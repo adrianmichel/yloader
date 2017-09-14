@@ -17,20 +17,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#pragma warning( disable: 4482 )
+#pragma warning(disable : 4482)
 
-
-#include "charactermapping.h"
-#include "plugin.h"
-#include <miscfile.h>
-#include <boost/shared_ptr.hpp>
-#include <boost/regex.hpp>
-#include <boost/make_shared.hpp>
 #include <datetime.h>
-#include "yplugin.h"
-#include "defaults.h"
 #include <filesymbols.h>
+#include <miscfile.h>
+#include <boost/make_shared.hpp>
+#include <boost/regex.hpp>
+#include <boost/shared_ptr.hpp>
+#include "charactermapping.h"
+#include "defaults.h"
+#include "plugin.h"
 #include "yahooeventsink.h"
+#include "yplugin.h"
 
 #define TAB _T( "\t" )
 #define DOUBLE_TAB TAB TAB
@@ -59,18 +58,24 @@ class DataFormatSettings {
   const std::wstring _dateSeparator;
   const std::wstring _fieldSeparator;
   const bool _padDate;
+  const int _fixedDecimalsCount;
+  const std::wstring _decimalSeparator;
 
  public:
   DataFormatSettings(bool addSymbol, unsigned int symbolColNumber,
                      yloader::DateFormat dateFormat,
                      const std::wstring& dateSeparator,
-                     const std::wstring& fieldSeparator, bool padDate)
+                     const std::wstring& fieldSeparator, bool padDate,
+                     int fixedDecimalCount,
+                     const std::wstring& decimalSeparator)
       : _addSymbol(addSymbol),
         _symbolColNumber(symbolColNumber),
         _dateFormat(dateFormat),
         _dateSeparator(dateSeparator),
         _padDate(padDate),
-        _fieldSeparator(fieldSeparator) {}
+        _fieldSeparator(fieldSeparator),
+        _fixedDecimalsCount(fixedDecimalCount),
+        _decimalSeparator(decimalSeparator) {}
 
   yloader::DateFormat dateFormat() const { return _dateFormat; }
   bool addSymbol() const { return _addSymbol; }
@@ -78,6 +83,8 @@ class DataFormatSettings {
   const std::wstring& dateSeparator() const { return _dateSeparator; }
   unsigned int symbolColNumber() const { return _symbolColNumber; }
   const std::wstring& fieldSeparator() const { return _fieldSeparator; }
+  int fixedDecimalsCount() const { return _fixedDecimalsCount; }
+  const std::wstring& decimalSeparator() const { return _decimalSeparator; }
 
   inline std::wstring pad0(int n, bool pad) const {
     std::wstring o;
@@ -227,6 +234,7 @@ class DataParams : public DataFormatSettings, public RegexDataFormatSettings {
       const std::wstring& saveFileAll, const std::wstring& symbolsFileName,
       const std::wstring& ext, bool dontReloadOldDataInUpdateMode,
       const std::wstring& logFile, bool appendToLogFile, bool logOnlyErrors,
+      int fixedDecimalsCount, const std::wstring& decimalSeparator,
       bool regex = false, const boost::wregex& regexMatch = boost::wregex(),
       const std::wstring& regexFormat = std::wstring(),
       unsigned long regexFlags = DEFAULT_REGEX_FLAGS)
@@ -260,7 +268,8 @@ class DataParams : public DataFormatSettings, public RegexDataFormatSettings {
         _appendToLogFile(appendToLogFile),
         _logOnlyErrors(logOnlyErrors),
         DataFormatSettings(addSymbol, symbolColNumber, dateFormat,
-                           dateSeparator, fieldSeparator, padDate),
+                           dateSeparator, fieldSeparator, padDate,
+                           fixedDecimalsCount, decimalSeparator),
         RegexDataFormatSettings(regex, regexMatch, regexFormat, regexFlags),
         _errorSymbolsList(errorSymbolsList),
         _appendToErrorSymbolsList(appendToErrorSymbolsList),

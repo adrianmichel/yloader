@@ -1,14 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
 
-    <p>
-      This section describes the command line usage for both the classic
-      GUI, and the new console versions of the YLoader application.</p>
-    <p>
-      Most command line arguments have corresponding settings in the GUI
-      version of YLoader. The ones that do not, are generally used to
-      control the runtime behavior of the console version, without
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+  </head>
+  <body>
+    <p> This section describes the command line usage for both the
+      classic GUI, and the new console versions of the YLoader
+      application.</p>
+    <p> Most command line arguments have corresponding settings in the
+      GUI version of YLoader. The ones that do not, are generally used
+      to control the runtime behavior of the console version, without
       affecting the downloaded data.</p>
-    <p>
-      Both the GUI and console versions accept the same command line
+    <p> Both the GUI and console versions accept the same command line
       arguments with some differences as far as the default values for
       missing arguments, or required vs. optional arguments:</p>
     <ul>
@@ -41,38 +45,33 @@
       <li>in one or more configuration files.</li>
     </ul>
     <h4><b><font size="4">Passing arguments on the command line</font></b></h4>
-    <p>
-      The command line has the general format:</p>
-    <p>
-      <b>&lt;executable_name&gt; [-argument1 value1] [-argument2 value2]
-        [-argument3 value3]... </b></p>
+    <p> The command line has the general format:</p>
+    <p> <b>&lt;executable_name&gt; [-argument1 value1] [-argument2
+        value2] [-argument3 value3]... </b></p>
     <p>where <b>&lt;executable_name&gt;</b> is:</p>
     <ul>
       <li><b>yloader.exe</b> for the GUI version </li>
       <li><b>ylodercl.exe</b> for the console version.</li>
     </ul>
-    <p>
-      Each argument is specified using a name - either short: one letter
-      preceded by "-" (ex: <b>-a</b>), or long: a string preceded by
-      "--" (ex: <b>--autostart</b>).</p>
-    <p>
-      It is not required that the entire long name be entered, only
+    <p> Each argument is specified using a name - either short: one
+      letter preceded by "-" (ex: <b>-a</b>), or long: a string
+      preceded by "--" (ex: <b>--autostart</b>).</p>
+    <p> It is not required that the entire long name be entered, only
       enough characters to uniquely identify the argument. For example <b>--auto</b>
       will trigger an error because the application doesn't know if that
       refers to <b>--autoexit</b> or <b>--autostart</b>. But <b>--autos</b>
       will be accepted as it is unambiguously referring to <b>--autostart.</b></p>
-    <p>
-      Most arguments require a value following the argument name. The
+    <p> Most arguments require a value following the argument name. The
       argument name and value must be separated by one or more spaces or
       tabs. The value can can be optionally surrounded by quotes if it
       must contain spaces (for example a path or file name). Some
       arguments do not require a value, and they can be followed
       immediately by another argument name.</p>
-    <p>
-      There are several types of values required by the various
+    <p> There are several types of values required by the various
       arguments:</p>
     <ul>
       <li><b>path</b>, for example <b>-s</b>: or <b>--symbolsfile. </b>Can
+
         be any legal path, optionally surrounded by quotes, which is
         necessary if it contains spaces. The character "\" should be
         used to indicate different directories levels. Ex: <b>"c:\my
@@ -82,6 +81,7 @@
         the string "<b>true</b>" (or any case combination: <b>True</b>,
         <b>tRuE,</b> etc, with or without surrounding quotes) or by the
         number <b>1. </b>False can be represented by the string <b>"false"
+
         </b>(again using any combination of lower and upper case:<b>
           False, FALSe, </b>etc<b>., </b>with or without surrounding
         quotes<b>) </b>or by the number <b>0. </b>Any other values
@@ -107,17 +107,16 @@
         This is represented as a series of decimal digits: ex: <b>-c
           15. </b>Any other character will trigger an error.</li>
       <li><b>floating point, </b>for example <b>-M</b> or <b>--volumemultiplier.
-        </b>
-        This is represented by any valid floating point value: <b>15,
-          2e2, 15.324534 </b>
-        etc.</li>
+
+        </b> This is represented by any valid floating point value: <b>15,
+
+          2e2, 15.324534 </b> etc.</li>
     </ul>
-    <p>
-      For the GUI version, if an argument is not present on the command
-      line, the value of the corresponding option will be loaded from
-      the previously saved values. The console version will use preset
-      defaults if these arguments are not present on the command line
-      (except for the required ones).</p>
+    <p> For the GUI version, if an argument is not present on the
+      command line, the value of the corresponding option will be loaded
+      from the previously saved values. The console version will use
+      preset defaults if these arguments are not present on the command
+      line (except for the required ones).</p>
     <h4><font size="4"><b>Passing arguments in a </b></font><b><font
           size="4">configuration file</font></b></h4>
     <p>Configuration files can be a more convenient way to pass
@@ -185,11 +184,13 @@
     <p>Note that all arguments names, short and long, are case sensitive
       - for example -s sets the symbols file, while -S sets the data
       sort order within a data file.</p>
-    <table width="100%" class="cmd_line_args">
+    <table class="cmd_line_args" width="100%">
       <tbody>
         <tr>
-          <td class="cmd_line_args" width="111" bgcolor="#CCCCCC"><b>Short name</b></td>
-          <td class="cmd_line_args" width="113" bgcolor="#CCCCCC"><b>Long name</b></td>
+          <td class="cmd_line_args" width="111" bgcolor="#CCCCCC"><b>Short
+              name</b></td>
+          <td class="cmd_line_args" width="113" bgcolor="#CCCCCC"><b>Long
+              name</b></td>
           <td class="cmd_line_args" width="67" bgcolor="#CCCCCC"><b>Value</b></td>
           <td class="cmd_line_args" width="48" bgcolor="#CCCCCC"><b>GUI</b></td>
           <td class="cmd_line_args" width="57" bgcolor="#CCCCCC"><b>Console</b></td>
@@ -206,9 +207,9 @@
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional</td>
-          <td class="cmd_line_args" width="1215">Displays a short description of all the
-            command line options</td>
-          <td class="cmd_line_args" >yloader -?</tdclass="cmd_line_args">
+          <td class="cmd_line_args" width="1215">Displays a short
+            description of all the command line options</td>
+          <td class="cmd_line_args">yloader -? </td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-a</b></td>
@@ -216,9 +217,9 @@
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">ignored</td>
-          <td class="cmd_line_args" width="1215">If present, this argument will automatically
-            start a downloading session</td>
-          <td class="cmd_line_args" >yloader -a</td>
+          <td class="cmd_line_args" width="1215">If present, this
+            argument will automatically start a downloading session</td>
+          <td class="cmd_line_args">yloader -a</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-x</b></td>
@@ -226,29 +227,30 @@
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">ignored</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to automatically
-            close after the downloading session has completed. It can be
-            used together with argument <b>-a </b>to automatically
-            start and end a YLoader session.
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to automatically close after the downloading
+            session has completed. It can be used together with argument
+            <b>-a </b>to automatically start and end a YLoader session.
             <p>Note: options -a and -x are generally used when YLoader
               is used as part of an automated script. In that case, it
               makes more sense to use the console version of YLoader
               instead of the GUI version.</p>
           </td>
-          <td class="cmd_line_args" >yloader -a -x</td>
+          <td class="cmd_line_args">yloader -a -x</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-o</b></td>
           <td class="cmd_line_args" width="113"><b>--showsettings</b></td>
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">ignored</td>
-          <td class="cmd_line_args" width="57">optional (default - don't show settings)</td>
-          <td class="cmd_line_args" width="1215">Available only in the console version.
-            Instructs the downloader to display all settings for the
-            session. Used to see the actual values for all the settings,
-            even those that have not been set explicitly on the command
-            line.</td>
-          <td class="cmd_line_args" >yloadercl -o</td>
+          <td class="cmd_line_args" width="57">optional (default - don't
+            show settings)</td>
+          <td class="cmd_line_args" width="1215">Available only in the
+            console version. Instructs the downloader to display all
+            settings for the session. Used to see the actual values for
+            all the settings, even those that have not been set
+            explicitly on the command line.</td>
+          <td class="cmd_line_args">yloadercl -o</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-N</b></td>
@@ -257,11 +259,12 @@
           <td class="cmd_line_args" width="48">ignored</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - run)</td>
-          <td class="cmd_line_args" width="1215">Available only in the console version.
-            Instructs the downloader not to run a downloading session.
-            Can be used together with -o to check the values of various
-            settings before actually starting a session.</td>
-          <td class="cmd_line_args" >yloadercl -o -N</td>
+          <td class="cmd_line_args" width="1215">Available only in the
+            console version. Instructs the downloader not to run a
+            downloading session. Can be used together with -o to check
+            the values of various settings before actually starting a
+            session.</td>
+          <td class="cmd_line_args">yloadercl -o -N</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-R</b></td>
@@ -270,10 +273,10 @@
           <td class="cmd_line_args" width="48">ignored</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 100)</td>
-          <td class="cmd_line_args" width="1215">Available only in the console version.
-            Instructs the downloader to display progress information
-            every N downloaded symbol if N &gt; 0, or no progress
-            information if set to 0</td>
+          <td class="cmd_line_args" width="1215">Available only in the
+            console version. Instructs the downloader to display
+            progress information every N downloaded symbol if N &gt; 0,
+            or no progress information if set to 0</td>
           <td>&nbsp;</td>
         </tr>
         <tr>
@@ -283,51 +286,54 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - empty string)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to load arguments
-            from a configuration file in addition to those passed
-            directly on the command line.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to load arguments from a configuration file in
+            addition to those passed directly on the command line.</td>
           <td class="cmd_line_args">yloader -C "\yloader.cfg"</td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF"><span
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF"><span
                 style="background-color: #6699FF">Download session
                 control</span></font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-s</b></td>
           <td class="cmd_line_args" width="113"><b>--symbolsfile</b></td>
-          <td class="cmd_line_args" width="67">a string containing the symbols file name </td>
+          <td class="cmd_line_args" width="67">a string containing the
+            symbols file name </td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">required</td>
-          <td class="cmd_line_args" width="1215">Sets the name and path of the file containing
-            the symbols. The value string must be between quotes if it
-            contains spaces</td>
+          <td class="cmd_line_args" width="1215">Sets the name and path
+            of the file containing the symbols. The value string must be
+            between quotes if it contains spaces</td>
           <td class="cmd_line_args">yloader -s "c:\symbols\nasdaq.txt"</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-d</b></td>
           <td class="cmd_line_args" width="113"><b>--datapath</b></td>
-          <td class="cmd_line_args" width="67">a string containing the data path</td>
+          <td class="cmd_line_args" width="67">a string containing the
+            data path</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">required</td>
-          <td class="cmd_line_args" width="1215">Sets the path under which the generated files
-            will be saved. The value string must be between quotes if it
-            contains spaces</td>
+          <td class="cmd_line_args" width="1215">Sets the path under
+            which the generated files will be saved. The value string
+            must be between quotes if it contains spaces</td>
           <td class="cmd_line_args">yloader -d "c:\data"</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-n</b></td>
           <td class="cmd_line_args" width="113"><b>--datasource</b></td>
-          <td class="cmd_line_args" width="67">a string identifying the datasource</td>
+          <td class="cmd_line_args" width="67">a string identifying the
+            datasource</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">required</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader which datasource to
-            use to download the data. The datasource name can be
-            incomplete as long as it uniquely identifies it, for example
-            "y", "ya" "go" are all valid datasource names. Also, the
-            name is case insensitive, so both "y" and "Y" will identify
-            Yahoo as datasource.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader which datasource to use to download the data. The
+            datasource name can be incomplete as long as it uniquely
+            identifies it, for example "y", "ya" "go" are all valid
+            datasource names. Also, the name is case insensitive, so
+            both "y" and "Y" will identify Yahoo as datasource.</td>
           <td class="cmd_line_args">yloader -n "Y"<br>
             yloader -n "yahoo" <br>
             yloader -n "goo" )<br>
@@ -344,9 +350,10 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default on)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader whether to adjust
-            data for split and dividends or not. Note that some data
-            sources may not support either adjusted or unadjusted data.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader whether to adjust data for split and dividends or
+            not. Note that some data sources may not support either
+            adjusted or unadjusted data.</td>
           <td class="cmd_line_args">yloader -j 1</td>
         </tr>
         <tr>
@@ -357,8 +364,8 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default on)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader whether to check
-            data for errors or not.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader whether to check data for errors or not.</td>
           <td class="cmd_line_args">yloader -v 0</td>
         </tr>
         <tr>
@@ -369,11 +376,11 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - earliest date available)</td>
-          <td class="cmd_line_args" width="1215">Sets the start date of the downloading range.
-            The format is "mm/dd/yyyy" where mm is the month (1-12), dd
-            is the day (1-31) and yyyy is the year. An empty quoted
-            string can be set to specify the earliest available start
-            date. See also -l and -u.</td>
+          <td class="cmd_line_args" width="1215">Sets the start date of
+            the downloading range. The format is "mm/dd/yyyy" where mm
+            is the month (1-12), dd is the day (1-31) and yyyy is the
+            year. An empty quoted string can be set to specify the
+            earliest available start date. See also -l and -u.</td>
           <td class="cmd_line_args">yloader -t "1/1/2008"<br>
             yloader -t ""</td>
         </tr>
@@ -385,11 +392,11 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - most recent date available)</td>
-          <td class="cmd_line_args" width="1215">Sets the end date of the downloading range.
-            The format is "mm/dd/yyyy" where mm is the month (1-12), dd
-            is the day (1-31) and yyyy is the year. An empty quoted
-            string can be set to most recent available end date. See
-            also -l and -u.</td>
+          <td class="cmd_line_args" width="1215">Sets the end date of
+            the downloading range. The format is "mm/dd/yyyy" where mm
+            is the month (1-12), dd is the day (1-31) and yyyy is the
+            year. An empty quoted string can be set to most recent
+            available end date. See also -l and -u.</td>
           <td class="cmd_line_args">yloader -e "1/1/2008"<br>
             yloader -e ""</td>
         </tr>
@@ -401,9 +408,10 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - off)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader whether to ignore
-            the start/end date settings and download all available data
-            ,if enabled, or use the start/end dates if disabled.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader whether to ignore the start/end date settings and
+            download all available data ,if enabled, or use the
+            start/end dates if disabled.</td>
           <td class="cmd_line_args">yloader -l 1</td>
         </tr>
         <tr>
@@ -414,12 +422,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - off)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to download only the
-            most recent missing bars if enabled, or the data for the
-            entire specified range if disabled. Enabling the update mode
-            is the most efficient way to download data on an ongoing
-            basis, as this will always download the minimum amount of
-            data.
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to download only the most recent missing bars if
+            enabled, or the data for the entire specified range if
+            disabled. Enabling the update mode is the most efficient way
+            to download data on an ongoing basis, as this will always
+            download the minimum amount of data.
             <p>Note: even in update mode the downloader may decide to
               download all data (according to the specified range) if it
               determines that old data is no longer consistent with the
@@ -446,11 +454,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 5)</td>
-          <td class="cmd_line_args" width="1215">Sets the number of simultaneous downloading
-            connections. If bandwidth and processing power were
-            unlimited, the higher the number the faster the download. In
-            practice, should be used with caution, as a higher number
-            may not necessarily result in a faster download</td>
+          <td class="cmd_line_args" width="1215">Sets the number of
+            simultaneous downloading connections. If bandwidth and
+            processing power were unlimited, the higher the number the
+            faster the download. In practice, should be used with
+            caution, as a higher number may not necessarily result in a
+            faster download</td>
           <td class="cmd_line_args">yloader -c 7</td>
         </tr>
         <tr>
@@ -461,10 +470,10 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - warning)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to issue an warning
-            and continue downloading the data, if set to warning, or
-            issue an error and halt downloading the data for that
-            symbol, if set to error.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to issue an warning and continue downloading the
+            data, if set to warning, or issue an error and halt
+            downloading the data for that symbol, if set to error.</td>
           <td class="cmd_line_args">yloader -i 1</td>
         </tr>
         <tr>
@@ -475,31 +484,34 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - valid)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader how to handle the
-            case of volume 0. If set to valid, it will consider volume 0
-            as a valid value, if set to invalid, it will consider volume
-            0 as invalid, and it will handle further according to
-            argument -i (handling of invalid data)</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader how to handle the case of volume 0. If set to
+            valid, it will consider volume 0 as a valid value, if set to
+            invalid, it will consider volume 0 as invalid, and it will
+            handle further according to argument -i (handling of invalid
+            data)</td>
           <td class="cmd_line_args">yloader -V 0</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-w</b></td>
           <td class="cmd_line_args" width="113"><b>--noreloadolddata</b></td>
-          <td class="cmd_line_args" width="67">0 - allow reloading of old data<br>
+          <td class="cmd_line_args" width="67">0 - allow reloading of
+            old data<br>
             1 - don't allow reloading of old data</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 0)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to reload old data
-            in update mode, if necessary, if set to enable, and disables
-            reloading of old data in update mode, even if old data is
-            inconsistent, if disabled. See also argument -u.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to reload old data in update mode, if necessary,
+            if set to enable, and disables reloading of old data in
+            update mode, even if old data is inconsistent, if disabled.
+            See also argument -u.</td>
           <td class="cmd_line_args">yloader -w 1</td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF">Settings based line
-              formatting</font></td>
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF">Settings
+              based line formatting</font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-f</b></td>
@@ -510,7 +522,8 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 0)</td>
-          <td class="cmd_line_args" width="1215">Sets the date format for the downloaded data.</td>
+          <td class="cmd_line_args" width="1215">Sets the date format
+            for the downloaded data.</td>
           <td class="cmd_line_args">yloader -f 1</td>
         </tr>
         <tr>
@@ -521,10 +534,11 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - off)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader whether to add the
-            symbol to the generated file if enabled (see argument -m for
-            the column where the symbol will be placed), or to not add
-            the symbol to the generated file if disabled.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader whether to add the symbol to the generated file
+            if enabled (see argument -m for the column where the symbol
+            will be placed), or to not add the symbol to the generated
+            file if disabled.</td>
           <td class="cmd_line_args">yloader -y 1</td>
         </tr>
         <tr>
@@ -534,26 +548,29 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default 0)</td>
-          <td class="cmd_line_args" width="1215">If adding the symbol to the generated file is
-            enabled (see argument -y), this will set the column in which
-            the symbol will be added (0 for the first column, 1 for the
-            second, etc, up to 6 for the last column)</td>
+          <td class="cmd_line_args" width="1215">If adding the symbol to
+            the generated file is enabled (see argument -y), this will
+            set the column in which the symbol will be added (0 for the
+            first column, 1 for the second, etc, up to 6 for the last
+            column)</td>
           <td class="cmd_line_args">yloader -y 1 -m 2</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-r</b></td>
           <td class="cmd_line_args" width="113"><b>--dateseparator</b></td>
-          <td class="cmd_line_args" width="67">a string of 1 or more characters </td>
+          <td class="cmd_line_args" width="67">a string of 1 or more
+            characters </td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - "/")</td>
-          <td class="cmd_line_args" width="1215">Sets the date separator to the specified
-            character or string. To set the "no date separator" mode,
-            use command line argument <b>-z</b>. The separator string
-            should be surrounded by quotes in case it starts with "-",
-            which can cause an ambiguous command line. If both <b>-r</b>
-            and <b>-z</b> are present on the command line, -z takes
-            precendence, so there won't be a date separator</td>
+          <td class="cmd_line_args" width="1215">Sets the date separator
+            to the specified character or string. To set the "no date
+            separator" mode, use command line argument <b>-z</b>. The
+            separator string should be surrounded by quotes in case it
+            starts with "-", which can cause an ambiguous command line.
+            If both <b>-r</b> and <b>-z</b> are present on the command
+            line, -z takes precendence, so there won't be a date
+            separator</td>
           <td class="cmd_line_args">yloader -r "-"</td>
         </tr>
         <tr>
@@ -562,22 +579,23 @@
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional</td>
-          <td class="cmd_line_args" width="1215">Sets the "no date separator" mode. See
-            command line argument -r for how to set any date separator.
-            If both <b>-r</b> and <b>-z</b> are present on the command
-            line, <b>-z</b> takes precedence, so there won't be a date
-            separator</td>
+          <td class="cmd_line_args" width="1215">Sets the "no date
+            separator" mode. See command line argument -r for how to set
+            any date separator. If both <b>-r</b> and <b>-z</b> are
+            present on the command line, <b>-z</b> takes precedence, so
+            there won't be a date separator</td>
           <td class="cmd_line_args">yloader -z</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-F</b></td>
           <td class="cmd_line_args" width="113"><b>--fieldseparator</b></td>
-          <td class="cmd_line_args" width="67">a string of 1 or more characters</td>
+          <td class="cmd_line_args" width="67">a string of 1 or more
+            characters</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - ",")</td>
-          <td class="cmd_line_args" width="1215">Sets the field separator to the specified
-            character or string</td>
+          <td class="cmd_line_args" width="1215">Sets the field
+            separator to the specified character or string</td>
           <td class="cmd_line_args">yloader -F "+"</td>
         </tr>
         <tr>
@@ -588,11 +606,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - disable)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader whether to pad the
-            date fields with 0s if enabled, or to leave the date
-            unchanged if disabled. The padding will only affect the day
-            and month fields, if either of these only has one digit (ex:
-            1/1/2010 becomes 01/01/2010)</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader whether to pad the date fields with 0s if
+            enabled, or to leave the date unchanged if disabled. The
+            padding will only affect the day and month fields, if either
+            of these only has one digit (ex: 1/1/2010 becomes
+            01/01/2010)</td>
           <td class="cmd_line_args">yloader -D 1</td>
         </tr>
         <tr>
@@ -602,13 +621,51 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 1)</td>
-          <td class="cmd_line_args" width="1215">Sets the volume multiplier.</td>
+          <td class="cmd_line_args" width="1215">Sets the volume
+            multiplier.</td>
           <td class="cmd_line_args">yloader -M 0.1</td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF">Regex based line
-              formatting</font></td>
+          <td class="cmd_line_args"><b>-L</b>
+          </td>
+          <td class="cmd_line_args"><b>-fixeddecimalscount</b>
+          </td>
+          <td class="cmd_line_args">integer
+          </td>
+          <td class="cmd_line_args">optional
+          </td>
+          <td class="cmd_line_args">optional (default -1)
+          </td>
+          <td class="cmd_line_args">Saves price values with fixed number of
+            decimals set by the argument value. If the value has fewer
+            decimal digits, value will be padded with zeros up to the
+            specified number of digits. Use "-1" for default behavior,
+            which is variable number of decimals
+          </td>
+          <td class="cmd_line_args">yloader -L 2
+          </td>
+        </tr>
+        <tr>
+          <td class="cmd_line_args"><b>-U</b>
+          </td>
+          <td class="cmd_line_args"><b>-decimalseparator</b>
+          </td>
+          <td class="cmd_line_args">a string of one or more characters
+          </td>
+          <td class="cmd_line_args">optional
+          </td>
+          <td class="cmd_line_args">optional (default ".")
+          </td>
+          <td class="cmd_line_args">Sets the decimal separator character. The
+            default is "."
+          </td>
+          <td class="cmd_line_args">yloader -U ","<br>
+          </td>
+        </tr>
+        <tr>
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF">Regex
+              based line formatting</font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-O</b></td>
@@ -616,22 +673,26 @@
           <td class="cmd_line_args" width="67">0 to disable<br>
             1 to enable</td>
           <td class="cmd_line_args" width="48">optional</td>
-          <td class="cmd_line_args" width="57">optional (default - disable)</td>
-          <td class="cmd_line_args" width="1215">it will enable regular expression formatting
-            of output data and will disable settings based output data
-            formatting. All other output data formatting arguments (such
-            as field separator, date format etc) will be ignored. </td>
+          <td class="cmd_line_args" width="57">optional (default -
+            disable)</td>
+          <td class="cmd_line_args" width="1215">it will enable regular
+            expression formatting of output data and will disable
+            settings based output data formatting. All other output data
+            formatting arguments (such as field separator, date format
+            etc) will be ignored. </td>
           <td>&nbsp;</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-Y</b></td>
           <td class="cmd_line_args" width="113"><b>--matchregex</b></td>
-          <td class="cmd_line_args" width="67">a string (the regular expression)</td>
+          <td class="cmd_line_args" width="67">a string (the regular
+            expression)</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - regex to extract all fields)</td>
-          <td class="cmd_line_args" width="1215">If set, it will define the regular expression
-            used to extract fields from the input data. <br>
+          <td class="cmd_line_args" width="1215">If set, it will define
+            the regular expression used to extract fields from the input
+            data. <br>
             See the chapter on regular expression formatting on more
             information</td>
           <td class="cmd_line_args">yloader -O 1 -Y "(.*),(.*)"</td>
@@ -639,14 +700,15 @@
         <tr>
           <td class="cmd_line_args" width="111"><b>-Z</b></td>
           <td class="cmd_line_args" width="113"><b>--formatstring</b></td>
-          <td class="cmd_line_args" width="67">a string describing the data format</td>
+          <td class="cmd_line_args" width="67">a string describing the
+            data format</td>
           <td class="cmd_line_args" width="48">ignored</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - it will leave input data unchanged, if based on
             the default match regex)</td>
-          <td class="cmd_line_args" width="1215">If set, it will define the format of each
-            line in the output data files. See the chapter on regular
-            expression formatting on more information</td>
+          <td class="cmd_line_args" width="1215">If set, it will define
+            the format of each line in the output data files. See the
+            chapter on regular expression formatting on more information</td>
           <td class="cmd_line_args">yloader -O 1 -Z "$1,$2</td>
         </tr>
         <tr>
@@ -656,16 +718,17 @@
           <td class="cmd_line_args" width="48">ignored</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default 0)</td>
-          <td class="cmd_line_args" width="1215">This argument is currently not used. In the
-            future it will allow fine tuning of the regular expression
-            formatting (the type of expression, character case handling
-            etc). See the chapter on regular expression formatting on
-            more information</td>
+          <td class="cmd_line_args" width="1215">This argument is
+            currently not used. In the future it will allow fine tuning
+            of the regular expression formatting (the type of
+            expression, character case handling etc). See the chapter on
+            regular expression formatting on more information</td>
           <td class="cmd_line_args">yloader -O 1 -G 0</td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF">Output files</font></td>
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF">Output
+              files</font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-S</b></td>
@@ -675,8 +738,8 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - ascending)</td>
-          <td class="cmd_line_args" width="1215">Sets the bar sorting order in the generated
-            files relative to their date.</td>
+          <td class="cmd_line_args" width="1215">Sets the bar sorting
+            order in the generated files relative to their date.</td>
           <td class="cmd_line_args">yloader -S 0</td>
         </tr>
         <tr>
@@ -686,12 +749,13 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - empty string)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to add the string to
-            the top of all data files. If the string contains spaces, it
-            should be quoted. Currently this string cannot contain
-            special characters such as new line etc. To enable a
-            multi-line header string, use the Settings/Formatting/Data
-            File Header when using the GUI version of the downloader.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to add the string to the top of all data files.
+            If the string contains spaces, it should be quoted.
+            Currently this string cannot contain special characters such
+            as new line etc. To enable a multi-line header string, use
+            the Settings/Formatting/Data File Header when using the GUI
+            version of the downloader.</td>
           <td class="cmd_line_args">yloader -h "This is a header string"</td>
         </tr>
         <tr>
@@ -701,11 +765,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - empty string)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to add the specified
-            string to the beginning of the file name for each symbol. If
-            the strings contains spaces, it should be quoted. The string
-            cannot contain characters that are invalid in file names,
-            such as <i>?, *, "</i></td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to add the specified string to the beginning of
+            the file name for each symbol. If the strings contains
+            spaces, it should be quoted. The string cannot contain
+            characters that are invalid in file names, such as <i>?, *,
+              "</i></td>
           <td class="cmd_line_args">yloader -P "data"</td>
         </tr>
         <tr>
@@ -715,11 +780,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - empty string)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to add the specified
-            string to the end of the file name (before the extension)
-            for each symbol. If the strings contains spaces, it should
-            be quoted. The string cannot contain characters that are
-            invalid in file names, such as <i>?, *, "</i></td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to add the specified string to the end of the
+            file name (before the extension) for each symbol. If the
+            strings contains spaces, it should be quoted. The string
+            cannot contain characters that are invalid in file names,
+            such as <i>?, *, "</i></td>
           <td class="cmd_line_args">yloader -A "data"</td>
         </tr>
         <tr>
@@ -729,11 +795,11 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - "csv")</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to use the specified
-            string as the file extension. If the strings contains
-            spaces, it should be quoted. The string cannot contain
-            characters that are invalid in file names, such as <i>?, *,
-              "</i></td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to use the specified string as the file
+            extension. If the strings contains spaces, it should be
+            quoted. The string cannot contain characters that are
+            invalid in file names, such as <i>?, *, "</i></td>
           <td class="cmd_line_args">yloader -X "txt"</td>
         </tr>
         <tr>
@@ -743,12 +809,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - empty string)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to save all the
-            downloaded data to a single file with the specified name.
-            Files for individual symbols will still be generated. If the
-            strings contains spaces, it should be quoted. The string
-            cannot contain characters that are invalid in file names,
-            such as <i>?, *, "</i> </td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to save all the downloaded data to a single file
+            with the specified name. Files for individual symbols will
+            still be generated. If the strings contains spaces, it
+            should be quoted. The string cannot contain characters that
+            are invalid in file names, such as <i>?, *, "</i> </td>
           <td class="cmd_line_args">yloader -b "c:\allsymbolsfile.csv"</td>
         </tr>
         <tr>
@@ -757,10 +823,10 @@
           <td class="cmd_line_args" width="67">&nbsp;</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">not used</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to clear the single
-            output file name field, thus disabling the single output
-            file generation feature for the current session (used only
-            in the GUI version).</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to clear the single output file name field, thus
+            disabling the single output file generation feature for the
+            current session (used only in the GUI version).</td>
           <td class="cmd_line_args">yloader -k</td>
         </tr>
         <tr>
@@ -771,11 +837,12 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 0)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to save the data
-            files under a hierarchy of nested folders (using the first
-            two characters of each symbol) if enabled, or to save the
-            output files in a flat structure, if disabled. The output
-            data path set with -d is used as root in both cases.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to save the data files under a hierarchy of
+            nested folders (using the first two characters of each
+            symbol) if enabled, or to save the output files in a flat
+            structure, if disabled. The output data path set with -d is
+            used as root in both cases.</td>
           <td class="cmd_line_args">yloader -q 1</td>
         </tr>
         <tr>
@@ -783,17 +850,19 @@
           </td>
           <td class="cmd_line_args" valign="middle"><b>--mapcharacter</b><br>
           </td>
-          <td class="cmd_line_args" valign="middle">a string of one or two characters<br>
+          <td class="cmd_line_args" valign="middle">a string of one or
+            two characters<br>
           </td>
           <td class="cmd_line_args" valign="middle">optional<br>
           </td>
           <td class="cmd_line_args" valign="middle">optional<br>
           </td>
-          <td class="cmd_line_args" valign="middle">Maps one character in the symbol name to
-            one character in the data file for that symbol. There can be
-            up to four mappings. The main purpose of this argument is to
-            allow saving data for symbols that contain characters that
-            are invalid in file names, such as ":" etc.<br>
+          <td class="cmd_line_args" valign="middle">Maps one character
+            in the symbol name to one character in the data file for
+            that symbol. There can be up to four mappings. The main
+            purpose of this argument is to allow saving data for symbols
+            that contain characters that are invalid in file names, such
+            as ":" etc.<br>
             <ul>
               <li>If the string contains one character, it will be
                 removed from the data file name, e.g. for symbol "ry:ca"
@@ -812,76 +881,83 @@
           </td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF">Extra Symbols Lists</font></td>
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF">Extra
+              Symbols Lists</font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-B</b></td>
           <td class="cmd_line_args" width="113"><b>--errorsymbolsfilename</b></td>
-          <td class="cmd_line_args" width="67">error symbols list file name</td>
+          <td class="cmd_line_args" width="67">error symbols list file
+            name</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - no error symbols file name)</td>
-          <td class="cmd_line_args" width="1215">Sets the error symbols list file name. If
-            set, it will save all symbols with errors during the current
-            session into this file, otherwise will not save the these
-            symbols. Can be used together with arguments -H and -I for
-            more control over how to save and use the error symbols
-            file.</td>
+          <td class="cmd_line_args" width="1215">Sets the error symbols
+            list file name. If set, it will save all symbols with errors
+            during the current session into this file, otherwise will
+            not save the these symbols. Can be used together with
+            arguments -H and -I for more control over how to save and
+            use the error symbols file.</td>
           <td class="cmd_line_args">yloader -B ""\errors.txt""</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-H</b></td>
           <td class="cmd_line_args" width="113"><b>--appendtoerrorsymbolslist</b></td>
-          <td class="cmd_line_args" width="67">0 - do not append to error symbols file<br>
+          <td class="cmd_line_args" width="67">0 - do not append to
+            error symbols file<br>
             1 - append to error symbols file</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 1</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to append new error
-            symbols to the existing error symbols file (if any), if set
-            to 1, or to create a new error symbols file after each
-            session if set to 0. Can be used together with arguments -B
-            and -I for more control over how to save and use the error
-            symbols file.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to append new error symbols to the existing error
+            symbols file (if any), if set to 1, or to create a new error
+            symbols file after each session if set to 0. Can be used
+            together with arguments -B and -I for more control over how
+            to save and use the error symbols file.</td>
           <td class="cmd_line_args">yloader -H "0"</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-I</b></td>
           <td class="cmd_line_args" width="113"><b>--ignoreerrorsymbolslist</b></td>
-          <td class="cmd_line_args" width="67">0 - do not ignore symbols in error symbols list<br>
+          <td class="cmd_line_args" width="67">0 - do not ignore symbols
+            in error symbols list<br>
             1 - ignore symbols in error symbols list</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 1</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to ignore symbols
-            that appear in the error symbols list file (if any), during
-            a downloading session, , even if they appear in the main
-            list of symbols to download, if set to 1, or to not ignore
-            these symbols if set to 0. Can be used together with
-            arguments -B and -H for more control over how to save and
-            use the error symbols file.</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to ignore symbols that appear in the error
+            symbols list file (if any), during a downloading session, ,
+            even if they appear in the main list of symbols to download,
+            if set to 1, or to not ignore these symbols if set to 0. Can
+            be used together with arguments -B and -H for more control
+            over how to save and use the error symbols file.</td>
           <td class="cmd_line_args">yloader -I "1"</td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-J</b></td>
           <td class="cmd_line_args" width="113"><b>--ignoresymbolslist</b></td>
-          <td class="cmd_line_args" width="67">file name containing symbols to be ignored<br>
+          <td class="cmd_line_args" width="67">file name containing
+            symbols to be ignored<br>
             no file name</td>
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 1</td>
-          <td class="cmd_line_args" width="1215">If set to the name of a file containing a
-            list of symbols, these symbols will be ignored during a
-            downloading session even if they appear in the main list of
-            symbols to download. This file can be used in addition to
-            the automatically generated error symbols list file to
-            further control what is and what is not downloaded.</td>
+          <td class="cmd_line_args" width="1215">If set to the name of a
+            file containing a list of symbols, these symbols will be
+            ignored during a downloading session even if they appear in
+            the main list of symbols to download. This file can be used
+            in addition to the automatically generated error symbols
+            list file to further control what is and what is not
+            downloaded.</td>
           <td class="cmd_line_args">yloader -J "\exclude_symbols.txt"</td>
         </tr>
         <tr>
-          <td class="cmd_line_args" id="argument_category" colspan="7" bgcolor="#6699FF"
-            align="center"> <font color="#FFFFFF">Log file</font></td>
+          <td class="cmd_line_args" id="argument_category" colspan="7"
+            bgcolor="#6699FF" align="center"> <font color="#FFFFFF">Log
+              file</font></td>
         </tr>
         <tr>
           <td class="cmd_line_args" width="111"><b>-g</b></td>
@@ -890,11 +966,11 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - no log file name)</td>
-          <td class="cmd_line_args" width="1215">Sets the the log file name. If set, it will
-            save the current session activity log with this name,
-            otherwise will not save the activity log. Can be used
-            together with argument -z for more control over how to save
-            the log file.</td>
+          <td class="cmd_line_args" width="1215">Sets the the log file
+            name. If set, it will save the current session activity log
+            with this name, otherwise will not save the activity log.
+            Can be used together with argument -z for more control over
+            how to save the log file.</td>
           <td class="cmd_line_args">yloader -g "\yloader.log"</td>
         </tr>
         <tr>
@@ -905,8 +981,9 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - log everything)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to only log error
-            events during a downloading session</td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to only log error events during a downloading
+            session</td>
           <td class="cmd_line_args">yloader -E 1</td>
         </tr>
         <tr>
@@ -917,29 +994,23 @@
           <td class="cmd_line_args" width="48">optional</td>
           <td class="cmd_line_args" width="57">optional<br>
             (default - 0)</td>
-          <td class="cmd_line_args" width="1215">Instructs the downloader to append log
-            statements for new sessions to the existing log file if set
-            to 1, or to reset the log file every time a new session
-            starts. </td>
+          <td class="cmd_line_args" width="1215">Instructs the
+            downloader to append log statements for new sessions to the
+            existing log file if set to 1, or to reset the log file
+            every time a new session starts. </td>
           <td class="cmd_line_args">yloader -z 1</td>
         </tr>
       </tbody>
     </table>
-    <h3>
-      Examples</h3>
-    <p>
-      <b>1. autostart and/or autoexit YLoader</b></p>
-    <div class="sample">
-       yloader.exe --autoexitt<br>
-        yloader.exe -x<br>
-        yloader.exe -x -a
-    </div>
+    <h3> Examples</h3>
+    <p> <b>1. autostart and/or autoexit YLoader</b></p>
+    <div class="sample"> yloader.exe --autoexitt<br>
+      yloader.exe -x<br>
+      yloader.exe -x -a </div>
     <p><span style="font-weight: 700">2. Set the required arguments for
         the console version, using long argument names</span></p>
-    <div class="sample">
-      yloadercl.exe --symbolsfile "c:\symbols
-        files\nasdaq.txt" --datapath "c:\data" --datasource "yahoo"
-    </div>
+    <div class="sample"> yloadercl.exe --symbolsfile "c:\symbols
+      files\nasdaq.txt" --datapath "c:\data" --datasource "yahoo" </div>
     <p><span style="font-weight: 400"><b>3. Set several options (adjust
           off, all available off, update on, validate prices off, data
           source Google)and auto-start a downloading session.</b></span></p>
@@ -947,12 +1018,10 @@
     <p><span style="font-weight: 400"><b>4. Set several options in a
           configuration file</b></span></p>
     <div class="sample">yloadercl.exe -C "\yloaderconfig.txt"</div>
-      where the configuration file "yloaderconfig.txt" contains:
-        <div class="sample">
-            symbolsfile="c:\symbols files\nasdaq.txt"<br>
-            datapath="c:\data"<br />
-            datasource="yahoo"
-        </div>
+    where the configuration file "yloaderconfig.txt" contains:
+    <div class="sample"> symbolsfile="c:\symbols files\nasdaq.txt"<br>
+      datapath="c:\data"<br>
+      datasource="yahoo" </div>
     <p><span style="font-weight: 400"><b>5. Display the current
           settings, including the defaults for missing arguments and
           exit (console version only).</b></span></p>
@@ -968,7 +1037,10 @@
     <div class="sample">yloadercl -d \data -s "\symbols.txt" -n "yahoo"
       -t 7/7/2010 -e 10/25/2010</div>
     <p><span style="font-weight: 400"><b>7. Run a console session </b></span><b>in
+
         update mode (download only most recent bars if possible)</b></p>
     <div class="sample">yloadercl -d \data -s "\symbols.txt" -n "y" -u 1</div>
     <p>Note: -n "y" will instruct YLoader to use Yahoo as data source (a
       few characters of the datasource name are enough to identify it)</p>
+  </body>
+</html>

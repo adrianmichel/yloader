@@ -231,6 +231,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
       bool appendToLog(cmdLine->appendToLog(DEFAULT_APPEND_TO_LOG));
       bool logOnlyErrors(cmdLine->logOnlyErrors(DEFAULT_LOG_ONLY_ERRORS));
+      int fixedDecimalsCount(
+          cmdLine->fixedDecimalsCount(DEFAULT_FIXED_DECIMALS_COUNT));
+      const std::wstring decimalSeparator(
+          cmdLine->decimalSeparator(DEFAULT_DECIMAL_SEPARATOR));
 
       DataParams dataParams(
           cmdLine->errorSymbolsListFileName(DEFAULT_ERROR_SYMBOLS_LIST),
@@ -254,14 +258,16 @@ int _tmain(int argc, _TCHAR* argv[]) {
           cmdLine->handlingInvalidData(DEFAULT_HANDLING_INVALID_DATA),
           cmdLine->handlingVolume0(DEFAULT_VOLUME0_INVALID), connections,
           DEFAULT_AUTO_SELECT_OUTPUT_PATH,  // cmdLine->autoSelectOutputPath(
-                                            // DEFAULT_AUTO_SELECT_OUTPUT_PATH ),
+                                            // DEFAULT_AUTO_SELECT_OUTPUT_PATH
+                                            // ),
           _T( "" ), cm, cmdLine->fieldSeparator(DEFAULT_FIELD_SEPARATOR),
           cmdLine->volumeMultiplier(DEFAULT_VOLUME_MULTIPLIER),
           cmdLine->dataFileHeader(),
           cmdLine->dateSeparator(DEFAULT_DATE_SEPARATOR), cmdLine->outputFile(),
           symbolsFileName, cmdLine->extension(DEFAULT_EXTENSION),
           cmdLine->noReloadOldData(DEFAULT_DONT_RELOAD_DATA_IN_UPDATE_MODE),
-          logFile, appendToLog, logOnlyErrors,
+          logFile, appendToLog, logOnlyErrors, fixedDecimalsCount,
+          decimalSeparator,
           cmdLine->enableRegexFomratting(DEFAULT_ENABLE_REGEX_FORMATTING),
           cmdLine->regexMatch(DEFAULT_MATCH_REGEX),
           cmdLine->regexFormat(DEFAULT_FORMAT_STRING),
@@ -491,3 +497,7 @@ void _showError(const TCHAR* text, const TCHAR* title) { printLine(text); }
 void _showInfo(const TCHAR* text, const TCHAR* title) { printLine(text); }
 
 bool _setUpdater(const StringSettable&, const StringSettable&) { return true; }
+
+void _setFixedDecimalsCount(unsigned int count) {}
+
+void _setDecimalSeparator(const TCHAR* decimalSeparator) {}

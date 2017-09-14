@@ -16,15 +16,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-#include "afxwinappex.h"
-#include "afxdialogex.h"
-#include "yloader.h"
-#include "MainFrm.h"
 
-#include "yloaderDoc.h"
-#include "YloaderView.h"
+#include "MainFrm.h"
+#include "afxdialogex.h"
+#include "afxwinappex.h"
+#include "yloader.h"
+
 #include <CmdLine.h>
 #include <versionno.h>
+#include "YloaderView.h"
+#include "yloaderDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -414,6 +415,14 @@ void _showInfo(const TCHAR* text, const TCHAR* title) {
 
 void _setMapCharacters(const std::vector<std::string>& mapCharacters) {
   getView()->setCharacterMapping(mapCharacters);
+}
+
+void _setFixedDecimalsCount(unsigned int count) {
+  getView()->setFixedDecimalsCount(count);
+}
+
+void _setDecimalSeparator(const TCHAR* decimalSeparator) {
+  getView()->setDecimalSeparator(std::wstring(decimalSeparator));
 }
 
 bool __stdcall cl() {

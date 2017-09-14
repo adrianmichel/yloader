@@ -79,6 +79,8 @@ class CmdLine {
   StringSettable _alternateUpdateHost;
   StringSettable _alternateUpdateDirectory;
   StrVectorSettable _mapCharacters;
+  IntSettable _fixedDecimalsCount;
+  StringSettable _decimalSeparator;
 
  public:
   CmdLine();
@@ -285,6 +287,14 @@ class CmdLine {
 
   bool doNotCheckForUpdate() const { return _doNotCheckForUpdate; }
   const StrVectorSettable& mapCharacters() const { return _mapCharacters; }
+  const IntSettable fixedDecimalsCount() const { return _fixedDecimalsCount; }
+  const StringSettable& decimalSeparator() const { return _decimalSeparator; }
+  int fixedDecimalsCount(int def) const {
+    return _fixedDecimalsCount.isSet() ? _fixedDecimalsCount.getValue() : def;
+  }
+  const std::wstring decimalSeparator(const std::wstring& def) const {
+    return _decimalSeparator.isSet() ? _decimalSeparator.getValue() : def;
+  }
 };
 
 class CmdLineException : public std::exception {
@@ -351,6 +361,8 @@ void _setAutoExit(bool autoExit);
 void _setIgnoreSymbolsList(const TCHAR* symbolsList);
 void _setDoNotCheckForUpdate(bool doNotCheckForUpdate);
 void _setMapCharacters(const std::vector<std::string>& mapCharacters);
+void _setFixedDecimalsCount(unsigned int count);
+void _setDecimalSeparator(const TCHAR* decimalSeparator);
 
 void _showError(const TCHAR* text, const TCHAR* title);
 void _showInfo(const TCHAR* text, const TCHAR* title);

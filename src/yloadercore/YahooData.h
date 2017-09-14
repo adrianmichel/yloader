@@ -17,20 +17,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include "yplugin.h"
 #include "dataparams.h"
-
-
+#include "yplugin.h"
 
 /*
         daily, 1/21/2005 - 6/2/2007
     /table.csv?s=ODFL&a=00&b=21&c=2005&d=05&e=01&f=2007&g=d&q=q&y=0&z=file&x=.csv
 
         weekly
-    /table.csv?s=ODFL&a=00&b=07&c=2005&d=05&e=01&f=2007&g=w&q=q&y=0&z=file&x=.csv HTTP/1.1
+    /table.csv?s=ODFL&a=00&b=07&c=2005&d=05&e=01&f=2007&g=w&q=q&y=0&z=file&x=.csv
+HTTP/1.1
 
         monthly
-    /table.csv?s=ODFL&a=11&b=24&c=2004&d=05&e=01&f=2007&g=m&q=q&y=0&z=file&x=.csv HTTP/1.1
+    /table.csv?s=ODFL&a=11&b=24&c=2004&d=05&e=01&f=2007&g=m&q=q&y=0&z=file&x=.csv
+HTTP/1.1
 
 ?        quarterly
     /table.csv?s=ODFL&a=11&b=24&c=2004&d=05&e=01&f=2007&g=d&q=q&y=0&z=file&x=.csv
@@ -62,12 +62,15 @@ public:
   }
 };
 
-class YahooDividendData : public YahooData, public  std::vector< boost::shared_ptr< Dividend > >
+class YahooDividendData : public YahooData, public  std::vector<
+boost::shared_ptr< Dividend > >
 {
 public:
-  YahooDividendData( const std::wstring& symbol, const yloader::DateTime& start, const yloader::DateTime& end )
+  YahooDividendData( const std::wstring& symbol, const yloader::DateTime& start,
+const yloader::DateTime& end )
   {
-    CHTTPRequest req( ServerContext( rootURL(), buildRequest(symbol,start, end ) ) );
+    CHTTPRequest req( ServerContext( rootURL(), buildRequest(symbol,start, end )
+) );
     __super::parse( (std::string)req );
   }
 
@@ -531,6 +534,19 @@ class PriceData : public BarVector {
       return crtCol;
   }
 
+  std::wstring formatValue(const DataFormatSettings& dataParams,
+                           double value) const {
+    std::wostringstream wos;
+
+    if (dataParams.fixedDecimalsCount() >= 0)
+      wos << std::setprecision(dataParams.fixedDecimalsCount()) << std::fixed;
+    wos << value;
+
+    std::wstring v(wos.str());
+    boost::algorithm::replace_first(v, _T("."), dataParams.decimalSeparator());
+    return v;
+  }
+
   yloader::t_ostream& barToString(unsigned int i,
                                   const DataFormatSettings& dataParams,
                                   yloader::t_ostream& o) const {
@@ -542,13 +558,13 @@ class PriceData : public BarVector {
     o << dataParams.dateToString(b.date()) << dataParams.fieldSeparator();
 
     column = addSymbol(dataParams, ++column, o);
-    o << b.open() << dataParams.fieldSeparator();
+    o << formatValue(dataParams, b.open()) << dataParams.fieldSeparator();
     column = addSymbol(dataParams, ++column, o);
-    o << b.high() << dataParams.fieldSeparator();
+    o << formatValue(dataParams, b.high()) << dataParams.fieldSeparator();
     column = addSymbol(dataParams, ++column, o);
-    o << b.low() << dataParams.fieldSeparator();
+    o << formatValue(dataParams, b.low()) << dataParams.fieldSeparator();
     column = addSymbol(dataParams, ++column, o);
-    o << b.close() << dataParams.fieldSeparator();
+    o << formatValue(dataParams, b.close()) << dataParams.fieldSeparator();
     column = addSymbol(dataParams, ++column, o);
 
     TCHAR buf[65];
@@ -590,7 +606,8 @@ class PriceData : public BarVector {
     if (dataParams.regexFormattingEnabled()) {
       DataFormatSettings dataFormatSettings(
           true, 0, DEFAULT_DATE_FORMAT, DEFAULT_DATE_SEPARATOR,
-          DEFAULT_FIELD_SEPARATOR, DEFAULT_PAD_DATE_FIELDS);
+          DEFAULT_FIELD_SEPARATOR, DEFAULT_PAD_DATE_FIELDS,
+          DEFAULT_FIXED_DECIMALS_COUNT, DEFAULT_DECIMAL_SEPARATOR);
       if (asc) {
         for (size_t i = 0; i < size(); i++) {
           barToStringRegex(i, dataFormatSettings, dataParams, o);

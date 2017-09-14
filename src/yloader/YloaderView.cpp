@@ -16,14 +16,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "stdafx.h"
-// SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
-// and search filter handlers and allows sharing of document code with that project.
+// SHARED_HANDLERS can be defined in an ATL project implementing preview,
+// thumbnail and search filter handlers and allows sharing of document code with
+// that project.
 #ifndef SHARED_HANDLERS
 #include "yloader.h"
 #endif
 
-#include "yloaderDoc.h"
 #include "YloaderView.h"
+#include "yloaderDoc.h"
 
 #include <defaults.h>
 #include "EmptyDataPathPromptDlg.h"
@@ -165,6 +166,8 @@ void CYloaderView::SaveParams(bool force, bool updateData) {
     WriteProfileInt(_T("IgnoreErrorSymbolsList"), _ignoreErrorSymbolsList);
     WriteProfileString(_T("NotifyOnlyIfNewerVersion"),
                        _notifyOnlyIfNewerVersion);
+    WriteProfileString(_T("DecimalSeparator"), _decimalSeparator);
+    WriteProfileInt(_T("FixedDecimalsCount"), _fixedDecimalsCount);
   }
 }
 
@@ -273,15 +276,19 @@ void CYloaderView::LoadParams(const std::wstring& defSymbolsFileName,
 
     _characterMapping.set(cmfrom, cmto);
 
+    _decimalSeparator =
+        GetProfileString(_T("DecimalSeparator"), DEFAULT_DECIMAL_SEPARATOR);
+    _fixedDecimalsCount =
+        GetProfileInt(_T("FixedDecimalsCount"), DEFAULT_FIXED_DECIMALS_COUNT);
     /*
-    if (!enableExtraFeatures())
-    {
-    // these features are enabled in the registered version only
-    m_autoStartDownloading = false;
-    _threads = 1;
-    _logFile = _T("");
-    }
-    */
+if (!enableExtraFeatures())
+{
+// these features are enabled in the registered version only
+m_autoStartDownloading = false;
+_threads = 1;
+_logFile = _T("");
+}
+*/
 
     if (!yloader::fileExists(getYLoaderSettingsFile())) SaveParams(true, false);
   }
@@ -402,7 +409,7 @@ void CYloaderView::OnInitialUpdate() {
 
   // Create the colored <SoftechSoftware> sign
   //	m_sessionStatusCtrl.SubclassDlgItem(IDC_STATIC_SESSION_STATUS_VALUE,
-  //this);
+  // this);
 
   LoadParams(_defSymbolsFileName, _defDataPath);
 
@@ -819,12 +826,12 @@ void CYloaderView::OnTimer(UINT_PTR nIDEvent) {
         //				if (b)
         {
             //					m_sessionStatusCtrl.SetTextColor(true,
-            //0X7f00);
+            // 0X7f00);
             //					m_sessionStatusCtrl.SetBkColor(_bk);
         }  //				else
         {
           //					m_sessionStatusCtrl.SetTextColor(true,
-          //0xffffff);
+          // 0xffffff);
           //					m_sessionStatusCtrl.SetBkColor(0x7f00);
         }
         //    m_sessionStatusCtrl.RedrawWindow();
@@ -835,12 +842,12 @@ void CYloaderView::OnTimer(UINT_PTR nIDEvent) {
         //				if (b)
         {
             //					m_sessionStatusCtrl.SetTextColor(true,
-            //0Xff);
+            // 0Xff);
             //					m_sessionStatusCtrl.SetBkColor(_bk);
         }  //				else
         {
           //					m_sessionStatusCtrl.SetTextColor(true,
-          //0xffffff);
+          // 0xffffff);
           //					m_sessionStatusCtrl.SetBkColor(0xff);
         }
       }
@@ -853,13 +860,13 @@ void CYloaderView::OnTimer(UINT_PTR nIDEvent) {
         m_sessionStatusCtrl.SetWindowText(_T( "Canceled"));
         //				m_sessionStatusCtrl.SetBkColor(0xff);
         //				m_sessionStatusCtrl.SetTextColor(true,
-        //0xffffff);
+        // 0xffffff);
       } else {
         OutputDebugString(_T("completed\n"));
         m_sessionStatusCtrl.SetWindowText(_T("Completed"));
         //				m_sessionStatusCtrl.SetBkColor(0x7f00);
         //				m_sessionStatusCtrl.SetTextColor(true,
-        //0xffffff);
+        // 0xffffff);
       }
 
       // todo: write errors if session cancelled? Do write for now

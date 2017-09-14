@@ -248,6 +248,8 @@ class CYloaderView : public CFormView, public Refreshable {
   bool _ignoreErrorSymbolsList;
   std::wstring _ignoreSymbolsList;
   std::wstring _notifyOnlyIfNewerVersion;
+  unsigned int _fixedDecimalsCount;
+  std::wstring _decimalSeparator;
 
   WriteFileSymbolsListPtr _errorSymbolsListFile;
 
@@ -525,6 +527,13 @@ class CYloaderView : public CFormView, public Refreshable {
     _characterMapping = map;
   }
 
+  void setFixedDecimalsCount(unsigned int count) {
+    _fixedDecimalsCount = count;
+  }
+  void setDecimalSeparator(const std::wstring& decimalSeparator) {
+    _decimalSeparator = decimalSeparator;
+  }
+
   void setAdjustment(bool a) { m_Adjustment = a ? TRUE : FALSE; }
 
   void setValidatePrices(bool v) { m_validatePrices = v; }
@@ -552,8 +561,8 @@ class CYloaderView : public CFormView, public Refreshable {
         _volumeMultiplier, _fileHeader, _dateSeparator,
         std::wstring(getSaveFileAll()), std::wstring(getSymbolsFileName()),
         _fileNameExtension, _dontReloadOldDataInUpdateMode, _logFile,
-        _appendToLog, _logOnlyErrors, _enableRegexFormatting, _matchRegex,
-        _formatString, _regexFlags));
+        _appendToLog, _logOnlyErrors, _fixedDecimalsCount, _decimalSeparator,
+        _enableRegexFormatting, _matchRegex, _formatString, _regexFlags));
   }
 
   void LoadParams(const std::wstring& defSymbolsFileName,

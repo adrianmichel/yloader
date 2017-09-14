@@ -32,7 +32,7 @@ using yloader::operator<<;
 // **************************
 //
 // ABCDEFGHIJKLMNOPQRSTUVWXYZ
-// *********** ** ***** * ***
+// ********************** ***
 
 #define COMMAND_LINE_HELP_SHORT _T( "?" )
 #define COMMAND_LINE_HELP_LONG _T( "help" )
@@ -188,6 +188,12 @@ using yloader::operator<<;
 
 #define ALTERNATE_UPDATE_DIRECTORY _T( "altupdatedir" )
 
+#define FIXED_DECIMALS_COUNT_SHORT _T( "L")
+#define FIXED_DECIMALS_COUNT_LONG _T( "fixeddecimalscount")
+
+#define DECIMAL_SEPARATOR_SHORT _T( "U")
+#define DECIMAL_SEPARATOR_LONG _T( "decimalseparator")
+
 typedef std::map<std::string, unsigned int> CmdLineInfoBase;
 
 class CmdLineInfo : public CmdLineInfoBase {
@@ -332,6 +338,11 @@ TCHAR* CmdLineInfo::x
                IGNORE_SYMBOLS_LIST) _T( "ignore symbols from the specified file")},
            {ARGS(
                MAP_CHARACTER) _T( "if argument contains two characters, change first character to second character in data file name. If argument contains only on character, remove it from the data file name. See full documentation for more details")},
+           {ARGS(FIXED_DECIMALS_COUNT) _T("forces price values to display ")
+                                       _T("with fixed number of decimals ")
+                                       _T("specified by the argument")},
+           {ARGS(
+               DECIMAL_SEPARATOR) _T( "sets the character used as decimal separator, by default \".\"")},
            {ARGS(
                DO_NOT_CHECK_FOR_UPDATE) _T( "do not check for YLoader update at startup, by default will check if there is an update (only in console version)")}};
 
@@ -560,6 +571,12 @@ bool CmdLine::process() {
           cmdLineInfo.fullName(MAP_CHARACTER_SHORT).c_str(),
           po::value<std::vector<string> >(),
           cmdLineInfo.description(MAP_CHARACTER_SHORT).c_str())(
+          cmdLineInfo.fullName(DECIMAL_SEPARATOR_SHORT).c_str(),
+          po::value<string>(),
+          cmdLineInfo.description(DECIMAL_SEPARATOR_SHORT).c_str())(
+          cmdLineInfo.fullName(FIXED_DECIMALS_COUNT_SHORT).c_str(),
+          po::value<int>(),
+          cmdLineInfo.description(FIXED_DECIMALS_COUNT_SHORT).c_str())(
           cmdLineInfo.fullName(DO_NOT_CHECK_FOR_UPDATE_SHORT).c_str(),
           po::value<bool>(&_doNotCheckForUpdate)
               ->default_value(DEFAULT_DO_NOT_CHECK_FOR_UPDATE)
@@ -739,6 +756,12 @@ bool CmdLine::process() {
       if (vm.count(yloader::ws2s(MAP_CHARACTER_LONG)) > 0)
         _mapCharacters.set(vm[yloader::ws2s(MAP_CHARACTER_LONG)]
                                .as<std::vector<std::string> >());
+      if (vm.count(yloader::ws2s(FIXED_DECIMALS_COUNT_LONG)) > 0)
+        _fixedDecimalsCount.set(
+            vm[yloader::ws2s(FIXED_DECIMALS_COUNT_LONG)].as<int>());
+      if (vm.count(yloader::ws2s(DECIMAL_SEPARATOR_LONG)) > 0)
+        _decimalSeparator.set(yloader::s2ws(
+            vm[yloader::ws2s(DECIMAL_SEPARATOR_LONG)].as<string>()));
 
       return true;
     }
@@ -809,6 +832,8 @@ CmdLinePtr ysession() {
     SET_NON_STR(autoExit, _setAutoExit)
     SET_STR(ignoreSymbolsList, _setIgnoreSymbolsList)
     SET_NON_STR(mapCharacters, _setMapCharacters)
+    SET_NON_STR(fixedDecimalsCount, _setFixedDecimalsCount)
+    SET_STR(decimalSeparator, _setDecimalSeparator)
     _setUpdater(cmdLine->alternateUpdateHostName(),
                 cmdLine->alternateUpdateDirectory());
     if (cmdLine->addSymbol().isSet()) {
