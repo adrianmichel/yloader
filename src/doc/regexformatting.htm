@@ -1,0 +1,112 @@
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+</head>
+
+<h3><b>Introduction</b></h3>
+<p>Please note that although Regex Formatting (RXF) is fully 
+functional, it is still an experimental feature and may be subject to 
+change.</p>
+<p>RXF is a very flexible way to generate output data in virtually any format. 
+RXF can be used by those with 
+special requirements that cannot be met by merely applying settings such as date 
+format, date separator, field separator etc. For example, using RXF, fields can 
+be rearranged in any order, and some can be repeated or omitted altogether, 
+dates can be represented in any format, multiple different date or field 
+separators can be used on the same line, numbers can be truncated, etc</p>
+<p>RXF and the usual settings based formatting cannot be applied at the same 
+time - the user must select one or the other.</p>
+<p>RXF has two elements: a regex (or regular expression by its long name), and a format string. The 
+regex defines what substrings to extract from the input data (before 
+transformation), while the format string 
+describes how to arrange these extracted substrings, and optionally other strings, to 
+generate the desired output data format.</p>
+<p>RFX can be enabled, and the regex and format string can be set either on the 
+command line or in the Settings dialog (just for the GUI version).</p>
+<p>RXF is applied repeatedly to each bar of the input data, until all the data is 
+transformed. </p>
+<p>When RXF is used, the line of text received in input by the regular expression has a 
+fixed format, unaffected by other data formatting settings:</p>
+<div class="sample">&lt;<b>symbol</b>&gt;,&lt;<b>date</b>&gt;,&lt;<b>open</b>&gt;,&lt;<b>low</b>&gt;,&lt;<b>high</b>&gt;,&lt;<b>close</b>&gt;,&lt;<b>volume</b>&gt;</div>
+<p>with the date represented <b>as 
+mm/dd/yyyy. </b>This allows consistent and repeatable results across various 
+installations of YLoader, and makes sharing of RXF configurations possible. 
+Here's an example of an input line when RXF is used: </p>
+<div class="sample"><b>
+xyz,10/25/2010,20.5,19.75,21.20,21,10000000</b></div>
+<h3><b>The regex</b></h3>
+<p>Since regular expressions are a rather broad subject, only information relevant in the context 
+of YLoader will be presented here and functionality will be described mostly 
+through examples. For detailed regex description and other related topics, 
+please consult any of the many web sites or books on the subject. A good 
+introductory article can be found
+<a href="http://en.wikipedia.org/wiki/Regular_expression">here</a>.</p>
+<p>YLoader uses the regex language as defined by the Perl programming 
+language. The complete description of the YLoader supported regex language can be 
+found
+<a href="http://www.boost.org/doc/libs/1_44_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html">
+here</a>. </p>
+<p>In the absence of a user set regex, YLoader uses the following default regex:</p>
+<div class="sample">(.*),(.*)/(.*)/(.*),(.*),(.*),(.*),(.*)</div>
+<p>It is clear that each of the () groups (or marked sub-expressions as they are 
+called in the regex jargon) corresponds to one of the fields in the input data, 
+with the characters between these groups corresponding to the various 
+separators. Each of these () groups in the regex extracts the corresponding 
+substring and associates it with a number matching its position in the original 
+input line. This information will be used by the format string to generate the 
+output data.</p>
+<p>Applying this default regex to the sample line above, we extract the 
+following substrings, each with the associated index:</p>
+<div class="sample"><ol>
+	<li><b>symbol - xyz </b></li>
+<li><b>month - 10</b></li>
+	<li><b>day - 25</b></li>
+<li><b>year - 2010</b></li>
+	<li><b>open - 20.5</b></li>
+<li><b>low - 19.75</b></li>
+	<li><b>high - 21.20</b></li>
+<li><b>close - 21</b></li>
+	<li><b>volume - 10000000</b></li>
+</ol>
+</div>
+<p>Here is a very brief description of how the default regex works (this 
+paragraph can be skipped by those not interested in more technical details). Each 
+marked sub-expression (MS) extracts a substring which matches a pattern defined 
+by the sub-expression between (). In the above regex, all MS have the format <b>&quot;.*&quot;. </b>In 
+the Perl regex language used by YLoader, the dot character is used to match any character in the 
+input string, and the * is used to represent 0 or more repetitions of the 
+previous character, so .* means any character repeated any number of times. The 
+characters between MS match the various separators. The expression <b>&quot;,(.*),&quot;</b> 
+will match and extract a substring containing all characters in the input 
+string between two &quot;,&quot;. When multiple such ME are put together, the 
+regex can isolate and extract each component of the input string. More 
+information can be found
+<a href="http://www.boost.org/doc/libs/1_44_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html">
+here</a>.</p>
+<p>While the default regex is sufficient for most cases, it can be modified if 
+the desired output format requires it. However, if you have special formatting 
+requirements but are not interested in learning regexes, you can post your 
+desired format on the YLoader forums and other users will provide you with a 
+regex and format string for your specific format.</p>
+<h3><b>The format string</b></h3>
+<p>For a complete description of the syntax and capabilities of the format 
+string supported by YLoader, go
+<a href="http://www.boost.org/doc/libs/1_44_0/libs/regex/doc/html/boost_regex/format/boost_format_syntax.html">
+here</a></p>
+<p>The format string takes the substrings extracted by the regular expression 
+and combines them to generate the final output line. Each substring extracted by 
+the regex is specified by $N, where N is the substring index. So in case of the 
+default regex, $1 will specify the symbol, while $9 will specify the volume.</p>
+<p>The default format string, which is used by YLoader in the absence of a user 
+set format string is:</p>
+<div class="sample"><b>$1,$2/$3/$4,$5,$6,$7,$8,$9</b></div>
+<p>which generates the output data in the exact same format as the input data, 
+if the default regex is used.</p>
+<p>This format string must be adjusted to achieve more useful results. For 
+example, the following format string:</p>
+<div class="sample"><b>$1,$2/$3/$4,$8</b></div>
+<p>will generate the output in the format:</p>
+<div class="sample"><b>&lt;symbol&gt;,&lt;date&gt;,&lt;close&gt;</b></div>
+<p>with the date represented as <b>mm/dd/yyyy.</b></p>
+<p>or using the same sample line above:</p>
+<div class="sample"><b>xyz,10/25/2010,21</b></div>

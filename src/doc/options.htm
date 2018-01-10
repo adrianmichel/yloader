@@ -1,0 +1,128 @@
+<ul>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Data Source</b> - the source for the historical data, currently Yahoo or 
+	Google. The Google data source has several limitations:<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	the earliest date acceptable is Jan 02, 1970</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	can only download adjusted data</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	supports only daily and weekly data (no monthly data)</li>
+</ul></li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Auto
+    start downloading - </b>when checked, downloading will be initiated as soon as
+    the application starts. Useful the application is used as part of an 
+    automated data downloading system, run from the command line.</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Check
+    for updates at startup</b> - enables auto checking for new releases at 
+	startup</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Simultaneous connections - </b>the number of simultaneous connections. 
+    Depending on the network bandwidth, choosing multiple connections will 
+    usually improve downloading speed.</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Add
+    symbol to column</b> - enables/disables adding a
+column to each data file containing the symbol name. The column number can be between
+0 (leftmost column) and 6 (rightmost column) and should be entered in the
+    associated edit box.</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Data
+    file name transformations</b> - options to configure the data file name 
+    generation for symbols<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Prepend/Append </b>: prepends and/or appends the
+    specified string to the file name for each symbol. For example, using the
+    strings &quot;_&quot; and &quot;test&quot; the file name for the symbol <i>msft</i>
+    would be: <i>_msfttest.csv </i>(assuming the extension is chosen to be &quot;csv&quot;)</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Extension</b> - the extension for all data files. Can contain a leading 
+    &quot;.&quot; or not. The default value is <i>csv</i>.</li>
+</ul></li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Create subdirectories for data files</b> - this will save data in a 
+	hierarchy of directories under the main data files directory. The hierarchy 
+	is organized in 2 levels: the first level will be named using the first 
+	letter of the symbol, and the second level will contain the second letter of 
+	the symbol, or _ if the symbol has only one letter. For example, if the root 
+	data directory is c:\data and the symbol is MSFT, the path to the data file 
+	will be: c:\data\m\s\msft.csv. Similarly, the path for IBM will be 
+	c:\data\i\b\ibm.csv and the path for A will be c:\data\a\_\a.csv.</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Log</b><ul>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Log file</b> - the path and name of the file that will receive 
+    information about the session (see the Log file
+    section). If this field is left blanc, no log file will be generated.</li>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Append new log - </b>when checked, each session will append log 
+    information at the end of the log file. If not checked, the log file will be 
+    overwritten each time.</li>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Log only error events</b> - will only save only error events to the log 
+	file</li>
+	</ul></li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Data formatting</b><ul>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Pad date fields with 0s</b> - when checked, will ensure that month and 
+    day fields have exactly 2 characters, even for 1 digit months or days, so 
+    Jan 05, 2006 will be written as 01/05/2006</li>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Sort bars in ascending order - </b>if on, it will force saving bars sorted from
+    the oldest to the most recent. If off, the order will be reversed with the
+    most recent bars at the top of the file. In the latter case the <b>Update
+    option</b> in the Time range group is also disabled.</li>
+		<li>
+		<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+		<b>Date
+    format</b> - the date can be written in US (mm/dd/yyyy - 02/25/2005) or European
+    format (dd/mm/yyyy - 25/02/2005). When updating, the data must have been 
+	saved using the same date format as the currently used one.</li>
+	</ul></li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Data validation - </b>settings apply only if the option to Validate prices 
+	on the main window is selected<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Handling of invalid data - determines the action taken in case of invalid 
+	data for a symbol</b><ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>As warning - </b>will display a warning message showing the first invalid 
+	bar, but will continue downloading data for the symbol</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>As error - </b>will display an error message showing the first invalid 
+	bar, and will stop downloading the data for that symbol</li>
+</ul></li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Volume 0 is invalid </b>- if checked, a bar with volume 0 will be 
+	considered invalid (if price validation is on). The action (warning or error) will still be 
+	determined based on the pervious setting. If unchecked, a bar with volume 0 
+	will be considered valid.</li>
+</ul></li>
+</ul>

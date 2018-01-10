@@ -1,0 +1,927 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\yloader.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""afxprint.rc""        // printing/print preview resources\r\n"
+    "#include ""afxribbon.rc""        // MFC ribbon and control bar resources\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\yloader.ico"
+
+IDR_yloaderTYPE         ICON                    "res\\yloaderDoc.ico"
+
+IDI_ICON_INFO           ICON                    "res\\icon_info.ico"
+
+IDI_ICON_FATAL_ERROR    ICON                    "res\\icon_fatal_error.ico"
+
+IDI_ICON_ERROR          ICON                    "res\\icon_error.ico"
+
+IDI_ICON_WARNING        ICON                    "res\\icon_warning.ico"
+
+IDI_ICON_OPEN_SYMBOLS   ICON                    "res\\icon_open_symbols.ico"
+
+IDI_ICON_EDIT_SYMBOLS_LIST ICON                    "res\\iconEditSymbolsList.ico"
+
+IDI_ICON_EXPLORE_DOWNLOAD_PATH ICON                    "res\\iconExploreOutputPath.ico"
+
+IDI_ICON_OPEN_OUTPUT_FILE ICON                    "res\\openoneoutputfile.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+
+IDR_MAIN_TOOLBAR        BITMAP                  "res\\idc_main.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME_256 TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAIN_TOOLBAR TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_DOWNLOAD
+    BUTTON      ID_CANCEL_DOWNLOAD
+    SEPARATOR
+    BUTTON      ID_SETTINGS
+    SEPARATOR
+    BUTTON      ID_HELP
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "&Toolbars and Docking Windows"
+        BEGIN
+            MENUITEM "<placeholder>",               ID_VIEW_TOOLBAR
+        END
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        POPUP "&Application Look"
+        BEGIN
+            MENUITEM "Windows &2000",               ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office &XP",                  ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "&Windows XP",                 ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 200&3",                ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 200&5",         ID_VIEW_APPLOOK_VS_2005
+            MENUITEM "Visual Studio 200&8",         ID_VIEW_APPLOOK_VS_2008
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "&Blue Style",                 ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "B&lack Style",                ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "&Silver Style",               ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "&Aqua Style",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About yloader...",           ID_APP_ABOUT
+    END
+END
+
+IDR_POPUP_EDIT MENU
+BEGIN
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+    END
+END
+
+IDR_HELP_MENU MENU
+BEGIN
+    MENUITEM "&About yloader...",           ID_APP_ABOUT
+END
+
+IDR_THEME_MENU MENU
+BEGIN
+    MENUITEM "Office 2007 (&Blue Style)",   ID_VIEW_APPLOOK_OFF_2007_BLUE
+    MENUITEM "Office 2007 (B&lack Style)",  ID_VIEW_APPLOOK_OFF_2007_BLACK
+    MENUITEM "Office 2007 (&Silver Style)", ID_VIEW_APPLOOK_OFF_2007_SILVER
+    MENUITEM "Office 2007 (&Aqua Style)",   ID_VIEW_APPLOOK_OFF_2007_AQUA
+    MENUITEM "Win&dows 7",                  ID_VIEW_APPLOOK_WINDOWS_7
+END
+
+IDR_MAIN_TOOLBAR MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "Se&ttings",                   ID_SETTINGS
+        MENUITEM "&Open Settings File",         ID_OPENSETTINGSFILE
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Online &Documentation",       ID_HELP
+        MENUITEM "&Release Notes",              ID_HELP_RELEASENOTES
+        MENUITEM SEPARATOR
+        MENUITEM "YLoader Ho&me",               ID_HELP_YGQDHOME
+        MENUITEM "YLoader on GitHub",           ID_HELP_YLOADERONGITHUB
+        MENUITEM SEPARATOR
+        MENUITEM "YLoader &Email Support",      ID_HELP_EMAILYGQDSUPPORT
+        MENUITEM SEPARATOR
+        MENUITEM "Check for &Updates",          ID_UPDATE
+        MENUITEM SEPARATOR
+        MENUITEM "&About YLoader",              ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 179, 69
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About YLoader"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
+    LTEXT           "YLoader 5.0, Beta 1",IDC_STATIC_NAME,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Build date:",IDC_STATIC_BUILD_DATE,42,26,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2017",IDC_STATIC,42,38,114,8
+    DEFPUSHBUTTON   "OK",IDOK,113,53,50,14,WS_GROUP
+END
+
+IDD_YLOADER_FORM DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "TODO: Place form controls on this dialog.",IDC_STATIC,24,42,280,8
+END
+
+IDD_DIALOG_YAHOO_HIST_DATA DIALOGEX 0, 0, 365, 355
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+EXSTYLE WS_EX_TRANSPARENT | WS_EX_LEFTSCROLLBAR
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_EDIT_SYMBOLS_LIST_LOCATION,169,8,188,14,ES_AUTOHSCROLL | WS_GROUP,WS_EX_ACCEPTFILES
+    LTEXT           "Data Source",IDC_DATA_SOURCE_LABEL,242,50,40,9
+    LTEXT           "Total symbols",IDC_STATIC_TOTAL_SYMBOLS_LABEL,242,59,44,8
+    LTEXT           "Static",IDC_DATA_SOURCE_VALUE,299,50,51,8
+    LTEXT           "Processed OK",IDC_STATIC_PROCESSED_OK_LABEL,242,75,45,8
+    LTEXT           "Static",IDC_STATIC_TOTAL_SYMBOLS,299,59,36,8
+    LTEXT           "Static",IDC_STATIC_TOTAL_PROCESSED,299,67,24,8
+    LTEXT           "Errors",IDC_STATIC_PROCESSED_WITH_ERRORS_LABEL,242,83,20,8
+    LTEXT           "Static",IDC_STATIC_PROCESSED_OK,299,75,24,8
+    LTEXT           "Static",IDC_STATIC_PROCESSED_WITH_ERRORS,299,83,25,8
+    LTEXT           "Ignored",IDC_STATIC_IGNORED_LABEL,242,91,26,8
+    LTEXT           "Static",IDC_STATIC_TOTAL_PROCESSED_PCT,328,67,26,8
+    LTEXT           "Static",IDC_STATIC_IGNORED,299,91,24,8
+    LTEXT           "Duration",IDC_STATIC_DURATION_LABEL,242,99,28,8
+    LTEXT           "Static",IDC_STATIC_PROCESSED_OK_PCT,328,75,26,8
+    LTEXT           "Connections",IDC_STATIC_CONNECTIONS_LABEL,242,107,40,8
+    LTEXT           "10:00:00",IDC_STATIC_DURATION_VALUE,299,99,35,8
+    LTEXT           "Status",IDC_STATIC_SESSION_STATUS_LABEL,242,115,22,8
+    LTEXT           "Static",IDC_STATIC_PROCESSED_WITH_ERRORS_PCT,328,83,26,8
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH,243,128,106,11,WS_EX_TRANSPARENT
+    GROUPBOX        "Latest download stats",IDC_STATIC_STATISTICS_GROUP,235,40,122,103
+    LTEXT           "Static",IDC_STATIC_CONNECTIONS,299,107,19,8
+    CTEXT           "",IDC_STATIC_SESSION_STATUS_VALUE,291,115,56,8
+    LTEXT           "Static",IDC_STATIC_IGNORED_PCT,328,91,26,8
+    EDITTEXT        IDC_EDIT_SAVE_DIR,169,24,188,14,ES_AUTOHSCROLL | WS_GROUP,WS_EX_ACCEPTFILES
+    EDITTEXT        IDC_EDIT_OUTPUT_FILE_NAME,169,147,188,14,ES_AUTOHSCROLL | WS_GROUP,WS_EX_ACCEPTFILES
+    LTEXT           "F&rom",IDC_STATIC_FROM_LABEL,82,73,17,8,NOT WS_GROUP
+    LTEXT           "&Period",IDC_STATIC_PERIOD_LABEL,146,58,21,8,NOT WS_GROUP
+    CONTROL         "&Dividend and split adjusted",IDC_CHECK_DIV_SPLIT_ADJUSTED,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | BS_NOTIFY | WS_TABSTOP,81,112,99,16
+    CONTROL         "&Validate prices",IDC_CHECK_VALIDATE_PRICES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,128,62,10
+    GROUPBOX        "Price options",IDC_STATIC_PRICE_ADJUSTMENT_GROUP,75,103,151,40
+    CONTROL         "",IDC_LIST_EVENTS,"SysListView32",LVS_LIST | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,167,350,181
+    GROUPBOX        "Time range",IDC_STATIC_TIME_RANGE_GROUP,75,40,151,61
+    LTEXT           "&To",IDC_STATIC_TO_LABEL,154,73,9,8,NOT WS_GROUP
+    LISTBOX         IDC_LIST_SYMBOLS,7,8,62,153,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Total processed",IDC_STATIC_TOTAL_PROCESSED_LABEL,242,67,52,8
+    CONTROL         "&Update",IDC_CHECK_UPDATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,82,63,39,10
+    COMBOBOX        IDC_COMBO_PERIOD,175,55,47,70,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    CONTROL         "&All available",IDC_CHECK_PERIOD_ALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,82,51,53,10
+    PUSHBUTTON      "&Symbols file",IDC_SYMBOLS_LIST,75,8,75,14,BS_ICON | BS_NOTIFY
+    PUSHBUTTON      "Download directory",IDC_BUTTON_SAVE_DIR,75,24,75,14
+    PUSHBUTTON      "Single data file",IDC_BUTTON_SAVE_FILE_ALL,75,147,75,14,BS_MULTILINE
+    PUSHBUTTON      "",IDC_EDIT_OUTPUT_FILE,152,147,16,14,BS_ICON
+    PUSHBUTTON      "",IDC_EXPLORE_OUTPUT_FOLDER,152,24,16,14,BS_ICON
+    PUSHBUTTON      "",IDC_EDIT_SYMBOLS_LIST,152,8,16,14,BS_BITMAP
+    CONTROL         "",IDC_DATETIMEPICKER_PERIOD_START,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,82,82,69,14
+    CONTROL         "",IDC_DATETIMEPICKER_PERIOD_END,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,154,82,69,14
+END
+
+IDD_DIALOG_EMPTY_DATA_PATH_PROMPT DIALOGEX 0, 0, 294, 76
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
+CAPTION "Downloading error"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,122,55,50,14
+    LTEXT           "No output path has been selected. Select the output path or check the button below to  save data files in the same directory as the symbols list file - this will become the default behavior. You can modify this option in the Settings/Output dialog.",IDC_STATIC_MESSAGE,7,7,280,30
+    CONTROL         "Auto select data path if empty",IDC_CHECK_AUTO_SELECT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,39,113,10
+END
+
+IDD_PROPPAGE_DATA_FILE_SETTINGS DIALOGEX 0, 0, 242, 226
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "&Prepend",IDC_STATIC_PREPEND_TO_FILE_NAME,5,74,28,8
+    EDITTEXT        IDC_EDIT_PREPEND_TO_FILE_NAME,42,71,66,14,ES_AUTOHSCROLL
+    LTEXT           "&Append",IDC_STATIC_APPEND_TO_FILE_NAME,5,91,26,8
+    EDITTEXT        IDC_EDIT_APPEND_TO_FILE_NAME,42,88,66,14,ES_AUTOHSCROLL
+    LTEXT           "&Extension",IDC_STATIC,5,108,32,8
+    EDITTEXT        IDC_EDIT_FILE_NAME_EXTENSION,42,105,66,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CH_MAP_FROM_1,123,82,14,12,ES_AUTOHSCROLL
+    LTEXT           "->",IDC_STATIC_ARROW1,139,83,9,8
+    EDITTEXT        IDC_CH_MAP_TO_1,148,82,14,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CH_MAP_FROM_2,123,97,14,12,ES_AUTOHSCROLL
+    LTEXT           "->",IDC_STATIC_ARROW2,139,99,9,8
+    EDITTEXT        IDC_CH_MAP_TO_2,148,97,14,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CH_MAP_FROM_3,180,82,14,12,ES_AUTOHSCROLL
+    LTEXT           "->",IDC_STATIC_ARROW3,196,83,9,8
+    EDITTEXT        IDC_CH_MAP_TO_3,205,82,14,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CH_MAP_FROM_4,180,97,14,12,ES_AUTOHSCROLL
+    LTEXT           "->",IDC_STATIC_ARROW4,196,98,9,8
+    EDITTEXT        IDC_CH_MAP_TO_4,205,97,14,12,ES_AUTOHSCROLL
+    GROUPBOX        "Character mappings",IDC_STATIC_CH_MAPPING,115,67,111,53
+    GROUPBOX        "Data file name transformations",IDC_STATIC_FILE_NAME_TRANSFORMATIONS,0,61,234,67
+    CONTROL         "&Create subdirectories for data files",IDC_CHECK_CREATE_SUBDIRS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,134,124,10
+    CONTROL         "A&uto select output directory",IDC_CHECK_AUTO_SELECT_OUTPUT_PATH,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,0,146,108,21
+    EDITTEXT        IDC_EDIT_AUTO_DATA_PATH,109,149,124,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DATA_FILE_HEADER_EDIT,0,11,231,29,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN
+    LTEXT           "Data file header (these lines will be added to the top of each data file)",IDC_STATIC,0,0,225,8
+    CONTROL         "&Sort bars in ascending order",IDC_CHECK_MOST_RECENT_BARS_LAST,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,0,45,106,10
+END
+
+IDD_SETTINGS_DLG DIALOGEX 0, 0, 417, 270
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Yahoo & Google Quotes Downloader Settings"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Tree1",IDC_TREE_CTRL,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,4,4,105,238
+    DEFPUSHBUTTON   "OK",IDOK,103,251,59,14
+    PUSHBUTTON      "Apply",IDAPPLY,116,251,59,14
+    PUSHBUTTON      "Cancel",IDCANCEL,215,251,59,14
+    PUSHBUTTON      "Help",IDC_PREFHELP,294,251,59,14
+    LTEXT           "",IDC_CAPTION_BAR,115,5,254,12,SS_CENTERIMAGE | NOT WS_VISIBLE
+    GROUPBOX        "",IDC_PAGE_FRAME,116,0,298,243
+END
+
+IDD_PROPPAGE_SYMBOLS_LISTS_SETTINGS DIALOGEX 0, 0, 292, 150
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Error symbols file",IDC_STATIC,7,19,58,8
+    EDITTEXT        IDC_EDIT_ERRORS_SYMBOLS_FILE,80,17,195,12,ES_AUTOHSCROLL
+    CONTROL         "Append to error symbols file (will overwrite if unchecked)",IDC_CHECK_APPEND_TO_ERROR_SYMBOLS_LIST_FILE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,34,197,10
+    CONTROL         "Ignore symbols in error symbols file during download",IDC_CHECK_IGNORE_ERRORS_SYMBOLS_LIST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,48,184,10
+    GROUPBOX        "Symbols with errors",IDC_STATIC_SYMBOLS_WITH_ERRORS_GROUP,0,5,281,58
+    LTEXT           "File with symbols to ignore during download",IDC_STATIC,0,67,78,20
+    EDITTEXT        IDC_EDIT_IGNORE_SYMBOLS_LIST,80,70,195,12,ES_AUTOHSCROLL
+END
+
+IDD_PROPPAGE_PLUGINS_SETTINGS DIALOGEX 0, 0, 284, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LISTBOX         IDC_LIST_DS_PLUGINS,0,12,67,204,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Plugin info",IDC_STATIC,73,2,34,8,NOT WS_VISIBLE
+    LTEXT           "Available plugins",IDC_STATIC,0,2,54,8
+END
+
+IDD_PROPPAGE_LOGGING_SETTINGS DIALOGEX 0, 0, 284, 166
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Log file",IDC_BUTTON_LOG_FILE,7,12,35,14
+    EDITTEXT        IDC_EDIT_LOG_FILE,43,12,179,14,ES_AUTOHSCROLL
+    CONTROL         "&Append new log (will overwrite old log if unchecked)",IDC_CHECK_APPEND_TO_LOG,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,30,181,10
+    CONTROL         "L&og only errors events (will log all downloading events if unchecked)",IDC_CHECK_LOG_ONLY_ERRORS,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,7,43,217,14
+    CONTROL         "Enable &diagnostic logging (will store detailed debugging information in a separate log file)",IDC_DIAGNOSTIC_LOGGING,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,7,80,209,19
+    GROUPBOX        "Session logging",IDC_SESSION_LOGGING_GROUP,0,0,230,62
+    GROUPBOX        "Diagnostic logging",IDC_DIAGNOSTIC_LOGGING_GROUP,0,70,230,32
+END
+
+IDD_PROPPAGE_GENERAL_SETTINGS DIALOGEX 0, 0, 289, 189
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "&Auto start downloading",IDC_CHECK_AUTO_START_DOWNLOADING,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,0,0,91,10
+    CONTROL         "&Check for updates at startup",IDC_CHECK_CHECK_FOR_UPDATES_AT_STARTUP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,13,109,10
+    LTEXT           "&Simultaneous connections",IDC_SIMULTANEOUS_CONNECTIONS_LABEL,0,31,83,8
+    EDITTEXT        IDC_EDIT_THREADS,87,29,30,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_THREADS,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,117,29,11,13
+    EDITTEXT        IDC_HTTP_REQUEST_TIMEOUT_EDIT,87,46,30,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_TIMEOUT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,117,44,11,14
+    LTEXT           "&IP address/name and port number",IDC_STATIC,5,71,70,17
+    EDITTEXT        IDC_PROXY_SERVER_ADDRESS_EDIT,77,72,93,12,ES_AUTOHSCROLL
+    LTEXT           "&User name",IDC_STATIC,6,89,40,8
+    EDITTEXT        IDC_PROXY_SERVER_USER_NAME_EDIT,77,87,93,12,ES_AUTOHSCROLL
+    LTEXT           "&Password",IDC_STATIC,6,104,32,8
+    EDITTEXT        IDC_PROXY_SERVER_PASSWORD_EDIT,77,102,93,12,ES_PASSWORD | ES_AUTOHSCROLL
+    GROUPBOX        "Proxy server",IDC_PROXY_SERVER_GROUP,0,61,247,61
+    CONTROL         "&Minimize to tray",IDC_CHECK_MINIMIZE_TO_TRAY,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,172,66,10
+    LTEXT           "&HTTP request timeout",IDC_STATIC,0,47,70,8
+    LTEXT           "seconds",IDC_STATIC,132,47,27,8
+    LTEXT           "Example:\nlocalhost:8118\n192.168.1.25:4444\nor leave blanc if no proxy server",IDC_STATIC,177,73,65,41
+    EDITTEXT        IDC_EDIT_OPEN_DATA_FILE_WITH,65,132,192,12,ES_AUTOHSCROLL
+    CONTROL         "Do not reload old data in Update mode",IDC_CHECK_DONT_RELOAD_IN_UPDATE_MODE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,152,139,10
+    PUSHBUTTON      "...",IDC_BUTTON_BROWSE_FOR_APP,261,132,18,12
+    LTEXT           "Open data file with",IDC_STATIC,0,135,62,8
+END
+
+IDD_PROPPAGE_DATA_VALIDATION_SETTINGS DIALOGEX 0, 0, 292, 150
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "As &warning (does not stop downloading for the symbol)",IDC_RADIO_INVALID_DATA_IS_WARNING,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,5,9,193,10
+    CONTROL         "As &error (stops downloading for that symbol)",IDC_RADIO_INVALID_DATA_IS_ERROR,
+                    "Button",BS_AUTORADIOBUTTON,5,22,159,10
+    GROUPBOX        "Handling of invalid data",IDC_STATIC_HANDLING_OF_INVALID_DATA_GROUP,0,0,238,36
+    CONTROL         "&Volume 0 is invalid",IDC_CHECK_VOLUME_0_INVALID,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,0,42,72,10
+END
+
+IDD_PROPPAGE_DATA_FORMATTING_SETTINGS DIALOGEX 0, 0, 310, 231
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "&Add symbol to column",IDC_CHECK_ADD_SYMBOLS_TO_COLUMN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,2,85,10
+    EDITTEXT        IDC_EDIT_COLUMN_NUMBER,90,0,27,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_SYMBOL_COLUMN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,118,0,10,14
+    LTEXT           "Field separator",IDC_FIELD_SEPARATOR,0,19,49,8
+    EDITTEXT        IDC_EDIT_FIELD_SEPARATOR,58,17,34,12,ES_AUTOHSCROLL
+    LTEXT           "Volume multiplier",IDC_VOLUME_MULTIPLIER_LABEL,120,19,54,8
+    EDITTEXT        IDC_EDIT_VOLUME_MULTIPLIER_EDIT,178,17,34,12,ES_AUTOHSCROLL
+    CONTROL         "m/d/y (ex: 10/25/2007)",IDC_RADIO_US_DATE_FORMAT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,6,43,92,10
+    CONTROL         "&Pad date fields with 0s\n(1/5/2006  becomes 01/05/2006)",IDC_CHECK_PAD_DATE,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,107,40,120,16
+    CONTROL         "d/m/y (ex: 25/10/2007)",IDC_RADIO_EUROPEAN_DATE_FORMAT,
+                    "Button",BS_AUTORADIOBUTTON,6,54,92,10
+    CONTROL         "y/m/d (ex: 2007/10/25)",IDC_RADIO_YEAR_FIRST_DATE_FORMAT,
+                    "Button",BS_AUTORADIOBUTTON,6,65,92,10
+    LTEXT           "Date separator",IDC_STATIC,107,62,50,8
+    EDITTEXT        IDC_EDIT_DATE_SEPARATOR,166,60,16,12,ES_AUTOHSCROLL
+    GROUPBOX        "Date format",IDC_STATIC_DATE_FORMAT_GROUP,0,33,231,48,WS_GROUP
+    CONTROL         "Use regular expression formatting",IDC_CHECK_USE_REGEX_FORMATTING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,91,126,10
+    PUSHBUTTON      "Reset to default values",IDC_BUTTON_RESET_REGEX_FORMATTING_TO_DEFAULT,6,117,85,14
+    PUSHBUTTON      "Unlock",IDC_CHECK_UNLOCK_MATCH_REGEX,222,117,50,14
+    LTEXT           "Match regex",IDC_STATIC,6,137,41,8
+    EDITTEXT        IDC_EDIT_MATCH_REGEX,53,135,219,12,ES_AUTOHSCROLL
+    LTEXT           "Format string",IDC_STATIC,6,153,44,8
+    EDITTEXT        IDC_EDIT_FORMAT_STRING,53,152,219,12,ES_AUTOHSCROLL
+    GROUPBOX        "Regular expression formatting",IDC_STATIC_REGEX_FORMATTING_GROUP,0,104,282,68
+END
+
+IDD_DIALOG_UPDATE DIALOGEX 0, 0, 309, 184
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New YLoader Version Available!"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,198,163,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,252,163,50,14
+    CONTROL         "",IDC_RICHEDIT2_UPDATE_DESCRIPTION,"RichEdit20W",WS_VSCROLL | WS_TABSTOP | 0x884,7,48,295,83
+    CONTROL         "Check for updates at startup",IDC_CHECK_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,154,109,10
+    CONTROL         "Show a notification for a newer update only",IDC_CHECK_SHOW_FOR_NEW_VERSION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,167,156,10
+    LTEXT           "",IDC_STATIC_CURRENT_VERSION_INFO,87,7,183,8
+    LTEXT           "",IDC_STATIC_NEW_VERSION_INFO,87,19,183,8
+    LTEXT           "Current version: ",IDC_STATIC_CURRENT_VERSION,10,7,66,8
+    LTEXT           "New version:",IDC_STATIC_NEW_VERSION,10,19,66,8
+    LTEXT           "Description",IDC_STATIC_DESCRIPTION,10,36,59,8
+    CONTROL         "http://www.yloader.com",IDC_MFCLINK_UPDATE_LINK,"MfcLink",WS_TABSTOP,7,138,295,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 5,0,0,0
+ PRODUCTVERSION 5,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "YLoader"
+            VALUE "FileDescription", "YLoader"
+            VALUE "FileVersion", "5.0.0.0"
+            VALUE "InternalName", "yloader.exe"
+            VALUE "LegalCopyright", "(c) YLoader.  All rights reserved."
+            VALUE "OriginalFilename", "yloader.exe"
+            VALUE "ProductName", "YLoader"
+            VALUE "ProductVersion", "5.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 62
+    END
+
+    IDD_YLOADER_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_DIALOG_YAHOO_HIST_DATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 357
+        VERTGUIDE, 80
+        BOTTOMMARGIN, 348
+    END
+
+    IDD_DIALOG_EMPTY_DATA_PATH_PROMPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 287
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_PROPPAGE_DATA_FILE_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_SETTINGS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 414
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 265
+    END
+
+    IDD_PROPPAGE_SYMBOLS_LISTS_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 143
+    END
+
+    IDD_PROPPAGE_PLUGINS_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_PROPPAGE_LOGGING_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+
+    IDD_PROPPAGE_GENERAL_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_PROPPAGE_DATA_VALIDATION_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 143
+    END
+
+    IDD_PROPPAGE_DATA_FORMATTING_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 224
+    END
+
+    IDD_DIALOG_UPDATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DIALOG_YAHOO_HIST_DATA DLGINIT
+BEGIN
+    IDC_COMBO_PERIOD, 0x403, 6, 0
+0x6144, 0x6c69, 0x0079, 
+    IDC_COMBO_PERIOD, 0x403, 7, 0
+0x6557, 0x6b65, 0x796c, "\000" 
+    IDC_COMBO_PERIOD, 0x403, 8, 0
+0x6f4d, 0x746e, 0x6c68, 0x0079, 
+    IDC_COMBO_PERIOD, 0x403, 10, 0
+0x7551, 0x7261, 0x6574, 0x6c72, 0x0079, 
+    IDC_COMBO_PERIOD, 0x403, 7, 0
+0x6559, 0x7261, 0x796c, "\000" 
+    0
+END
+
+IDD_DIALOG_UPDATE DLGINIT
+BEGIN
+    IDC_MFCLINK_UPDATE_LINK, 0x37c, 157, 0
+0x4d3c, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x4d2f, 0x4346, 
+0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 0x5f6b, 
+0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x2f3c, 0x464d, 0x4c43, 0x6e69, 
+0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x4d3c, 0x4346, 0x694c, 
+0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x4d2f, 0x4346, 0x694c, 
+0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 
+0x5f6b, 0x7546, 0x6c6c, 0x6554, 0x7478, 0x6f54, 0x6c6f, 0x6974, 0x3e70, 
+0x4146, 0x534c, 0x3c45, 0x4d2f, 0x4346, 0x694c, 0x6b6e, 0x465f, 0x6c75, 
+0x546c, 0x7865, 0x5474, 0x6f6f, 0x746c, 0x7069, "\076" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_YAHOO_HIST_DATA AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROPPAGE_DATA_FILE_SETTINGS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PROPPAGE_PLUGINS_SETTINGS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG_UPDATE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "YLoader\n\nyloader\n\n\nyloader.Document\nyloader.Document"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "yloader"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_STATUS_PANE1        "Pane 1"
+    IDS_STATUS_PANE2        "Pane 2"
+    IDS_TOOLBAR_STANDARD    "Standard"
+    IDS_TOOLBAR_CUSTOMIZE   "Customize..."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_EDIT_MENU           "Edit"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\yloader.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#if !defined(_AFXDLL)
+#include "afxprint.rc"        // printing/print preview resources
+#include "afxribbon.rc"        // MFC ribbon and control bar resources
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,127 @@
+/*! \mainpage YLoader
+This manual is divided in the following sections:
+- \subpage introduction
+- \subpage knownissues
+- \subpage installation
+- \subpage mainwindowgeneral
+- \subpage menubar
+- \subpage settings
+- \subpage cmdline
+- \subpage symbolsfileformat
+- \subpage datafileformat
+- \subpage regexformatting
+- \subpage logfile
+- \subpage simpreproc
+*/
+
+
+/*! \page knownissues Known Issues
+	\htmlinclude knownissues.htm
+*/
+
+/*! \page introduction Introduction
+	\htmlinclude introduction.htm
+*/
+
+/*! \page installation Installation
+	\htmlinclude installation.htm
+*/
+
+/*! \page mainwindowgeneral The YLoader Main Window
+	\htmlinclude mainwindow.htm
+*/
+
+
+/*! \page menubar Menu Bar
+	\htmlinclude filemenu1.htm
+	\image html filemenu.png
+	\htmlinclude filemenu2.htm
+	\htmlinclude helpmenu1.htm
+	\image html helpmenu.png
+	\htmlinclude helpmenu2.htm
+*/
+
+/*! \page cmdline Command Line Options
+	\htmlinclude cmdline.htm
+*/
+
+/*! \page symbolsfileformat Symbols File Format
+	\htmlinclude symbolsfileformat.htm
+*/
+
+/*! \page datafileformat Data File Format
+	\htmlinclude datafileformat.htm
+*/
+
+/*! \page logfile Log file
+	\htmlinclude log.htm
+*/
+
+/*! \page simpreproc Symbol processing command line utility (symbols.exe)
+	\htmlinclude sympreproc.htm
+*/
+
+/*! \page settings Settings
+	- \subpage settingsdlg
+	- \subpage plugin_settings
+	- \subpage general_settings
+	- \subpage formatting_settings
+	- \subpage validation_settings
+	- \subpage output_settings
+	- \subpage symbols_settings
+	- \subpage logging_settings
+*/
+
+/*! \page plugin_settings Data Sources
+	\htmlinclude pluginsettings.htm
+*/
+
+/*! \page general_settings General
+	\htmlinclude generalsettings.htm
+*/
+
+/*! \page formatting_settings Formatting
+	\htmlinclude formattingsettings.htm
+*/
+/*! \page validation_settings Validation
+    \image html validationsettings.png
+	\htmlinclude validationsettings.htm
+*/
+
+/*! \page output_settings Output
+    \image html outputsettings.png
+	\htmlinclude outputsettings.htm
+*/
+
+/*! \page symbols_settings Symbols
+    \image html symbolslistssettings.png
+	\htmlinclude symbolssettings.htm
+*/
+
+/*! \page logging_settings Logging
+    \image html loggingsettings.png
+	\htmlinclude loggingsettings.htm
+*/
+
+/*! \page settingsdlg The Settings Dialog
+	\htmlinclude settingsdlg.htm
+*/
+
+/*! \page regexformatting Regular expression formatting
+	\htmlinclude regexformatting.htm
+*/
+
+/*! \image html main.png
+	\image html exploreoutfolderbtn.png
+	\image html startbtn.png
+	\image html cancelbtn.png
+	\image html settingsbtn.png
+	\image html helpbtn.png
+	\image html aboutbtn.png
+	\image html symbolsbutton.png
+	\image html editsymbols.png
+	\image html datapathbtn.png
+	\image html outputfilebtn.png
+	\image html viewoutputfilebtn.png
+	\image html settingsdlg.png
+*/

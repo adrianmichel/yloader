@@ -1,0 +1,418 @@
+
+<font color="#FF0000"><b>THE FOLLOWING API IS WORK IN PROGRESS AND SUBJECT TO CHANGE.</b></font><p>The 
+YLoader API consists of several functions exported by the yloader.dll, and whose C prototypes are declared in 
+yloader.h. These APIs can be used in applications developed in C, C++, Visual Basic, Excel or any other languages and environments that allow direct dll calls.<br>
+
+&nbsp;</p><div class="code">unsigned int create( unsigned int mode );</div>
+
+<ul>
+	<li>Description: creates a downloader instance. The return value identifies the newly created downloader instance, and should be used in subsequent calls to other APIs that refer to this downloader instance. This function can be called several times to create multiple downloader instances, each identified by a different downloader id. Each instance can be used independently.</li>
+	<li>Arguments: 
+	<ul>
+		<li>unsigned int mode - currently not used, must be 0.</li>
+	</ul>
+	</li>
+	<li>Return value: a downloader id if >1. A return value of 0 indicates failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br>
+	<div class="sample">unsigned int downloaderId = create( 0 );</div>
+	</li>
+	<li>See also: start<br></li>
+</ul>
+
+<p><div class="code">
+bool start( unsigned int downloaderId, int mode ); 
+	</div>
+
+<ul>
+	<li>Description: start a downloader. A downloader must first have been crated by 
+calling create. For a GUI downloader, this will show its main window.</li>
+	<li>Arguments: 
+	<ul>
+		<li>unsigned int downloaderId - the downloader id</li>
+		<li>unsigned int mode - currently not used, must be 0.</li>
+	</ul>
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex:<br>
+	<div class="sample">bool success = start( downloaderId, 0 );</div></li>
+	<li>See also: create
+
+</li>
+</ul>
+
+<p><div class="code">
+bool isRunning( unsigned int downloaderId, bool* isRunning );
+	</div>
+
+<ul>
+	<li>Description: indicates whether a downloader is currently running or not. To be running, a downloader must first have been started using the start function.</li>
+	<li>Arguments:
+	<ul>
+		<li>unsigned int downloaderId - the downloader id
+</li>
+		<li>bool* isRunning - a pointer to a boolean, which will contain the result of the call - true if the downloader is running, false if the downloader is not running</li>
+	</ul>
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: 
+	<br>
+	<div class="sample">bool running; <br>
+	bool success = isRunning( downloaderId, &running );</div><br>
+	</li>
+</ul>
+
+	<p>
+<div class="code">
+bool getLastError( char* error, unsigned int errorMessageLength );
+	</div>
+
+<ul>
+	<li>Description: retrieves a string containing a description of the most recent error, if any, resulting from calling other APIs. This function applies to all current downloaders, so it doesn't take a downloader id as a parameter. This function should be called immediately after an error, or its content may be altered by subsequent API calls. This function will write at most errorMessageLength - 1 characters, and will also append a final 0 to mark the end of the string.</li>
+	<li>Arguments:
+	<ul>
+		<li>char* error - a pointer to a buffer created by the calling code, which will contain the string describing the error upon return
+		</li>
+		<li>unsigned int errorMessageLength - the length of the buffer. 
+</li>
+	</ul>
+	</li>
+	<li>Ex: <br>
+		<div class="sample">char buffer[ 100 ];<br>
+	getLastError( buffer, 100 );</div>
+	</li>
+</ul>
+
+<p><div class="code"> 
+bool startSession( unsigned int downloaderId, bool sync );
+	</div>
+<ul>
+	<li>Description: starts a downloading session. To start a downloading session, the downloader must have been created and started, and also there should not be another downloading session in progress. A session can be started synchronously (the call will not return until the session is complete) or asynchronously (the call returns immediately after starting the session).</li>
+	<li>Arguments:
+	<ul>
+		<li>unsigned int downloaderId - the downloader id
+</li>
+		<li>bool sync - false for an asynchronous call, true for a synchronous call.
+		</li>
+	</ul>
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.
+	</li>
+	<li>Ex:<br>
+	<div class="sample">bool success = startSession( downloaderId, false );</div></li>
+	<li>See also: isSessionActive<br>
+	</li>
+</ul>
+
+<p><div class="code">
+
+ bool isSessionActive( unsigned int downloaderId, bool* isSessionActive );
+	</div>
+<ul>
+	<li>Description: indicates whether a downloading session is currently active or not. To be active, a downloading session must first have been started using the startSession function, or directly in the GUI by the user.</li>
+	<li>Arguments:
+	<ul>
+		<li>unsigned int downloaderId - the downloader id
+</li>
+		<li>bool* isSessionActive - a pointer to a boolean, which will contain the result of the call - true if a downloading session is active, false otherwise</li>
+	</ul>
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: 
+	<br>
+	<div class="sample">bool active;<br>
+	bool success = isSessionActive( downloaderId, &active );</div><br>
+	</li>
+</ul>
+
+<p><div class="code">
+     bool hasHadSession( unsigned int downloaderId, 
+bool* hasHadSession ); 
+	</div>
+	
+	<ul>
+		<li>Description: indicates whether there has been a complete 
+downloading session. A complete session is a session that was started and has 
+ended, regardless of how it was ended (canceled or not). This function will 
+indicate false before and during the first downloading session, and true after 
+the first session.</li>
+	<li>Arguments: 
+	
+	<ul>
+		<li>unsigned int downloaderId - the downloader id </li>
+		<li>bool* hasHadSession - a pointer to a boolean, which will contain the result 
+of the call - true if there has been a complete session, false otherwise </li>
+</ul>
+		</li>
+	<li>Return 
+value: true in case of success, false in case of failure. Call getLastError to 
+get more information about a failure. </li>
+	<li>Ex: </li>
+	<li><div class="sample">bool session; <br>
+	bool success = 
+hasHadSession( downloaderId, &session ); </div></li>
+</ul>
+	<p><div class="code"> bool setSymbolsFileName( unsigned int downloaderId, const
+char* symbolsFileName );</div>
+		<ul>
+			<li>Description: sets the symbols file name.</li>
+	<li>Arguments:
+		<ul>
+			<li>unsigned int downloaderId - the downloader id </li>
+			<li>const char* symbolsFileName - a 0
+ended string containing the symbols file name.</li>
+</ul>
+
+</li>
+	<li>Return value: true in case of
+success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: 
+<div class="sample">bool success = setSymbolsFileName( downloaderId, "c:\\symbols\\nasdaq.txt" );</div>
+	</li>
+</ul>
+
+<p><div class="code">
+    bool setDataPath( unsigned int downloaderId, 
+	const char* dataPath );
+	</div>
+<ul>
+	<li>Description: sets the path where the files containing the downloaded data will be stored.</li>
+	<li>Arguments:<ul>
+	<li>unsigned int downloaderId - the downloader id</li>
+	<li>const char* dataPath- a 0 ended string containing the data path</li>
+</ul>
+
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: 
+<br>
+	<div class="sample">bool success = setDataPath( downloaderId, "c:\\data" );</div> </li>
+</ul>
+
+<p><div class="code">
+
+bool setDateRange( unsigned int downloaderId, const char* startDate, 
+ const char* endDate );
+	</div>
+<ul>
+	<li>Description: sets the downloading date range. </li>
+	<li>Arguments:</li>
+	<li>unsigned int downloaderId - the downloader id<ul>
+	<li>const char* startDate - a pointer to a string containing the range start date as "mm/dd/yyyy". Set to 0 or an empty string to indicate the earliest date available.</li>
+	<li>const char* endDate - a pointer to a string containing the range start date as "mm/dd/yyyy". Set to 0 or an empty string to indicate the most recent date available.</li>
+</ul>
+
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setDateRange( downloaderId, "1/1/2007", "12/31/2007" );<br>success = setDateRange( donwloaderId, 0, "12/31/2007" );<br>success = setDateRange( downloaderId, "1/1/2007", "" );</div>
+	</li>
+</ul>
+
+<p><div class="code"> bool setStartDate( unsigned int downloaderId, const char* 
+	   startDate );
+</div>
+<ul>
+	<li>Description: sets the downloading start date. </li>
+	<li>Arguments:<ul>
+		<li>unsigned int downloaderId - the downloader id</li>
+		<li>const char* startDate - a pointer to a string containing the downloading start date as "mm/dd/yyyy". Set to 0 or an empty string to indicate the earliest date available.</li>
+	</ul>
+	</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br>
+<div class="sample">bool success = setStartDate( downloaderId, "1/1/2007" );<br>
+success = setStartDate( donwloaderId, 0 );</div></li>
+</ul>
+
+<p><div class="code">
+bool setEndDate( unsigned int downloaderId, const char* endDate );
+</div>
+	<ul>
+		<li>Description: sets the downloading end date. </li>
+	<li>Arguments:<ul>
+		<li>unsigned int downloaderId - the downloader id</li>
+		<li>const char* endDate - a pointer to a string containing the downloading end date as "mm/dd/yyyy". Set to 0 or an empty string to indicate the most recent date available.</li>
+</ul>
+
+		</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setEndDate( downloaderId, "12/12/2007" );<br>success = setEndDate( donwloaderId, 0 );</div><br>
+	</li>
+</ul>
+
+<p><div class="code">
+	   bool setDataSource( unsigned int downloaderId, 
+	 unsigned int dataSource );
+</div>
+		<ul>
+			<li>Description: this API has been deprecated and should not be 
+			called, or it will return an error. Call setDateSourcePlugin 
+			instead.<br></li>
+</ul>
+
+<p><div class="code">
+<div class="code">
+	   bool setDataSourcePlugin( unsigned int downloaderId, const char* dataSourcePlugin );
+</div>
+		<ul>
+			<li>Description: sets the data source plugin.</li>
+	<li>Arguments:<ul>
+			<li>unsigned int downloaderId - the downloader id</li>
+			<li>const char* dataSourcePlugin - the address of a string 
+			containing the first characters of the plugin short name or id. This 
+			string is case insensitive. The call will fail if there is no plugin 
+			matching the string, or if there are two or more plug-ins matching 
+			the string.</li>
+</ul>
+
+			</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setDataSource( downloaderId, 
+		&quot;Y&quot; ); // will set the Yahoo plugin<br>
+		bool success = setDataSource( downloaderId, &quot;yahoo&quot; ); // will set the 
+		Yahoo plugin</div>bool success = setDataSource( downloaderId, &quot;goo&quot; ); 
+	// will set the Google plugin<br>
+	bool success = setDataSource( downloaderId, &quot;4389DD&quot; ); // will set the 
+	Google plugin<br>
+	// whose id is 4389DDF8-91D8-4c8b-894C-60E033AE83C7<br></li>
+</ul>
+
+<p>
+<p>bool loadSettings( unsigned int downloaderId, const char* settingsName );
+</div>
+			<ul>
+				<li>Description: loads previously saved settings. This call will overwrite any previous settings. Currently, settings are saved automatically when the downloader is closed, if the "dirty" flag has been set (i.e. there have been any changes made by the user). The API calls will not affect the state of "dirty" flag. 
+	</li>
+	<li>Arguments:<ul>
+				<li>unsigned int downloaderId - the downloader id</li>
+				<li>const char* settingsName - currently not used, must be set to 0</li>
+</ul>
+
+
+				</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = loadSettings( downloaderId, 0 );</div><br></li>
+</ul>
+
+
+<p><div class="code">
+bool setAllAvailable( unsigned int 
+	downloaderId, bool allAvailable );
+	</div>
+				<ul>
+					<li>Description: sets the value of the "All available" option. If this option is on, the downloader will request all available data for all symbols during a downloading session. If this option is off, the data will be requested according to the date range.</li>
+	<li>Arguments:<ul>
+					<li>unsigned int downloaderId - the downloader id</li>
+					<li>bool allAvailable - true to enable, false to disable the "All available" option.</li>
+</ul>
+
+					</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setAllAvailable( downloaderId, true );</div><br></li>
+</ul>
+
+<p><div class="code">
+bool setUpdate( unsigned int downloaderId, bool update );
+	</div>
+					<ul>
+						<li>Description: sets the value of the "Update" option. If this option is on, the downloader will try to download only the most recent data for all symbols. If there is no local data for a symbol, or if there have been split or dividend events that require adjusting of the whole series and if the Adjust data option is enabled, the downloader will refresh all data based on the All available or the date range options.</li>
+	<li>Arguments:<ul>
+						<li>unsigned int downloaderId - the downloader id</li>
+						<li>bool update - true to enable, false to disable the "Update" option.</li>
+</ul>
+
+						</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setUpdate( downloaderId, false );</div><br></li>
+</ul>
+
+<p><div class="code">bool setAdjust( unsigned int
+downloaderId, bool adjust );
+	</div>
+						<ul>
+							<li>Description: sets the value of the "Adjust" option. If this option is on, the downloader will download split and dividend adjusted data
+	</li>
+	<li>Arguments:
+						<ul>
+							<li>unsigned int downloaderId - the downloader id
+							</li>
+							<li>bool adjust - true to enable, false to disable the "Adjust data" option.
+							</li>
+</ul>
+
+</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.
+	</li>
+	<li>Ex: <br>
+	<div class="sample">bool success = setAdjust( downloaderId, true );</div> </li>
+</ul>
+
+<p><div class="code"> bool setValidatePrices( unsigned int downloaderId, bool
+validate );
+	</div>
+							<ul>
+								<li>Description: sets the value of the "Validate prices" option. If this option is on, the downloader will validate downloaded data and signal errors in case of data inconsistencies.</li>
+	<li>Arguments:<ul>
+								<li>unsigned int downloaderId - the downloader id</li>
+								<li>bool validate - true to enable, false to disable the "Validate data" option.</li>
+</ul>
+
+								</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setValidate( downloaderId, true );</div><br></li>
+</ul>
+
+<p><div class="code">
+bool setPeriod( unsigned int downloaderId, unsigned int period );
+	</div>
+								<ul>
+									<li>Description: sets the value of the "Period" option. This will select the data period: daily, weekly or monthly. Note that not all periods are supported by all data source.</li>
+	<li>Arguments:<ul>
+									<li>unsigned int downloaderId - the downloader id</li>
+									<li>unsigned int period - the data period: 0 for daily, 1 for weekly, 2 for monthly.</li>
+</ul>
+
+									</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setPeriod( downloaderId, 1 );</div><br></li>
+</ul>
+
+<p><div class="code"> bool setConnections( unsigned int downloaderId,
+unsigned int connections );
+	</div>
+									<ul>
+										<li>Description: sets the number of connections option. This will indicate how many simultaneous connection to use when downloading data.</li>
+	<li>Arguments:<ul>
+										<li>unsigned int downloaderId - the downloader id</li>
+										<li>unsigned int connections - the number of simultaneous connections - a number between 1 and 20.</li>
+</ul>
+
+										</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.</li>
+	<li>Ex: <br><div class="sample">bool success = setConnections( downloaderId, 5 );</div><br></li>
+</ul>
+
+<p><div class="code">
+bool close( unsigned int downloaderId );
+	</div>
+										<ul>
+											<li>Description: will close a downloader. If a session is in progress, it will first cancel it before closing.
+	</li>
+	<li>Arguments:
+unsigned int downloaderId - the downloader id
+</li>
+	<li>Return value: true in case of success, false in case of failure. Call getLastError to get more information about a failure.
+	</li>
+	<li>Ex:<br>
+	<div class="sample">bool success = close( downloaderId );</div> </li>
+</ul>
+
+<p><div class="code">
+bool getLastError( char* error, unsigned int errorMessageLength );
+	</div>
+											<ul>
+												<li>Description: retrieves a string containing a description of the most recent error, if any, resulting from calling other APIs. This function applies to all current downloaders, so it doesn't take a downloader id as a parameter. This function should be called immediately after an error, or its content may be altered by subsequent API calls. This function will write at most errorMessageLength - 1 characters, and will also append a final 0 to mark the end of the string.</li>
+	<li>Arguments:</li>
+	<li>char* error - a pointer to a buffer created by the calling code, which will contain the string describing the error upon return</li>
+	<li>unsigned int errorMessageLength - the length of the buffer. </li>
+	<li>Ex:<br><div class="sample">char buffer[ 100 ];<br>getLastError( buffer, 100 );</div></li>
+</ul>

@@ -1,0 +1,20 @@
+Please note that these are experimental features and their behavior may change based on users' feedback.
+
+The settings in this tab provide more advanced symbols list functionality when used together with the default symbols list defined on the main YLoader window.
+
+Mainly, these settings allow to filter out symbols found in an automatically generated error symbols list, or other externally provided symbols list.
+
+
+<ul>
+  <li>
+	<b>Error symbols file</b> - if this edit field is set to a valid file name that the current user can create and modify, YLoader will save all symbols that have caused errors during a downloading session, to that file. If this field is not set, the error symbols file is not created.<ul>
+  <li>
+	<b>Append to errors symbols file - </b>If checked and if the <b>Error symbols file</b> is set to a valid file name, it will append all symbols that have triggered errors during a downloading session, to that file. If unchecked, the content of that file will be reset after every downloading session.</li>
+	<li>
+	<b>Ignore symbols in error symbols file during download - </b>If checked and the <b>Error symbols file</b> points to a file that contains a list of symbols, YLoader will ignore these symbols during a downloading session, even if they are present in the default symbols list.</li>
+</ul></li>
+	<li>
+	<b>File with symbols to ignore during download - </b>If set to a valid file name pointing to a symbols list file, YLoader will ignore these symbols during a downloading session, even if they are present in the default symbols list.</li>
+</ul>
+
+One use of these options is to automatically disable repeated download attempts of symbols for which there is no data, with the benefit of increased overall download speed. Or in case of automated symbols list generation, an exclusion symbols list can be created on the fly based on specific criteria, which will prevent data for these symbols to be downloaded.

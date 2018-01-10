@@ -1,0 +1,32 @@
+<p>YLoader generates two types of log files: session log file and diagnostic log 
+file.</p>
+<p>The session log file is optional, and its location, name and type of content 
+can be set in the options described below.</p>
+<p>The diagnostic log file contains information about the internal functioning 
+of the application and its content is updated every time the YLoader is run. Its 
+location is fixed and set to &quot;&lt;YLoader installation path&gt;\log\yloader.log&quot;.&nbsp; </p>
+<ul>
+		<li>
+		<b>Session Logging</b><ul>
+		<li><b>Log file</b> - the path and name of the file that will receive 
+    information about the session (see the Log file
+    section). If this field is left blanc, no log file will be generated.</li>
+		<li><b>Append new log - </b>when checked, each session will append log 
+    information at the end of the log file. If not checked, the log file will be 
+    overwritten each time.</li>
+		<li><b>Log only error events</b> - will only save only error events to the log 
+	file</li>
+	</ul>
+
+		</li>
+		<li><b>Diagnostic logging</b><ul>
+		<li><b>Enable diagnostic logging - </b>will save detailed info in 
+		the diagnostic log file. This option should normally be disabled to 
+		avoid any performance degradation, but it may have to be enabled in case 
+		of hard to debug or reproduce bugs. Some limited information is saved 
+		into the log file even if this option is off.</li>
+	</ul>
+
+		</li>
+	</ul>
+

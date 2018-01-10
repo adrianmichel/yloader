@@ -1,0 +1,170 @@
+<img src="main.png" align="right" class="illustration">
+<ul>
+  	<li><img src="startbtn.png"> <b>Download </b>: start a downloading session</li>
+	<li>
+	<img src="cancelbtn.png"> <b>Cancel </b>: cancel a downloading session in progress</li>
+	<li>
+	<img src="settingsbtn.png"> <b>Settings</b>: opens the Settings dialog<b> </b></li>
+	<li>
+	<img src="helpbtn.png"> <b>Help </b>: opens the YLoader documentation</li>
+	<li>
+	<img src="aboutbtn.png"> <b>About </b>: same as the About menu command above</li><li>
+    <b>Symbols file</b>: select the name of the file containing the 
+	symbols list. The format of this file is described in the Symbols File Format section. The
+    name of the symbols file can be entered by typing it, by selecting it in the
+    Symbols List File dialog, by dragging and dropping it from an Explorer
+    window (be it a shortcut or file name), or from the command line (see
+    the Command Line section).</li>
+	<li>
+        <img src="editsymbols.png"> <b>Edit symbols list</b>: open the currently 
+	selected symbols file in the default text editor (notepad if the symbols 
+	file has extension .txt).</li>
+  <li>
+    <b>Download Directory</b>: 
+    select the directory where downloaded data will be saved. The data for each 
+    symbol will be saved in a file with the name of the symbol and the extension 
+    selected in the Options dialog (see the Options 
+    section). The data path can be entered by typing it, by selecting it in the 
+    Data Path dialog, by dragging and dropping it from an Explorer window, or 
+    from the command line (see the Command Line 
+    section).</li>
+  <li>
+    <img src="exploreoutfolderbtn.png"> <b>Explore data download folder</b>: open an explorer window with the selected output directory.</li>
+	<li><b>Time Range
+    </b>- the range of dates for which to download
+the data, either all available data or a specific range. Each time the application starts,
+    it will set the start date to hold the same value used in the most recent session, and the
+    end date to today's date. It is also possible to set the start date to 
+	&quot;None&quot; (empty date) in which case the data will be downloaded starting with 
+	the earliest date available.<ul>
+		<li><b>All
+    available</b> - will download all available data for each symbol</li>
+		<li><b>Update
+    - </b>when checked, the application will attempt to update the data. When 
+		this option is on, if the data file for a symbol already exists, it will 
+		add only the new bars, up to the end date or if all is checked, up to 
+		the most recent date. If the data file doesn't exist, it will create it 
+		and load all the data for the specified time range. This option is 
+		automatically turned off if the &quot;Most recent bars last in file&quot; option 
+		is off.<br>
+		By default, in Update mode, old data (that was already present on the 
+		system) is not changed, unless it has become inconsistent with the new 
+		data. This can happen if adjustment is turned on and there have been 
+		recent splits or dividends. In that case, the adjustment factor is now 
+		different for old data than it was at the time it was originally 
+		downloaded. To maintain data consistency, YLoader will then reload all 
+		data, not just the most recent. There are cases however when this data 
+		reloading is undesired, such as when data is manually modified on disk, 
+		perhaps to correct bad bars. In that case, this behavior can be disabled 
+		by checking the corresponding option in the General Settings dialog, or 
+		by using the flag -w from the command line.</li>
+		<li><b>Period</b> - the data period: can be daily, weekly and monthly.</li>
+	</ul></li>
+	<li><b>Price options - </b>options which enable/disable price transformations 
+    and validation<ul>
+		<li><b>Dividend and split adjusted
+    </b>- when checked, downloaded data will be adjusted for dividends and 
+	splits.</li>
+		<li><b>Validate
+    prices</b> - when checked will verify that each bar has valid data (high &gt; 
+	open, close, high etc). The Options dialog contains extra settings used to 
+	fine tune the validation process - see the Options dialog section.</li>
+	</ul></li>
+    <li>
+
+       <b>Single data file</b>:
+        used to save all downloaded data to a single file. Click this button to select a file the
+        single data file name. The file name can also be entered by typing it
+        directly into the associated edit box, by dragging and dropping from an
+        Explorer window, or from the command line (see the Command Line section). Also, a list of most
+        recently used eight output files is available by clicking on the side arrow
+        down button. If this field is left empty, the single data file will not be generated.
+    </li>
+    <li>
+        <img border="0" src="viewoutputfilebtn.png" width="31" height="27">
+        <b>View/edit the output file</b>: open the currently selected output file in the default text editor
+        (notepad for txt files) for viewing or editing.
+    </li>
+
+	<li><b>Latest download stats - </b>various statistics about the most recent 
+    downloading session: 
+
+	<ul>
+		<li>the data source: Yahoo or Google</li>
+		<li>duplicates), </li>
+		<li>previous number if the session has been canceled) and their percentage of 
+	the total number of symbols</li>
+		<li>which were processed without errors and their percentage of the total number 
+	of symbols</li>
+		<li>and their percentage of the total number of symbols,</li>
+		<li>duration, </li>
+		<li>or canceling when a session is in 
+	progress, or completed or canceled for finished sessions</li>
+	</ul></li>
+	<li><b>The download progress bar - </b>shows graphically the downloading 
+	progress. This bar will 
+	be displayed even after the session has ended, and it will show the status 
+	at the end of the most recent session (incomplete if the session was canceled, or full 
+	if the session was successfully completed)</li>
+	<li><b>Downloaded symbols info </b>- detailed info about the downloaded status 
+    of all symbols. Indicates whether the
+download was successful or not, the symbol, and a message showing how much data has
+been loaded, for a successful operation, or a diagnostic message in case of a 
+	warning or
+error.&nbsp;</li>
+</ul>
+
+<p><b>Opening data files directly from YLoader</b></p>
+<p>To open a symbol data file directly from YLoader, double click the symbol 
+name in the symbols list, or the line containing that symbol in the download 
+status list. By default, the application associated with the file extension is 
+used to open the data file. For example, if the extension is txt, notepad will 
+be used, or for csv, Excel will be used (if installed on the system). It is 
+possible to use any application to open data files - go to Setting/General 
+Settings and enter the full path of the application to run.</p>
+
+<b>Note about symbols</b><ul>
+  <li>
+    The list of symbols will ignore duplicate symbols. Symbols are considered duplicates if they have the exact same 
+    spelling, regardless of the case, so <b> <i>msft</i></b> and <i><b>MSFT</b> </i>are 
+	considered duplicates.</li>
+</ul>
+
+<b>Notes about using the Update option</b>:
+
+<ul>
+  <li>
+
+if a change in the previously loaded data has occurred between the time of the 
+last download and the current download, then all data is reloaded. This can 
+happen if for example there has been an adjustment (split or dividend) between 
+the previous and current update, in which case all the data for that symbol will 
+be changed to reflect the adjustment. This behavior can be disabled if desired, 
+by checking the option &quot;Do not reload old data in Update mode&quot; on the General 
+Settings page in the Settings dialog.</li>
+  <li>
+
+the various options (data and file format, adjustment etc) must be consistent 
+between updates.</li>
+</ul>
+
+<p><b>Notes about using the output file option</b></p>
+<ul>
+	<li>If an output file is specified, it will be created by copying the 
+	content of all the data files that were generated during the downloading 
+	session to this file. If this file already exists, it will be replaced with 
+	the new content. </li>
+	<li>The data files for individual symbols are not deleted after this 
+	operation.</li>
+	<li>The order in which the data files are copied to the output file is not 
+	guaranteed, unless only one connection is used to download data. </li>
+	<li>Only data for symbols that were successfully downloaded is copied to the 
+	output file.</li>
+	<li>All available data for those symbols is copied, regardless of whether 
+	the downloading was done in update mode or not.</li>
+	<li>The output file tends to get very large, so opening it with Notepad 
+	after a downloading session can be a lengthy operation as Notepad loads the 
+	entire file in memory.</li>
+</ul>
+
+

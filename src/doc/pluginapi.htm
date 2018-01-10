@@ -1,0 +1,221 @@
+
+<head>
+<style>
+<!--
+code         {  }
+-->
+</style>
+</head>
+
+<font color="#FF0000"><b>THE FOLLOWING API IS WORK IN PROGRESS AND MAY NOT BE 
+100% FUNCTIONALLY STABLE.<br>
+THIS IS PRELIMINARY INFORMATION AND SUBJECT TO CHANGE.</b></font><p>The YLoader data 
+source plugin API consists of several 
+functions which must be exported by a plug-in dll. The C prototypes for these APIs are declared in 
+yloader.h. These APIs can be used in applications developed in C, C++, Visual Basic, Excel or any other languages and environments that allow direct dll calls.</p>
+<p>A data source plug-in must be implemented in a dll with the extension .ypi. </p>
+<p>Each data source plug-in must have an unique Id (UUID).</p>
+<p>All strings returned by various plug-in APIs consist of 8 bit characters 
+(they can be UTF8 encoded, although international characters are not currently 
+supported in YLoader) and are 0 terminated. The plug-in can allocate them as 
+desired. After each string has been processed by the application, a call to freeString will be made so the plug-in can deallocate the string, if necessary.</p>
+<p>Here are the current plug-ins APIs:</p><div class="code">const char* 
+	getShortName();</div>
+
+<ul>
+	<li>Description: returns the address of a string containing the plug-in 
+	short name, such as &quot;Yahoo&quot;. The short name will be displayed on the main 
+	window.</li>
+	<li>Arguments: 
+	none</li>
+	<li>Return value: the plug-in short name.</li>
+</ul>
+
+<p><div class="code">
+const char* getName(); 
+	</div>
+
+<ul>
+	<li>Description: returns the address of a string containing the plug-in 
+	name, such as &quot;Yahoo Data Source&quot;. The name will be displayed in the Plugin 
+	Settings window</li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in name</li>
+</ul>
+
+<p>
+<p><div class="code">
+const char* getDescription(); </div></p>
+<ul>
+	<li>Description: returns the address of a string containing the plug-in 
+	description, such as &quot;Downloads free quotes from the Yahoo Finance site&quot;. 
+	The name will be displayed in the Plugin Settings window properties</li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in description</li>
+</ul>
+<p></p>
+
+	<p>
+<p><div class="code">
+const char* getId();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the plug-in 
+	unique Id as a UUID, such as &quot;2987B033-E5E4-4794-94BA-247A0955B612&quot;. </li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in id</li>
+</ul>
+<p></p>
+<p><div class="code">
+const char* getDeveloperName();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the developer 
+	name, such as &quot;YLoader.com&quot;. </li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in id</li>
+</ul>
+
+<p>
+<p><div class="code">
+const char* getDeveloperURL();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the developer 
+	URL, such as &quot;http://www.yloader.com&quot;. This will be shown as a clickable 
+	link in the properties area of the Plug-in settings pane</li>
+	<li>Arguments: none</li>
+	<li>Return value: the developer URL</li>
+</ul>
+<p><div class="code">const char* getDeveloperEmail();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the developer 
+	email, such as &quot;info@yloader.com&quot;. This will be shown as a clickable link in 
+	the properties area of the Plug-in settings pane</li>
+	<li>Arguments: none</li>
+	<li>Return value: the developer email</li>
+</ul>
+<p><div class="code">const char* getVersion();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the plug-in 
+	version, such as &quot;1.0.0.0&quot;. The version can contain up to four numeric 
+	fields, and it will be shown in the properties area of the Plug-in settings 
+	pane, and will be used when checking for updates.</li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in version</li>
+</ul>
+<p><div class="code">const char* getAPIVersion();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the supported 
+	plug-in API version, such as &quot;1.0.0.0&quot;. This version must match the API 
+	version declared in ydlib.h file as PLUGIN_API_VERSION. It will be shown in 
+	the properties area of the Plug-in settings pane, and will be used when 
+	checking for updates and will be used to verify the plug-in compatibility 
+	with newer versions of YLoader. </li>
+	<li>Arguments: none</li>
+	<li>Return value: the plug-in API version</li>
+</ul>
+<p><div class="code">const char* getYDataSourcePluginInfo();</div> </p>
+<ul>
+	<li>Description: must return 0 for now. </li>
+	<li>Arguments: none</li>
+	<li>Return value: 0.</li>
+</ul>
+
+<p><div class="code"> unsigned int getMaxConnections();
+</div>
+<ul>
+	<li>Description: returns an unsigned integer indicating the maximum number 
+	of connections supported by the plug-in. The minimum value is 1, which 
+	indicates that the plug-in does not support multi-threading.</li>
+	<li>Arguments: none</li>
+	<li>Return value: the maximum number of simultaneous connections supported.</li>
+</ul>
+<p><div class="code">bool getCanAdjust();</div> </p>
+<ul>
+	<li>Description: returns a boolean value, indicating whether the plug-in 
+	supports adjusted data</li>
+	<li>Arguments: none</li>
+	<li>Return value: 0 if the plug-in doesn't support adjusted data, 1 or other 
+	non 0 value if it supports adjusted data.</li>
+</ul>
+<p><div class="code">bool getCanUnAdjust();</div> </p>
+<ul>
+	<li>Description: returns a boolean value, indicating whether the plug-in 
+	supports un-adjusted data</li>
+	<li>Arguments: none</li>
+	<li>Return value: 0 if the plug-in doesn't support un-adjusted data, 1 or 
+	other non 0 value if it supports un-adjusted data.</li>
+</ul>
+<p><div class="code">const char* getFirstDate();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the earliest 
+	date supported by the plug-in, in the format: MM/DD/YYYY. If all dates are 
+	supported, then the returned value should be 0. Example, &quot;1/1/1960&quot; shows 
+	that the plug-in can't retrieve data earlier than Jan 1st 1960.</li>
+	<li>Arguments: none</li>
+	<li>Return value: 0 if the plug-in supports all dates, or a date string if 
+	it can't get data earlier than that date..</li>
+</ul>
+<p><div class="code">const char* getSupportedPeriods();</div> </p>
+<ul>
+	<li>Description: returns the address of a string containing the supported 
+	data periods with the following format: &quot;format_1 format2 ... format_n&quot;, 
+	where format_1, format_2, format_n are one of:<ul>
+		<li>0 - daily</li>
+		<li>1 - weekly</li>
+		<li>2 - monthly</li>
+		<li>3 - quarterly</li>
+		<li>4 - yearly</li>
+	</ul>
+	<p>For example, &quot;1 2 3&quot; shows that the plug-in supports weekly, monthly and 
+	quarterly data, while &quot;0&quot; shows that the plug-in supports only daily data.</li>
+	<li>Arguments: none</li>
+	<li>Return value: a string containing the supported periods</li>
+</ul><div class="code">
+const char* getData( const char* symbol, const char* startDate, const char* 
+endDate, Period period, bool adjusted, bool&amp; error );
+	</div>
+					<ul>
+						<li>Description: returns the address of a string 
+						containing the downloaded data in csv format 
+						corresponding to the input parameters. Each bar of data 
+						will be on a different line, with lines separated by CR 
+						LF or 0x0d 0x0a. Each line will have the format: &quot;date,open,high.low,close,volume&quot;, 
+						for example &quot;10/01/2008,10.25,10.50,10.10,10.12,450000&quot;.</li>
+	<li>Arguments:<ul>
+						<li>const char* symbol - the symbol</li>
+						<li>const char* startDate - the start date (or 0 if the 
+						oldest available)</li>
+	<li>const char* endDate - the end date (or 0 if the most recent available)</li>
+	<li>Period period - one of the Period enumeration values (0 - daily, 1 - 
+	weekly etc).</li>
+						<li>bool adjusted - true to get adjusted data, false to 
+						get unadjusted data.</li>
+						<li>bool&amp; error - a reference to a boolean that will be 
+						set by the plug-in to indicate the status of the 
+						request. If the request for data succeeded, this will be 
+						set by the plug-in to false (0), if the request failed, 
+						the plug-in will set this boolean to true (1) </li>
+</ul>
+
+						</li>
+						<li>Return value: the data if the call succeeds, or an 
+						string indicating the nature of the error if the call 
+						fails.<br></li>
+</ul>
+
+<p><div class="code">void freeString( const char* str );</div>
+						<ul>
+							<li>Description: a hint to the plug-in that YLoader no 
+							longer needs the string with the address &quot;str&quot;, and 
+							that the plug-in can free it. The plug-in can choose 
+							any alloc/free strategy desired, as long as it 
+							doesn't lead to memory leaks, or to excessive memory 
+							usage, which can cause performance degradation.</li>
+	<li>Arguments:
+						<ul>
+							<li>the address of a string previously passed by the 
+							plug-in to YLoader.</li>
+</ul>
+
+</li>
+	<li>Return value: none</li>
+</ul>

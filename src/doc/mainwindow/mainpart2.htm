@@ -1,0 +1,160 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+
+<body>
+
+<ul>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Symbols</b> - opens the dialog for selecting the name of the file containing the 
+	symbols list. The format of this file is described in the Symbols File Format section. The
+    name of the symbols file can be entered by typing it, by selecting it in the
+    Symbols List File dialog, by dragging and dropping it from an Explorer
+    window (be it a shortcut or file name), or from the command line (see
+    the Command Line section). Also, a list of most recently used eight symbols 
+	lists is available by clicking on the side arrow down button.</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Output </b>- select the directory where the downloaded data will be saved. The data for each 
+    symbol will be saved in a file with the name of the symbol and the extension 
+    selected in the Options dialog (see the Options 
+    section). The data path can be entered by typing it, by selecting it in the 
+    Data Path dialog, by dragging and dropping it from an Explorer window, or 
+    from the command line (see the Command Line 
+    section). also, a list of most recently used eight output paths is available 
+	by clicking on the side arrow down button. </li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Refresh
+    symbols </b>- will refresh the contents of the displayed list of symbols
+    from symbols file.</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Time Range
+    </b>- the range of dates for which to download
+the data, either all available data or a specific range. Each time the application starts,
+    it will set the start date to hold the same value used in the most recent session, and the
+    end date to today's date.<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>All
+    available</b> - will download all available data for each symbol</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Update
+    - </b>when checked, the application will attempt to update the data. When
+    this option is on, if the data file for a symbol already exists, it will add
+    only the new bars, up to the end date or if all is checked, up to the most
+    recent date. If the data file doesn't exist, it will create it and
+    load all the data for the specified time range. This option is automatically
+    turned off if the &quot;Most recent bars last in file&quot; option is off.</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Period</b> - the data period: can be daily, weekly and monthly.</li>
+</ul>
+
+	</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Price options - </b>options which enable/disable price transformations 
+    and validation<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Dividend and split adjusted
+    </b>- when checked, downloaded data will be adjusted for dividends and 
+	splits.</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	<b>Validate
+    prices</b> - when checked will verify that each bar has valid data (high &gt; 
+	open, close, high etc). The Options dialog contains extra settings used to 
+	fine tune the validation process - see the Options dialog section.</li>
+</ul>
+
+	</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Latest download stats - </b>various statistics about the most recent 
+    downloading session: 
+
+<ul>
+  <li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+	the data source: Yahoo or Google</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">total number of symbols in the list (excluding 
+    duplicates), </li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">total number of symbols processed (which can be lower than the 
+    previous number if the session has been canceled) and their percentage of 
+	the total number of symbols</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">total number of symbols 
+    which were processed without errors and their percentage of the total number 
+	of symbols</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">total number of errors, 
+	and their percentage of the total number of symbols,</li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">the session 
+    duration, </li>
+	<li>
+	<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">the current status: downloading 
+	or canceling when a session is in 
+	progress, or completed or canceled for finished sessions</li>
+</ul>
+
+	</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>The download progress bar - </b>shows graphically the downloading 
+	progress. This bar will 
+	be displayed even after the session has ended, and it will show the status 
+	at the end of the most recent session (incomplete if the session was canceled, or full 
+	if the session was successfully completed)</li>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    <b>Downloaded symbols info </b>- detailed info about the downloaded status 
+    of all symbols. Indicates whether the
+download was successful or not, the symbol, and a message showing how much data has
+been loaded, for a successful operation, or a diagnostic message in case of a 
+	warning or
+error.&nbsp;</li>
+</ul>
+
+<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+<b>Note about symbols</b></p>
+
+<ul>
+  <li>
+    <p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+    The list of symbols will ignore duplicate symbols. Symbols are considered duplicates if they have the exact same 
+    spelling, including the case, so <i>msft</i> and <i>MSFT </i>are not 
+    considered duplicates.</li>
+</ul>
+
+<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+<b>Notes about using the Update option</b>:
+
+<ul>
+  <li>
+
+<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+if the option to adjust for dividends and splits is on, and if a split or 
+dividend has occurred between the time of the last download and the current 
+download, then all data is reloaded, as previous bars have to be adjusted to 
+account for the new split or dividend ratios.</li>
+  <li>
+
+<p style="tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt">
+the various options (data and file format, adjustment etc) must be consistent 
+between updates.</li>
+</ul>
+
+</body>
+
+</html>

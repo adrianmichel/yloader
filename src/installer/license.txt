@@ -1,0 +1,30 @@
+Summary
+
+USE AT YOUR OWN RISK!
+
+License agreement
+
+YLOADER.COM PROVIDES THE SOFTWARE "AS-IS" AND WITH ALL FAULTS. NEITHER YLOADER.COM NOR ANY OF ITS SUPPLIERS OR RESELLERS MAKE ANY WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. YLOADER.COM AND ITS SUPPLIERS SPECIFICALLY DISCLAIM THE IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, SYSTEM INTEGRATION, AND DATA ACCURACY. THERE IS NO WARRANTY OR GUARANTEE THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-FREE, OR VIRUS-FREE, OR THAT THE SOFTWARE WILL MEET ANY PARTICULAR CRITERIA OF PERFORMANCE, QUALITY, ACCURACY, PURPOSE, OR NEED. YOU ASSUME THE ENTIRE RISK OF SELECTION, INSTALLATION, AND USE OF THE SOFTWARE. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN ESSENTIAL PART OF THIS AGREEMENT. NO USE OF THE SOFTWARE IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER.
+
+THIS SOFTWARE DEPENDS ON CERTAIN DATA TRANSFER PROTOCOLS THAT HAVE BEEN DEVELOPED AND ARE MAINTAINED BY YAHOO AND GOOGLE. YAHOO OR GOOGLE MAY DECIDE TO CHANGE THESE PROTOCOLS AT ANY TIME WITH OR WITHOUT NOTICE. YLOADER.COM WILL MAKE ANY REASONABLE EFFORT TO KEEP THE SOFTWARE UP TO DATE IN RESPECT TO THESE CHANGES, BUT DOES NOT GUARANTEE THE TIMELINESS OF THESE UPDATES, OR THAT IT WILL EVEN BE POSSIBLE TO INCORPORATE SOME OR ALL OF THESE CHANGES. SOME OF THE CONSEQUENCES OF SUCH CHANGES BY YAHOO OR GOOGLE COULD BE: INACCURATE OR UNAVAILABLE MARKET DATA, POOR PERFORMANCE AND OTHERS. YOU ASSUME THE ENTIRE RISK OF ALL SUCH OCCURRENCES, AS WELL AS THE RISK THAT THE SOFTWARE MAY BE RENDERED TEMPORARILY OR PERMANENTLY, IN PART OR COMPLETELY  NONFUNCTIONAL BY SUCH CHANGES.
+							YLOADER.COM DOES NOT MAKE ANY GUARANTEE THAT THIS SOFTWARE COMPLIES OR WILL CONTINUE TO COMPLY WITH THE YAHOO AND GOOGLE TERMS OF SERVICE OR ANY OTHER AGREEMENTS BETWEEN YAHOO OR GOOGLE AND YOU. YOU ARE SOLELY AND FULLY RESPONSIBLE FOR COMPLYING WITH THE YAHOO OR GOOGLE TERMS OF SERVICE AND ANY OTHER AGREEMENTS BETWEEN YAHOO OR GOOGLE AND YOU.
+
+DATA IS DOWNLOADED EXACTLY AS PROVIDED BY YAHOO, GOOGLE OR ANY OTHER SUPPORTED DATA PROVIDER, AND YLOADER.COM DOES NOT GUARANTEE THE DOWNLOADED DATA QUALITY, ACCURACY OR COMPLETENESS.
+
+Limitation Of Liability
+
+Neither YLoader.com nor anyone else who has been involved in the creation, production or delivery, of this software or its accompanying documentation shall be liable for any direct, indirect, incidental, special, exemplary or consequential damages whatsoever, including but not limited to any loss of actual or anticipated profits or benefits, resulting from the use of the software or its documentation.
+
+Termination
+
+You may terminate this agreement by uninstalling and deleting all copies of the software and documentation from your devices. This license terminates automatically and without notice to you if you fail to comply with any provisions of this agreement.
+
+Complete Agreement
+
+You acknowledge that you have read this license agreement and that it is complete and exclusive agreement between you and YLoader.com regarding the software and its documentation. This License shall be governed by and construed in accordance with the laws of the State of California, United States of America, as if performed wholly within the state and without giving effect to the principles of conflict of law. If any portion hereof is found to be void or unenforceable, the remaining provisions of this License shall remain in full force and effect. This License constitutes the entire License between the parties with respect to the use of the Software
+
+General Provisions
+
+YLoader.com reserves all rights not expressly granted herein. YLoader.com may modify this Agreement at any time by providing such revised Agreement to you or posting the revised Agreement on his website presently located at http://www.yloader.com/license/. Your continued use of the Software shall constitute your acceptance of such revised Agreement. Nothing in this Agreement shall constitute a partnership or joint venture between you and YLoader.com. Should any term or provision hereof be deemed invalid, void or unenforceable either in its entirety or in a particular application, the remainder of this Agreement shall nonetheless remain in full force and effect.
+
+YOU EXPRESSLY ACKNOWLEDGE THAT YOU HAVE READ THIS AGREEMENT AND UNDERSTAND THE RIGHTS, OBLIGATIONS, TERMS AND CONDITIONS SET FORTH HEREIN. BY CONTINUING TO INSTALL AND USE THE SOFTWARE, YOU EXPRESSLY CONSENT TO BE BOUND BY ITS TERMS AND CONDITIONS AND GRANT TO YLOADER.COM THE RIGHTS SET FORTH HEREIN.

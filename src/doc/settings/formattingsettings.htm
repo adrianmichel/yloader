@@ -1,0 +1,57 @@
+<img src="formattingsettings.png" class="illustration">
+<ul>
+  <li>
+    <b>Add
+    symbol to column</b> - enables/disables adding a
+column to each data file containing the symbol name. The column number can be between
+0 (leftmost column) and 6 (rightmost column) and should be entered in the
+    associated edit box.</li>
+	<li>
+	<b>Sort bars in ascending order - </b>if on, it will force saving bars sorted from
+    the oldest to the most recent. If off, the order will be reversed with the
+    most recent bars at the top of the file. In the latter case the <b>Update
+    option</b> in the Time range group is also disabled.</li>
+	<li><b>Field separator - </b>sets the character or string to be used as 
+	field separator. The default value is &quot;,&quot;, but any character (including 
+	blanc) or string can be used.</li>
+	<li><b>Volume mulitplier - </b>decimal number which is multiplied with the 
+	downloaded (and optionally adjusted) volume value to generate the final, 
+	saved volume value. For example, to save the volume as thousands of shares, 
+	use the multiplier 0.001, which will divide the real volume by 100. To leave 
+	the volume unchanged, use the multiplier 1 (the default value).</li>
+	<li>
+	<b>Date
+    format</b> - the date can be written as<ul>
+  <li>mm/dd/yyyy - 10/25/2007 </li>
+	<li>dd/mm/yyyy - 25/10/2007</li>
+	<li>yyyy/mm/dd - 2007/10/25</li>
+</ul>
+	</li>
+	<li>
+	<b>Pad date fields with 0s</b> - when checked, will ensure that month and 
+	day fields have exactly 2 characters, even for 1 digit months or days, so 
+	Jan 05, 2006 will be written as 01/05/2006</li>
+	<li>
+	<b>Date separator</b> - sets the character to be used as a date field 
+	separator. The default value is &quot;/&quot;. To generate dates without a separator, 
+	clear this field. In this case it is usually a good idea to also check the 
+	option to Pad the date fields with 0s, or dates may become ambiguous (for 
+	example, 1252008 can be interpreted as 12/5/2008 or 1/25/2008, but 01252008 
+	is clearly 1/25/2008).</li>
+	<li>
+	<b>Use regular expression formatting - </b>when checked, it will enable 
+	regular expression formatting and disable settings based formatting (such as 
+	Add symbol to column, Field separator etc).</li>
+	<li>
+	<b>Regular expression formatting</b><ul>
+  <li><b>Reset to default values - </b>will reset the Match regex and Format 
+	string to their initial default values when clicked</li>
+	<li><b>Unlock - </b>the regular expression formatting controls are locked by 
+	default to avoid accidental changes. Clicking on this button will unlock 
+	these controls for editing.</li>
+	<li><b>Match regex </b>- contains the regular expression used for extracting 
+	strings from the input data</li>
+	<li><b>Format string </b>- contains the strings that defines the output data 
+	format</li>
+</ul></li>
+</ul>

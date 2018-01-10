@@ -1,0 +1,14 @@
+/**
+The Yahoo Downloader is also distributed as part of the <a target="_blank" href="http://www.yloader.com/tradingapp/">TradingApp Platform 2.0</a>
+You are granted the right to use this application only if you agree to the terms set forth in the Disclaimer.
+Run setup.exe to install the application.
+Installing or running the software will not make any changes to your system or registry. The only file created at runtime is ydownloaderlibpr.ini in your system directory, which stores settings values between sessions.
+Files installed:
+the components needed to run the downloader
+ydownloaderlib.lib and ydownloader.h, needed to add the Yahoo downloader functionality to third party applications. 
+symbols.txt - a sample symbols file
+an auto-updater, which you can use to get the most recent version from the server.
+By default the application will check the website for updates at startup. This automatic check can be turned off in the Options dialog. Please note that this check doesn't send out any information - it only reads an xml file on the web site that contains the information about the most recent released version. If the version on the website is more recent than the installed one, the user will be notified and can then choose to download and install the update or not 
+
+<a href="log.htm">log</a>
+*/

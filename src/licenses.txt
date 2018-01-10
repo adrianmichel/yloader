@@ -1,0 +1,12 @@
+YLoader uses the following third party packages:
+
+CSettingsDlg, a settings dialog class: https://www.codeproject.com/articles/1831/csettingsdialog-a-dialog-customizing-your-project?fid=3279&df=90&mpp=50&sort=Position&view=Normal&spc=Tight&fr=51
+CReportCtrl, a List control wrapper class: https://www.codeproject.com/Articles/4014/CReportCtrl-An-extremely-convenient-version-of-rep
+CDropEdit, a drag & drop enabled CEdit wrapper: https://www.codeproject.com/Articles/1899/CDropEdit
+HListBox
+Doxygen, documentation generator: http://wwww.doxygen.org
+boost, a set of portable C++ libraries: http://www.boost.org
+libcurl, a multiprotocol file transfer library: https://curl.haxx.se/libcurl/
+JSON for modern C++, a JSON C++ library: https://github.com/nlohmann/json
+OpenSSL, a TLS and SSL toolkit: https://www.openssl.org
+crypt http://en.wikipedia.org/wiki/XXTEA

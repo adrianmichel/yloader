@@ -1,0 +1,49 @@
+<p><img border="0" src="generalsettings.png"></p>
+
+<ul>
+	<li>
+	<b>Auto
+    start downloading - </b>when checked, downloading will be initiated as soon as
+    the application starts. Useful the application is used as part of an 
+    automated data downloading system, run from the command line.</li>
+  <li>
+    <b>Check
+    for updates at startup</b> - enables auto checking for new releases at 
+	startup</li>
+  <li>
+    <b>Simultaneous connections - </b>the number of simultaneous connections. 
+    Depending on the network bandwidth, choosing multiple connections will 
+    usually improve downloading speed.</li>
+	<li>
+    <b>HTTP Request timeout - </b>the delay in seconds after which a request 
+	that hasn't completed is abandoned, or 0 for no timeout (wait indefinitely).</li>
+	<li>
+    <b>Proxy Server</b><ul>
+	<li><b>IP address/name and port number - </b>the IP address or name that 
+	identifies the proxy server on the network, and the TCP port number on which 
+	this proxy server is listening for connections. The address and port number 
+	are separated by &quot;:&quot;. If this field is left blanc, no proxy server will be 
+	used. Consult your network administrator or proxy server documentation for 
+	the exact configuration. Examples: 127.0.0.1:8118 (this is the local 
+	computer, port 8118), ourproxyserver:4444 (a proxy server with the name 
+	ourproxyserver listening on port 4444).</li>
+	<li><b>User name - </b>enter the user name if the proxy server requires 
+	authentication</li>
+	<li><b>Password - </b>enter the password if the proxy server requires 
+	authentication</li>
+	</li>
+	<li><b>Open data file with </b>- enter or browse to the application name you 
+	want to use when opening data files directly from YLoader. If this field is 
+	empty, the default application associated with the extension of the data 
+	files will be used. For example, if the extension is csv, Excel will be used 
+	(if installed), or if the extension is txt, notepad will be used. To define 
+	a custom application, this field should contain the full path of that 
+	application, such as &quot;c:\windows\notepad.exe.</li>
+	<li><b>Do not reload old data in Update mode - </b>by default, when the 
+	Update mode is active, if old data is inconsistent with new data, all the old 
+	data will be reloaded. This can happen if there have been splits or 
+	dividends between the last available bar locally and the new bars to be 
+	downloaded. If however this behavior is not desired, check this box to turn 
+	it off. This can be useful if the data has been modified manually and 
+	updating it would cancel all manual changes.</li>
+</ul>

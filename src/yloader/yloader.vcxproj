@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5E0D9CAF-92A7-4DB8-BDEA-75B312C64AB7}</ProjectGuid>
+    <RootNamespace>yloader</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(Configuration)\$(PlatformTarget)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(Configuration)\$(PlatformTarget)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(Configuration)\$(PlatformTarget)\</IntDir>
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(Configuration)\$(PlatformTarget)\</IntDir>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(BoostInclude);$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(BoostLib);$(SolutionDir)lib\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rpcrt4.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(BoostInclude);$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(BoostLib);$(SolutionDir)lib\$(Configuration);</AdditionalLibraryDirectories>
+      <OutputFile>$(OutputPath)$(TargetFileName)</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <AdditionalDependencies>rpcrt4.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(BoostInclude);$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;</AdditionalIncludeDirectories>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(BoostLib);$(SolutionDir)lib\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalDependencies>rpcrt4.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <CustomBuildStep>
+      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
+if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
+      <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
+      <Outputs>$(InstallerDir)\y5_$(PlatformArchitecture)_setup.exe</Outputs>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
+"C:\Program Files (x86)\NSIS\makensis.exe" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(Bits).txt</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(BoostInclude);$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(BoostLib);$(SolutionDir)lib\$(Configuration);</AdditionalLibraryDirectories>
+      <OutputFile>$(OutputPath)$(TargetFileName)</OutputFile>
+      <AdditionalDependencies>rpcrt4.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <CustomBuildStep>
+      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
+if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
+      <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
+      <Outputs>$(InstallerDir)\y5_$(PlatformArchitecture)_setup.exe</Outputs>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
+"C:\Program Files (x86)\NSIS\makensis.exe" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(Bits).txt</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ColorStaticST.h" />
+    <ClInclude Include="DataFormattingSettingsPage.h" />
+    <ClInclude Include="DataValidationSettingsPage.h" />
+    <ClInclude Include="downloader.h" />
+    <ClInclude Include="DownloadListCtrl.h" />
+    <ClInclude Include="DropEdit.h" />
+    <ClInclude Include="EmptyDataPathPromptDlg.h" />
+    <ClInclude Include="GeneralSettingsPage.h" />
+    <ClInclude Include="HListBox.h" />
+    <ClInclude Include="LoginSettingsPage.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="mru.h" />
+    <ClInclude Include="OutputSettingsPage.h" />
+    <ClInclude Include="PluginSettingsPage.h" />
+    <ClInclude Include="PrefsStatic.h" />
+    <ClInclude Include="ReportCtrl.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SettingsDlg.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SymbolsSettingsPage.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="UpdateDlg.h" />
+    <ClInclude Include="yloader.h" />
+    <ClInclude Include="yloaderDoc.h" />
+    <ClInclude Include="YloaderView.h" />
+    <ClInclude Include="YSettingsDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ColorStaticST.cpp" />
+    <ClCompile Include="DataFormattingSettingsPage.cpp" />
+    <ClCompile Include="DataValidationSettingsPage.cpp" />
+    <ClCompile Include="DownloadListCtrl.cpp" />
+    <ClCompile Include="DropEdit.cpp" />
+    <ClCompile Include="EmptyDataPathPromptDlg.cpp" />
+    <ClCompile Include="GeneralSettingsPage.cpp" />
+    <ClCompile Include="HListBox.cpp" />
+    <ClCompile Include="LoginSettingsPage.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="OutputSettingsPage.cpp" />
+    <ClCompile Include="PluginSettingsPage.cpp" />
+    <ClCompile Include="PrefsStatic.cpp" />
+    <ClCompile Include="ReportCtrl.cpp" />
+    <ClCompile Include="SettingsDlg.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SymbolsSettingsPage.cpp" />
+    <ClCompile Include="UpdateDlg.cpp" />
+    <ClCompile Include="yloader.cpp" />
+    <ClCompile Include="yloaderDoc.cpp" />
+    <ClCompile Include="YloaderView.cpp" />
+    <ClCompile Include="YSettingsDialog.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="yloader.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\iconEditSymbolsList.ico" />
+    <Image Include="res\iconExploreOutputPath.ico" />
+    <Image Include="res\icon_error.ico" />
+    <Image Include="res\icon_fatal_error.ico" />
+    <Image Include="res\icon_info.ico" />
+    <Image Include="res\icon_open_symbols.ico" />
+    <Image Include="res\icon_warning.ico" />
+    <Image Include="res\idc_main.bmp" />
+    <Image Include="res\openoneoutputfile.ico" />
+    <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\Toolbar256.bmp" />
+    <Image Include="res\yloader.ico" />
+    <Image Include="res\yloaderDoc.ico" />
+    <Image Include="UserImages.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\yloader.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\filesymbols\filesymbols.vcxproj">
+      <Project>{ea3bcd75-7b37-40d6-959a-93f52425315d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\miscwin\miscwin.vcxproj">
+      <Project>{9c793cf1-986e-46fa-93d8-e0243982cb41}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\sympreproc\sympreproc.vcxproj">
+      <Project>{e5ec4e21-2c9e-40e5-b5f9-08f23234e825}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\updater\updater.vcxproj">
+      <Project>{1721770c-82f2-472f-8e55-e338a8a74c45}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ycmdline\ycmdline.vcxproj">
+      <Project>{7836e55f-584b-404d-9748-3fc99609eb5b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ydspluginhelper\ydspluginhelper.vcxproj">
+      <Project>{1803644b-83f5-4dbc-a140-29ea44b92d6a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ygqdconsole\ygqdconsole.vcxproj">
+      <Project>{de51113d-4633-411e-b21c-9996a5848880}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yloadercore\yloadercore.vcxproj">
+      <Project>{4d7c9a81-2e6e-4afc-8a41-b0db7cdc2a93}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="yloader.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

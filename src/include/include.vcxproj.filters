@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="datetime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filesymbols.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hinstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="httprequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="miscfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="miscwin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="namevalue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objcounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stringformat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="threadsync.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tokenizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="versionno.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="yloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ypluginhelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

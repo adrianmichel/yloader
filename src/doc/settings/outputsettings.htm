@@ -1,0 +1,58 @@
+<ul>
+	<li><b>Data file header</b> - user defined text that will be added to the 
+	beginning of each data file. If this box contains any text, a new line 
+	character will be automatically inserted between this text and the rest of 
+	the file.</li>
+  <li>
+    <b>Data
+    file name transformations</b> - options to configure the data file name 
+    generation for symbols<ul>
+  <li>
+	<b>Prepend/Append </b>: prepends and/or appends the
+    specified string to the file name for each symbol. For example, using the
+    strings &quot;_&quot; and &quot;test&quot; the file name for the symbol <i>msft</i>
+    would be: <i>_msfttest.csv </i>(assuming the extension is chosen to be &quot;csv&quot;)</li>
+	<li>
+	<b>Extension</b> - the extension for all data files. Can contain a leading 
+    &quot;.&quot; or not. The default value is <i>csv</i>.</li>
+</ul></li>
+  <li>
+    <b>Create subdirectories for data files</b> - when this is checked, data will 
+	be saved in a hierarchy of directories under the main data files directory. The hierarchy 
+	is organized in 2 levels: the first level will be named using the first 
+	letter of the symbol, and the second level will contain the second letter of 
+	the symbol, or _ if the symbol has only one letter. For example, if the root 
+	data directory is c:\data and the symbol is MSFT, the path to the data file 
+	will be: c:\data\m\s\msft.csv. Similarly, the path for IBM will be 
+	c:\data\i\b\ibm.csv and the path for A will be 
+	<a href="file:///c:/data/a/_/a.csv">c:\data\a\_\a.csv</a>.</li>
+	<li>
+    <b>Auto select output directory - </b>when this option is checked, if the 
+	output path edit box on the main page is empty, the data will be saved 
+	automatically under the symbols file directory, using the content of the 
+	edit box as the root. The default value for the root is &quot;data&quot;, but it can 
+	be changed or even removed. If the output specified directory doesn't 
+	exist, it will be automatically created</li>
+	<li>
+    <b>Character mapping - </b>will define up to for character mappings between 
+	a character to be replaced (source) and a character to replace with 
+	(destination).</li>
+</ul>
+<h3>About character mappings</h3>
+<p>During data downloading, if a symbol contains one or more source characters 
+defined in any of the mappings, they will be replace with the corresponding 
+destination characters.</p>
+<p>This feature is used primarily to allow saving of data 
+	for symbols that contain illegal file name characters (\, /, *, &quot;, &lt;, &gt; and 
+	|) that otherwise could not be saved.</p>
+<p>For example, the data for the symbol TSE:ABX downloaded using the Google 
+datasource could not be 
+	saved as &quot;TSE:ABX.csv&quot; because of the illegal &quot;:&quot;. However, if one of the mappings is 
+	&quot;:&quot; to &quot;_&quot; (which is the only default mapping), then the data for 
+that symbol 
+	will be saved as &quot;TSE_ABX.csv&quot; which is a valid file name. </p>
+<p>It is ok to 
+	map a character to no character (just leave the second edit field of the 
+	mapping empty) - this will result in the source character being removed completely 
+	from the file name of all symbols that contain it. It is also ok to map a 
+character to space (blanc).</p>

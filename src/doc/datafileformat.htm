@@ -1,0 +1,479 @@
+<p style='margin-top:0in'>By default, data
+downloaded for each symbol is saved in a file having the name of that symbol and 
+the extension csv by default. This can be adjusted however by using the Output settings:
+strings can be prepended and/or appended to the symbol part of the file name and 
+the file extension can be changed.</p>
+
+<p>The format described below is relevant mostly if fixed formatting settings 
+are used. If regex formatting is used, data can be saved in virtually any format.</p>
+<p style='margin-top:0in'>The date format depends on several settings (see the 
+Settings section). They can be in US or European format, and or they can have the 
+month and day fields padded with 0s up to 2 digits.</p>
+
+<h3 style='margin-top:0in'><a name="_Toc94869294">Bar data format</a></h3>
+
+<p style='margin-top:0in'>Historical data
+files are saved in CSV format with the following columns:</p>
+
+<table class="sample" border=0 cellpadding=0 style='width:100.0%;'>
+ <tr>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>Date</p>
+  </td>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>&nbsp;Open</p>
+  </td>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>High</p>
+  </td>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>Low</p>
+  </td>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>Close</p>
+  </td>
+  <td width="15%" style='background-position: 0% 0%; width:15.0%;padding:.75pt; ; background-image:none; background-repeat:repeat; background-attachment:scroll'>
+  <p align=center style='text-align:center'>Volume</p>
+  </td>
+ </tr>
+</table>
+
+<p style='margin-top:0in'>&nbsp;</p>
+
+<p style="margin-top: 0in">There is no title row in
+the data files.</p>
+
+<p style='margin-top:0in'>Data example when
+using the US date format&nbsp;</p>
+
+<table class="sample" border=0 cellpadding=0 width="100%" style='width:100.0%;'>
+ <col width="70" style="width:53pt"><col width="64" span="6" style="width:48pt">
+ <tr style='height:12.75pt'>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="38293">
+  <p align=center style='text-align:center'>11/15/2010</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="49.857799999999997">
+  <p align=center style='text-align:center'>49.8578</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.3459">
+  <p align=center style='text-align:center'>50.3459</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="49.469299999999997">
+  <p align=center style='text-align:center'>49.4693</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="49.688400000000001">
+  <p align=center style='text-align:center'>49.6884</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>2806900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="38294">
+  <p align=center style='text-align:center'>11/16/2010</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.804099999999998">
+  <p align=center style='text-align:center'>50.8041</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="51.899900000000002">
+  <p align=center style='text-align:center'>51.8999</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.744300000000003">
+  <p align=center style='text-align:center'>50.7443</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.953499999999998">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>5451100</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="38295">
+  <p align=center style='text-align:center'>11/17/2010</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.654699999999998">
+  <p align=center style='text-align:center'>50.6547</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.724400000000003">
+  <p align=center style='text-align:center'>50.7244</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="49.9773">
+  <p align=center style='text-align:center'>49.9773</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.395699999999998">
+  <p align=center style='text-align:center'>50.3957</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>4875700</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="38296">
+  <p align=center style='text-align:center'>11/18/2010</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.604900000000001">
+  <p align=center style='text-align:center'>50.6049</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="51.172699999999999">
+  <p align=center style='text-align:center'>51.1727</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.2164">
+  <p align=center style='text-align:center'>50.2164</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.953499999999998">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>4379900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="38299">
+  <p align=center style='text-align:center'>11/19/2010</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.953499999999998">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="52.278399999999998">
+  <p align=center style='text-align:center'>52.2784</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num="50.863900000000001">
+  <p align=center style='text-align:center'>50.8639</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>51.87</p>
+  </td>
+  <td style='background-position: 0% 0%; padding:.75pt; height:12.75pt; background-image:none; background-repeat:repeat; background-attachment:scroll'
+  u1:num>
+  <p align=center style='text-align:center'>4025700</p>
+  </td>
+ </tr>
+</table>
+
+<p style='margin-top:0in'>&nbsp;</p>
+
+<p style='margin-top:0in'>The same data using the European date format:</p>
+
+<table class="sample" border=0 cellpadding=0 style='mso-cellspacing: 1.5pt'>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38293" width="235">
+  <p align=center style='text-align:center'>15/11/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.857799999999997" width="202">
+  <p align=center style='text-align:center'>49.8578</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.3459" width="204">
+  <p align=center style='text-align:center'>50.3459</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.469299999999997" width="203">
+  <p align=center style='text-align:center'>49.4693</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.688400000000001" width="205">
+  <p align=center style='text-align:center'>49.6884</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="200">
+  <p align=center style='text-align:center'>2806900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38294" width="235">
+  <p align=center style='text-align:center'>16/11/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.804099999999998" width="202">
+  <p align=center style='text-align:center'>50.8041</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="51.899900000000002" width="204">
+  <p align=center style='text-align:center'>51.8999</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.744300000000003" width="203">
+  <p align=center style='text-align:center'>50.7443</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="205">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="200">
+  <p align=center style='text-align:center'>5451100</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38295" width="235">
+  <p align=center style='text-align:center'>17/11/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.654699999999998" width="202">
+  <p align=center style='text-align:center'>50.6547</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.724400000000003" width="204">
+  <p align=center style='text-align:center'>50.7244</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.9773" width="203">
+  <p align=center style='text-align:center'>49.9773</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.395699999999998" width="205">
+  <p align=center style='text-align:center'>50.3957</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="200">
+  <p align=center style='text-align:center'>4875700</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38296" width="235">
+  <p align=center style='text-align:center'>18/11/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.604900000000001" width="202">
+  <p align=center style='text-align:center'>50.6049</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="51.172699999999999" width="204">
+  <p align=center style='text-align:center'>51.1727</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.2164" width="203">
+  <p align=center style='text-align:center'>50.2164</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="205">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="200">
+  <p align=center style='text-align:center'>4379900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38299" width="235">
+  <p align=center style='text-align:center'>19/11/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="202">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="52.278399999999998" width="204">
+  <p align=center style='text-align:center'>52.2784</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.863900000000001" width="203">
+  <p align=center style='text-align:center'>50.8639</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="205">
+  <p align=center style='text-align:center'>51.87</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="200">
+  <p align=center style='text-align:center'>4025700</p>
+  </td>
+ </tr>
+</table>
+
+<p style='margin-top:0in'>&nbsp;</p>
+
+<p style='margin-top:0in'>In case the option to add the symbol name to the file
+to column is on, and the column number is 1 for example, the resulting data will
+be:</p>
+
+<table class="sample" border=0 cellpadding=0 width="100%" style='mso-cellspacing: 1.5pt'>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38293" width="183">
+  <p align=center style='text-align:center'>11/15/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.857799999999997" align="center" width="183">
+  symbol
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.857799999999997" width="183">
+  <p align=center style='text-align:center'>49.8578</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.3459" width="184">
+  <p align=center style='text-align:center'>50.3459</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.469299999999997" width="184">
+  <p align=center style='text-align:center'>49.4693</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.688400000000001" width="184">
+  <p align=center style='text-align:center'>49.6884</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>2806900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38294" width="183">
+  <p align=center style='text-align:center'>11/16/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.804099999999998" align="center" width="183">
+  symbol
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.804099999999998" width="183">
+  <p align=center style='text-align:center'>50.8041</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="51.899900000000002" width="184">
+  <p align=center style='text-align:center'>51.8999</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.744300000000003" width="184">
+  <p align=center style='text-align:center'>50.7443</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="184">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>5451100</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38295" width="183">
+  <p align=center style='text-align:center'>11/17/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.654699999999998" align="center" width="183">
+  symbol
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.654699999999998" width="183">
+  <p align=center style='text-align:center'>50.6547</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.724400000000003" width="184">
+  <p align=center style='text-align:center'>50.7244</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="49.9773" width="184">
+  <p align=center style='text-align:center'>49.9773</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.395699999999998" width="184">
+  <p align=center style='text-align:center'>50.3957</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>4875700</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38296" width="183">
+  <p align=center style='text-align:center'>11/18/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.604900000000001" align="center" width="183">
+  symbol
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.604900000000001" width="183">
+  <p align=center style='text-align:center'>50.6049</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="51.172699999999999" width="184">
+  <p align=center style='text-align:center'>51.1727</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.2164" width="184">
+  <p align=center style='text-align:center'>50.2164</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="184">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>4379900</p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="38299" width="183">
+  <p align=center style='text-align:center'>11/19/2010</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" align="center" width="183">
+  symbol
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.953499999999998" width="183">
+  <p align=center style='text-align:center'>50.9535</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="52.278399999999998" width="184">
+  <p align=center style='text-align:center'>52.2784</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num="50.863900000000001" width="184">
+  <p align=center style='text-align:center'>50.8639</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>51.87</p>
+  </td>
+  <td style='background-repeat: repeat; background-attachment: scroll; height: 12.75pt; padding: .75pt; background-position:  0% 50%; '
+  u1:num width="184">
+  <p align=center style='text-align:center'>4025700</p>
+  </td>
+ </tr>
+</table>
+
+<p style='margin-top:0in'>&nbsp;</p>
