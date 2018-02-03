@@ -1,5 +1,7 @@
 @echo off
 
+set LIBCURL_EXTRA_H=%CD%\libcurl_extra.h
+
 rem ****************************************************************
 rem ******* get yloader
 rem git clone https://github.com/adrianmichel/yloader.git yloader
@@ -33,9 +35,10 @@ rem libcurl
 cd ..
 call git clone --recursive https://github.com/adrianmichel/build-libcurl-windows.git libcurl
 cd libcurl
-call build
+call build x %LIBCURL_EXTRA_H%
 
-cd ..
+rem back to root
+cd ..\..
 
 
 
