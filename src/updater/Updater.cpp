@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "stdafx.h"
 #include "Updater.h"
-#include <json.hpp>
 
 using json = nlohmann::json;
 using namespace yloader;
