@@ -38,7 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <misc.h>
 #include <versionno.h>
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 #include <thread.h>
 
 
