@@ -797,7 +797,7 @@ void CYloaderView::OnSettings() {
 
     enableUpdate();
 
-    Log::setLevel(_diagnosticLogging ? log_debug : log_info);
+    Log::setLevel(_diagnosticLogging ? log_debug : log_none);
 
     setDataSourceText();
   }

@@ -253,9 +253,6 @@ bool yloader::Log::_logToDebugOutput = false;
 bool yloader::Log::_logToConsole = false;
 yloader::Mutex Log::_mutex;
 
-LOG_API unsigned __int64 LogEntryExit::m_crtId(0);
-LOG_API yloader::Mutex LogEntryExit::m_mx;
-
 class ConsoleLog : public Log {
  public:
   ConsoleLog(Level level, TCHAR* func) : Log(level, func) {}

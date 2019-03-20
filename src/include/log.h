@@ -54,7 +54,7 @@ inline std::wstring hexstr(const void* n, unsigned int digits) {
 
 /**/
 
-enum Level { log_debug, log_info, log_error, log_assert, log_any };
+enum Level { log_debug, log_info, log_error, log_assert, log_none };
 
 namespace yloader {
 class LogException {};
@@ -81,7 +81,7 @@ class LOG_API Log {
   Log(Level level, TCHAR* func) : _level(level) {}
 
   // start session
-  Log() : _level(log_any) {}
+  Log() : _level(log_none) {}
 
   ~Log() {}
 
@@ -95,8 +95,8 @@ class LOG_API Log {
         return _T("L2");
       case log_assert:
         return _T("L3");
-      case log_any:
-        return _T("L4");
+      case log_none:
+        return _T("");
       default:
         assert(false);
         return _T("");
@@ -236,36 +236,3 @@ using yloader::operator<<;
   yloader::Log::xfilelog(fileName, level, _T(__FUNCTION__), \
                          std::wstring() << value);
 
-class LogEntryExit {
- private:
-  Level m_level;
-  const std::wstring m_name;
-  const std::wstring m_message;
-  const unsigned __int64 m_id;
-
-  LOG_API static unsigned __int64 m_crtId;
-
-  LOG_API static yloader::Mutex m_mx;
-
-  static unsigned __int64 getId() {
-    yloader::Lock lock(m_mx);
-    return m_crtId++;
-  }
-
- public:
-  LogEntryExit(Level level, TCHAR* name, const std::wstring& message)
-      : m_level(level), m_name(name), m_message(message), m_id(getId()) {
-    yloader::Log::xlog(m_level, const_cast<TCHAR*>(m_name.c_str()),
-                       std::wstring()
-                           << m_message << " - entry [" << m_id << "]");
-  }
-
-  ~LogEntryExit() {
-    yloader::Log::xlog(m_level, const_cast<TCHAR*>(m_name.c_str()),
-                       std::wstring()
-                           << m_message << " - exit [" << m_id << "]");
-  }
-};
-
-#define LOG_ENTRY_EXIT(level, message) \
-  LogEntryExit ___logentryexit___(level, __FUNCTION__, message);

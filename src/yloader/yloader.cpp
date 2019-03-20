@@ -73,30 +73,26 @@ CyloaderApp theApp;
 
 CMainFrame& getMainFrame() { return *(CMainFrame*)AfxGetMainWnd(); }
 
-std::wstring getLogFileDirectory()
-{
+std::wstring getLogFileDirectory() {
+  std::wstring logPath(getDirectory(getLocalYLoaderDataPath(), _T( "log")));
+  if (!DirectoryExists(logPath.c_str())) ::CreateDirectory(logPath.c_str(), 0);
 
-	std::wstring logPath(getDirectory(getLocalYLoaderDataPath(), _T( "log")));
-	if (!DirectoryExists(logPath.c_str()))
-		::CreateDirectory(logPath.c_str(), 0);
-
-	return logPath;
-
+  return logPath;
 }
 
-std::wstring getLogFileName()
-{
-	const std::wstring  LOG_FILE(_T("yloader"));
+std::wstring getLogFileName() {
+  const std::wstring LOG_FILE(_T("yloader"));
 
-	const std::wstring  logFileDirectory(getLogFileDirectory());
+  const std::wstring logFileDirectory(getLogFileDirectory());
 
-	return logFileDirectory.empty() ? _T( "" ) : makeFileName(getLogFileDirectory(), LOG_FILE, _T( "log" ));
+  return logFileDirectory.empty()
+             ? _T( "" )
+             : makeFileName(getLogFileDirectory(), LOG_FILE, _T( "log" ));
 }
-
 
 BOOL CyloaderApp::InitInstance() {
-	// first set up logging
-	Log::setLogToFile(getLogFileName());
+  // first set up logging
+  Log::setLogToFile(getLogFileName());
 
   // InitCommonControlsEx() is required on Windows XP if an application
   // manifest specifies use of ComCtl32.dll version 6 or later to enable
