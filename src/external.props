@@ -3,31 +3,16 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <ExternalDir>$(SolutionDir)external\</ExternalDir>
-    <BoostDir>$(ExternalDir)boost</BoostDir>
-    <BoostInclude>$(BoostDir)</BoostInclude>
-    <BoostLib>$(BoostDir)\stage\$(PlatformTarget)\lib</BoostLib>
     <Fciv>$(ExternalDir)fciv\fciv.exe</Fciv>
     <InstallerDir>$(SolutionDir)bin\installer\</InstallerDir>
     <InstallerFile>$(InstallerDir)y5_$(PlatformArchitecture)_setup.exe</InstallerFile>
     <NSISExe>C:\Program Files (x86)\NSIS\makensis.exe</NSISExe>
-    <JsonInclude>$(ExternalDir)json\include</JsonInclude>
-    <LibCurlInclude>$(ExternalDir)libcurl\third-party\libcurl\include</LibCurlInclude>
-    <LibCurlLib>$(ExternalDir)libcurl\third-party\libcurl\lib\static-$(Configuration)-$(PlatformTarget)</LibCurlLib>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
     <BuildMacro Include="ExternalDir">
       <Value>$(ExternalDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="BoostDir">
-      <Value>$(BoostDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="BoostInclude">
-      <Value>$(BoostInclude)</Value>
-    </BuildMacro>
-    <BuildMacro Include="BoostLib">
-      <Value>$(BoostLib)</Value>
     </BuildMacro>
     <BuildMacro Include="Fciv">
       <Value>$(Fciv)</Value>
@@ -40,15 +25,6 @@
     </BuildMacro>
     <BuildMacro Include="NSISExe">
       <Value>$(NSISExe)</Value>
-    </BuildMacro>
-    <BuildMacro Include="JsonInclude">
-      <Value>$(JsonInclude)</Value>
-    </BuildMacro>
-    <BuildMacro Include="LibCurlInclude">
-      <Value>$(LibCurlInclude)</Value>
-    </BuildMacro>
-    <BuildMacro Include="LibCurlLib">
-      <Value>$(LibCurlLib)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

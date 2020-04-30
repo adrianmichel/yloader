@@ -226,5 +226,6 @@
     <None Include="res\yloader.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -15,9 +15,13 @@
   !if ${Platform} == win32
 	!define TYPE 32
 	!define INSTALLDIR $PROGRAMFILES32\YLoader
+    !define LIB_CRYPTO libcrypto-1_1.dll
+    !define LIB_SSL libssl-1_1.dll
   !else
 	!define TYPE 64
 	!define INSTALLDIR $PROGRAMFILES64\YLoader
+    !define LIB_CRYPTO libcrypto-1_1-x64.dll
+    !define LIB_SSL libssl-1_1-x64.dll
   !endif
 
   BrandingText "YLoader"
@@ -56,10 +60,10 @@
   !insertmacro MUI_UNPAGE_INSTFILES
   !insertmacro MUI_UNPAGE_FINISH
 
-  
+
 ;--------------------------------
 ;Languages
- 
+
   !insertmacro MUI_LANGUAGE "English"
 
 ;--------------------------------
@@ -68,7 +72,7 @@
 Section "Dummy Section" SecDummy
 
   SetOutPath "$INSTDIR"
-  
+
   File ${INDIR}\yloader.exe
   File ${INDIR}\yloadercl.exe
   File ${INDIR}\symbols.exe
@@ -78,11 +82,15 @@ Section "Dummy Section" SecDummy
   File ${INDIR}\ygoogledsplugin.ypi
   File ${INDIR}\yqmdsplugin.ypi
   File ${INDIR}\yyahoodsplugin.ypi
+  File ${INDIR}\zlib1.dll
+  File ${INDIR}\${LIB_CRYPTO}
+  File ${INDIR}\libcurl.dll
+  File ${INDIR}\${LIB_SSL}
   File license.txt
-  
+
   ;Store installation folder
   WriteRegStr HKCU ${KEY} "" $INSTDIR
-  
+
   ;Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -94,7 +102,7 @@ SectionEnd
   ;Language strings
   LangString DESC_SecDummy ${LANG_ENGLISH} "A test section."
 
- 
+
 ;--------------------------------
 ;Uninstaller Section
 
@@ -109,6 +117,10 @@ Section "Uninstall"
   Delete $INSTDIR\ygoogledsplugin.ypi
   Delete $INSTDIR\yqmdsplugin.ypi
   Delete $INSTDIR\yyahoodsplugin.ypi
+  Delete ${INDIR}\zlib1.dll
+  Delete ${INDIR}\${LIB_CRYPTO}
+  Delete ${INDIR}\libcurl.dll
+  Delete ${INDIR}\${LIB_SSL}.dll
   Delete $INSTDIR\license.txt
 
 
