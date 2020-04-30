@@ -27,6 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "YloaderView.h"
 #include "yloaderDoc.h"
 
+using namespace std::string_literals;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -441,9 +443,7 @@ BOOL CAboutDlg::OnInitDialog() {
   CDialogEx::OnInitDialog();
 
   m_name = getCaption(STRPRODUCT_NAME).c_str();
-  m_buildDate =
-      (std::wstring(_T( "Built: " )) +
-       VersionInfo::getCurrentBuildInfo()->to_simple_string() + _T( " UTC" ))
+  m_buildDate = (L"Built: "s + VersionInfo::getCurrentBuildInfo()->to_simple_string() + _T( " UTC" ))
           .c_str();
 
   UpdateData(FALSE);
