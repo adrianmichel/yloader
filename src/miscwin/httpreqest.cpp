@@ -407,7 +407,7 @@ void CurlHTTPRequest::handleCurlResult(unsigned int res, const char* name) {
                                        */
     case CURLE_TELNET_OPTION_SYNTAX:  /* 49 - Malformed telnet option */
     case CURLE_OBSOLETE50:            /* 50 - NOT USED */
-    case CURLE_PEER_FAILED_VERIFICATION: /* 51 - peer's certificate or
+    case CURLE_OBSOLETE51:             /* 51 - peer's certificate or
                                             fingerprint wasn't verified fine */
       throw InternetException(InternetException::CURL_ERROR, (CURLcode)res,
                               message);
@@ -422,7 +422,7 @@ void CurlHTTPRequest::handleCurlResult(unsigned int res, const char* name) {
     case CURLE_OBSOLETE57:      /* 57 - NOT IN USE */
     case CURLE_SSL_CERTPROBLEM: /* 58 - problem with the local certificate */
     case CURLE_SSL_CIPHER:      /* 59 - couldn't use specified cipher */
-    case CURLE_SSL_CACERT:      /* 60 - problem with the CA cert (path?) */
+    case CURLE_PEER_FAILED_VERIFICATION:      /* 60 - problem with the CA cert (path?) */
     case CURLE_BAD_CONTENT_ENCODING: /* 61 - Unrecognized transfer encoding */
     case CURLE_LDAP_INVALID_URL:     /* 62 - Invalid LDAP URL */
     case CURLE_FILESIZE_EXCEEDED:    /* 63 - Maximum file size exceeded */
