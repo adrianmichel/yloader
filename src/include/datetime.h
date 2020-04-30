@@ -838,8 +838,7 @@ class Date {
   DateAbstrPtr _date;
 
  private:
-  void parse(const std::wstring& xdate, DateFormat format,
-             const std::wstring& sep) throw(DateException);
+   void parse(const std::wstring& xdate, DateFormat format, const std::wstring& sep);
 
  protected:
   Date(DateAbstrPtr date) : _date(date) {}
@@ -880,12 +879,9 @@ class Date {
 //  MISC_API explicit Date( const std::wstring& date, DateFormat format, bool
 //  sep ) throw( DateException );
 #define DEF_DATE_SEP _T( "/-" )
-  MISC_API explicit Date(
-      const std::wstring& date, DateFormat format = us,
-      const std::wstring& separator = DEF_DATE_SEP) throw(DateException);
+  MISC_API explicit Date(const std::wstring& date, DateFormat format = us, const std::wstring& separator = DEF_DATE_SEP);
 
-  MISC_API Date(const std::wstring& date,
-                const std::wstring& format) throw(DateException);
+  MISC_API Date(const std::wstring& date, const std::wstring& format);
   /**
    * Get the year part of the date
    *
