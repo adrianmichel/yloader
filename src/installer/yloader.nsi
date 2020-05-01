@@ -78,10 +78,8 @@ Section "Dummy Section" SecDummy
   File ${INDIR}\symbols.exe
   File ${INDIR}\misc.dll
   File ${INDIR}\miscwin.dll
-  File ${INDIR}\ydspluginhelper.dll
-  File ${INDIR}\ygoogledsplugin.ypi
-  File ${INDIR}\yqmdsplugin.ypi
-  File ${INDIR}\yyahoodsplugin.ypi
+  File ${INDIR}\dspluginhelper.dll
+  File ${INDIR}\yahooplugin.ypi
   File ${INDIR}\zlib1.dll
   File ${INDIR}\${LIB_CRYPTO}
   File ${INDIR}\libcurl.dll
@@ -113,10 +111,8 @@ Section "Uninstall"
   Delete $INSTDIR\symbols.exe
   Delete $INSTDIR\misc.dll
   Delete $INSTDIR\miscwin.dll
-  Delete $INSTDIR\ydspluginhelper.dll
-  Delete $INSTDIR\ygoogledsplugin.ypi
-  Delete $INSTDIR\yqmdsplugin.ypi
-  Delete $INSTDIR\yyahoodsplugin.ypi
+  Delete $INSTDIR\dspluginhelper.dll
+  Delete $INSTDIR\yahooplugin.ypi
   Delete ${INDIR}\zlib1.dll
   Delete ${INDIR}\${LIB_CRYPTO}
   Delete ${INDIR}\libcurl.dll

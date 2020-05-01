@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class CPrefsStatic : public CStatic {
 
   // Implementation
  public:
-  virtual ~CPrefsStatic();
+  ~CPrefsStatic() override;
 
  protected:
   CFont m_captionFont, m_nameFont;

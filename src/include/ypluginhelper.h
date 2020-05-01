@@ -22,21 +22,20 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <utility>
 #include <vector>
+#include <atomic>
+
 #include "datetime.h"
 #include "httprequest.h"
 #include "strings.h"
+#include <objcounter.h>
 
-#ifdef YDSPLUGINHELPER_EXPORTS
-#define YDSPLUGINHELPER_API __declspec(dllexport)
-#else
-#define YDSPLUGINHELPER_API __declspec(dllimport)
-#endif
+#define DSPLUGINHELPER_API
 
 namespace yloader {
 
-typedef public std::pair<yloader::Date, yloader::Date> DateRangeBase;
+using DateRangeBase = std::pair<yloader::Date, yloader::Date>;
 
-class YDSPLUGINHELPER_API DateRange : public DateRangeBase {
+class DSPLUGINHELPER_API DateRange : public DateRangeBase {
  public:
   DateRange() {}
   DateRange(const std::wstring& d1, const std::wstring& d2);
@@ -45,45 +44,44 @@ class YDSPLUGINHELPER_API DateRange : public DateRangeBase {
   yloader::DateDuration duration();
 };
 
-typedef std::vector<DateRange> DateRangesBase;
+using DateRangesBase = std::vector<DateRange>;
 
 class DateRanges : public DateRangesBase {
  public:
-  DateRanges(DateRange range, unsigned int maxUnits = 1000,
-             unsigned int unit = 1);
+  DateRanges(DateRange range, unsigned int maxUnits = 1000, unsigned int unit = 1);
   std::wstring toString() const;
 };
 
-YDSPLUGINHELPER_API StringPtr removeLines(const std::wstring& str,
-                                          unsigned int count,
-                                          const std::wstring& eol);
+DSPLUGINHELPER_API StringPtr removeLines(const std::wstring& str, unsigned int count, const std::wstring& eol);
 
 class Requests {
  private:
-  typedef std::list<HTTPRequestBasePtr> RequestList;
-  RequestList m_requests;
+  using RequestMap = std::map<uint64_t, HTTPRequestBasePtr>;
+  RequestMap m_requests;
 
-  yloader::Mutex _mx;
+  std::mutex m_mx;
 
  public:
-  HTTPRequestBasePtr getRequest(const std::wstring& serverName, bool http);
+  HTTPRequestBasePtr getRequest(uint64_t id, const std::wstring& serverName, bool http);
   void cancel();
+  void remove(uint64_t id) {
+    std::scoped_lock(m_mx);
+    m_requests.erase(id);
+  }
 };
 
 class ReqBuilder {
  public:
   virtual ~ReqBuilder() {}
-  virtual std::wstring buildRequest(const std::wstring& symbol,
-                                    const yloader::DateRange& dateRange,
-                                    Period period) const = 0;
+  virtual std::wstring buildRequest(const std::wstring& symbol, const yloader::DateRange& dateRange, Period period) const = 0;
   virtual std::wstring rootURL() const = 0;
   virtual bool hasCookie() const { return false; }
   virtual std::wstring cookie(const std::wstring& symbol) const {
-    return _T("");
+    return L"";
   }
 };
 
-typedef yloader::ManagedPtr<ReqBuilder> ReqBuilderPtr;
+using ReqBuilderPtr = std::shared_ptr<ReqBuilder>;
 
 enum HTTPErrorType {
   no_data_for_symbol,
@@ -100,32 +98,35 @@ class HTTPErrorHandler {
   virtual HTTPErrorType handler(unsigned int error) const = 0;
 };
 
-typedef yloader::ManagedPtr<HTTPErrorHandler> HTTPErrorHandlerPtr;
+using HTTPErrorHandlerPtr = std::shared_ptr<HTTPErrorHandler>;
 
 class ResultHandler {
  public:
   virtual ~ResultHandler() {}
 
   virtual std::wstring handler(const StringPtr result) const {
-    return _T( "" );
+    return L"";
   }
 };
 
-typedef yloader::ManagedPtr<ResultHandler> ResultHandlerPtr;
+using ResultHandlerPtr = std::shared_ptr<ResultHandler>;
 
-class YDSPLUGINHELPER_API Request {
- private:
-  const ReqBuilder& _reqBuilder;
-  const HTTPErrorHandler& _httpErrorHandler;
-  const ResultHandlerPtr _resultHandler;
-  const std::wstring _symbol;
-  const DateRange _dateRange;
-  const Period _period;
-  std::wstring _error;
+class DSPLUGINHELPER_API Request {
+  OBJ_COUNTER(Request)
+private:
+  static std::atomic_uint64_t m_crtId;
+  const uint64_t m_id;
+  const ReqBuilder& m_reqBuilder;
+  const HTTPErrorHandler& m_httpErrorHandler;
+  const ResultHandlerPtr m_resultHandler;
+  const std::wstring m_symbol;
+  const DateRange m_dateRange;
+  const Period m_period;
+  std::wstring m_error;
   static Requests m_requests;
-  bool _canceled;
-  StringPtr _response;
-  bool _http;
+  bool m_canceled;
+  StringPtr m_response;
+  bool m_http;
 
   static std::wstring m_proxyServerAddress;
   static std::wstring m_proxyServerUserName;
@@ -148,19 +149,19 @@ class YDSPLUGINHELPER_API Request {
     m_httpRequestTimeout = httpRequestTimeout;
   }
 
-  StringPtr response() const { return _response; }
+  StringPtr response() const { return m_response; }
 
-  Request(const ReqBuilder& reqBuilder,
-          const HTTPErrorHandler& httpErrorHandler, const std::wstring& symbol,
-          const DateRange& dateRange, Period period, bool http,
-          ResultHandlerPtr resultHandler = ResultHandlerPtr());
+  Request(const ReqBuilder& reqBuilder, const HTTPErrorHandler& httpErrorHandler, const std::wstring& symbol,
+          const DateRange& dateRange, Period period, bool http, ResultHandlerPtr resultHandler = ResultHandlerPtr());
 
   bool handleInternetException(const InternetException& e);
 
   bool run();
-  const std::wstring& error() const { return _error; }
+  const std::wstring& error() const { return m_error; }
 
-  ~Request() {}
+  ~Request() {
+    m_requests.remove(m_id);
+  }
 
   static void cancel();
 
@@ -169,11 +170,11 @@ class YDSPLUGINHELPER_API Request {
 
 class StrPtrMap : private std::map<const TCHAR*, StringPtr> {
  private:
-  yloader::Mutex _mx;
+  std::mutex m_mx;
 
  public:
   void add(StringPtr str) {
-    yloader::Lock lock(_mx);
+    std::scoped_lock lock(m_mx);
 
     __super::insert(__super::value_type(str.get()->c_str(), str));
   }
@@ -185,35 +186,32 @@ class StrPtrMap : private std::map<const TCHAR*, StringPtr> {
   }
 
   void remove(const TCHAR* str) {
-    yloader::Lock lock(_mx);
+    std::scoped_lock lock(m_mx);
     assert(__super::find(str) != __super::end());
     __super::erase(str);
   }
 };
 
-class YDSPLUGINHELPER_API MultiDataLoader {
+class DSPLUGINHELPER_API MultiDataLoader {
  private:
-  StrPtrMap& _strings;
-  const ReqBuilderPtr _reqBuilder;
-  const HTTPErrorHandlerPtr _httpErrorHandler;
-  const ResultHandlerPtr _resultHandler;
-  const unsigned int _width;
+  StrPtrMap& m_strings;
+  const ReqBuilderPtr m_reqBuilder;
+  const HTTPErrorHandlerPtr m_httpErrorHandler;
+  const ResultHandlerPtr m_resultHandler;
+  const unsigned int m_width;
 
  private:
   StringPtr stitchStr(yloader::StringPtrVector& v);
 
  public:
   // width: the max number of days in a range, when creating the date ranges.
-  MultiDataLoader(ReqBuilderPtr reqBuilder,
-                  HTTPErrorHandlerPtr httpErrorHandler, StrPtrMap& strings,
-                  unsigned int width,
-                  ResultHandlerPtr resultHandler = ResultHandlerPtr());
+  MultiDataLoader(ReqBuilderPtr reqBuilder, HTTPErrorHandlerPtr httpErrorHandler, StrPtrMap& strings,
+                  unsigned int width, ResultHandlerPtr resultHandler = ResultHandlerPtr());
   ~MultiDataLoader();
 
   virtual StringPtr preprocess(StringPtr str) const = 0;
 
-  const TCHAR* getData(const TCHAR* symbol, const TCHAR* startDate,
-                       const TCHAR* endDate, Period period, bool adjusted,
+  const TCHAR* getData(const TCHAR* symbol, const TCHAR* startDate, const TCHAR* endDate, Period period, bool adjusted,
                        bool& error, int retries);
 };
 

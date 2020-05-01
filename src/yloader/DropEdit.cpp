@@ -38,14 +38,14 @@
 //	To use this in an app, you'll need to :
 //
 //	1) #include <afxole.h> in stdafx.h
-//	
+//
 //	2) in your CWinApp-derived class *::InitInstance, you'll need to call
 //		::CoInitialize(NULL);
 //
 //	3) in your CWinApp-derived class *::ExitInstance, you'll need to call
 //	::CoUninitialize();
 //
-//	4) Place a normal edit control on your dialog. 
+//	4) Place a normal edit control on your dialog.
 //	5) Check the "Accept Files" property.
 //
 //	6) In your dialog class, declare a member variable of type CDropEdit
@@ -63,7 +63,7 @@
 //
 //	that's it!
 //
-//	This will behave exactly like a normal edit-control but with the 
+//	This will behave exactly like a normal edit-control but with the
 //	ability to accept drag-n-dropped files (or directories).
 //
 //
@@ -104,7 +104,7 @@ void CDropEdit::OnDropFiles(HDROP dropInfo) {
   // Get the number of pathnames that have been dropped
   WORD wNumFilesDropped = DragQueryFile(dropInfo, -1, NULL, 0);
 
-  CString csFirstFile = _T("");
+  CString csFirstFile;
 
   // there may be many, but we'll only use the first
   if (wNumFilesDropped > 0) {
@@ -177,15 +177,14 @@ CString CDropEdit::ExpandShortcut(CString& inFile) {
   CString outFile;
 
   // Make sure we have a path
-  ASSERT(inFile != _T(""));
+  ASSERT(!inFile.IsEmpty());
 
   IShellLink* psl;
   HRESULT hres;
   LPTSTR lpsz = inFile.GetBuffer(MAX_PATH);
 
   // Create instance for shell link
-  hres = ::CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
-                            IID_IShellLink, (LPVOID*)&psl);
+  hres = ::CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID*)&psl);
 
   if (SUCCEEDED(hres)) {
     // Get a pointer to the persist file interface
@@ -193,12 +192,6 @@ CString CDropEdit::ExpandShortcut(CString& inFile) {
 
     hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
     if (SUCCEEDED(hres)) {
-      // Make sure it's ANSI
-      /*            WORD wsz[MAX_PATH];
-                  ::MultiByteToWideChar(CP_ACP, 0, lpsz, -1, (LPWSTR)wsz,
-         MAX_PATH);
-                              */
-
       // Load shortcut
       hres = ppf->Load((LPCOLESTR)lpsz, STGM_READ);
 
@@ -206,8 +199,7 @@ CString CDropEdit::ExpandShortcut(CString& inFile) {
         WIN32_FIND_DATA wfd;
 
         // find the path from that
-        HRESULT hres = psl->GetPath(outFile.GetBuffer(MAX_PATH), MAX_PATH, &wfd,
-                                    SLGP_UNCPRIORITY);
+        HRESULT hres = psl->GetPath(outFile.GetBuffer(MAX_PATH), MAX_PATH, &wfd, SLGP_UNCPRIORITY);
 
         outFile.ReleaseBuffer();
       }

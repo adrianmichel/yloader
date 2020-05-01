@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,31 +27,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // See yloader.cpp for the implementation of this class
 //
 
-class CyloaderApp : public CWinAppEx {
+class CYLoaderApp : public CWinAppEx {
  private:
-  boost::shared_ptr<Updater> m_updater;
+  std::shared_ptr<Updater> m_updater;
 
  public:
-  CyloaderApp();
+  CYLoaderApp();
 
   // Overrides
  public:
-  virtual BOOL InitInstance();
+  BOOL InitInstance() override;
+  BOOL ExitInstance() override;
 
   // Implementation
   UINT m_nAppLook;
   BOOL m_bHiColorIcons;
 
-  virtual void PreLoadState();
-  virtual void LoadCustomState();
-  virtual void SaveCustomState();
+  void PreLoadState() override;
+  void LoadCustomState() override;
+  void SaveCustomState() override;
 
   afx_msg void OnAppAbout();
   DECLARE_MESSAGE_MAP()
 
  public:
-  void setUpdater(const StringSettable& alternateUpdateHostName,
-                  const StringSettable& alternateUpdateDirectory);
+  void setUpdater(const StringSettable& alternateUpdateHostName, const StringSettable& alternateUpdateDirectory);
 };
 
-extern CyloaderApp theApp;
+extern CYLoaderApp theApp;

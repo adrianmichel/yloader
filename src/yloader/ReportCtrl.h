@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,6 +18,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <miscwin.h>
+
+// Sent to parent window when user clicked on the checkbox of an item:
+// wParam: The item index in the list ctrl
+// lParam: The mouse event type(WM_LBUTTONDOWN, WM_RBUTTONDOWN, etc) which
+// generated this event. Note: This message is not sent when the checkbox states
+// were altered programmatically
+//       by calling "SetItem", it is only sent when the user "physically"
+//       clicked the checkbox using mouse or joystick etc.
+#define WM_ON_CHKBOX (WM_APP + 10000)
+
+// Sent to parent window when a column of items were sorted
+// wParam: The column index
+// lParam: The sort method, either 0(descending) or 1(ascending)
+#define WM_ITEM_SORTED (WM_APP + 10001)
+
+// Sent to parent window when an item text editing was committed
+// wParam: The item index
+// lParam: The column index
+#define WM_EDIT_COMMITTED (WM_APP + 10002)
+
+// Checkbox styles.
+#define RC_CHKBOX_NONE 0    // No checkbox displayed
+#define RC_CHKBOX_NORMAL 1  // Normal, multiple check allowed
+#define RC_CHKBOX_SINGLE 2  // Single check only
+#define RC_CHKBOX_DISABLED \
+  3  // Disabled, cannot be checked/unchecked by user input,
+     // but can be by your code.
+
+// Item state flags for selection, deletion, etc.
+// Multiple flags can be combined together using the bit-or operator.
+// Note: If RC_ITEM_ALL is set, all other flags are ignored
+#define RC_ITEM_NONE 0x0000        // Void, indicates invalid items only
+#define RC_ITEM_ALL 0x0001         // All items regardless of states
+#define RC_ITEM_SELECTED 0x0002    // Selected items
+#define RC_ITEM_UNSELECTED 0x0004  // Unselected items
+#define RC_ITEM_CHECKED 0x0008     // Checked items
+#define RC_ITEM_UNCHECKED 0x0010   // Unchecked items
+#define RC_ITEM_FOCUSED 0x0020     // Focused item
+#define RC_ITEM_UNFOCUSED 0x0040   // Unfocused items
+
+// Item inverting types
+#define RC_INVERT_SELECTION 0  // Invert item selection
+#define RC_INVERT_CHECKMARK 1  // Invert item check mark
+
+// Removes any custom color from item text and item backgroun
+#define COLOR_INVALID 0xffffffff
+
+
 
 //////////////////////////////////////////////////////////////////////////
 // The CYReportCtrl Class Definition

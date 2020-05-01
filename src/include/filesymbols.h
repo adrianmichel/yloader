@@ -39,12 +39,12 @@ class Addable {
 
 class FileSymbolsParserException {
  private:
-  const std::wstring _message;
+  const std::wstring m_message;
 
  public:
-  FileSymbolsParserException(const std::wstring& message) : _message(message) {}
+  FileSymbolsParserException(const std::wstring& message) : m_message(message) {}
 
-  const std::wstring& message() const { return _message; }
+  const std::wstring& message() const { return m_message; }
 };
 
 class SymbolTransformer {
@@ -54,11 +54,11 @@ class SymbolTransformer {
   virtual std::wstring operator()(const std::wstring& symbol) const = 0;
 };
 
-typedef std::set<std::wstring> UniqueSymbolsSetBase;
+using UniqueSymbolsSetBase = std::set<std::wstring>;
 
 class UniqueSymbolsSet : public UniqueSymbolsSetBase {
  private:
-  yloader::Mutex _mx;
+  std::mutex m_mx;
 
  public:
   bool add(const std::wstring& symbol) {
@@ -76,22 +76,14 @@ class UniqueSymbolsSet : public UniqueSymbolsSetBase {
   }
 };
 
-typedef yloader::ManagedPtr<UniqueSymbolsSet> UniqueSymbolsSetPtr;
+using UniqueSymbolsSetPtr = std::shared_ptr<UniqueSymbolsSet>;
 
-StrListPtr getSymbols(
-    const std::wstring& fileName, bool removeDuplcateSymbols = false,
-    const SymbolTransformer* st = 0) throw(FileSymbolsParserException);
-StrListPtr getSymbols(
-    const StrVector& fileNames, bool removeDuplcateSymbols = false,
-    const SymbolTransformer* st = 0,
-    const yloader::StrList* extraSymbols = 0) throw(FileSymbolsParserException);
+StrListPtr getSymbols(const std::wstring& fileName, bool removeDuplcateSymbols = false, const SymbolTransformer* st = 0);
+StrListPtr getSymbols( const StrVector& fileNames, bool removeDuplcateSymbols = false, const SymbolTransformer* st = 0,
+    const yloader::StrList* extraSymbols = 0);
 
-UniqueSymbolsSetPtr getUniqueSymbols(const StrVector& fileNames) throw(
-    FileSymbolsParserException);
-UniqueSymbolsSetPtr getUniqueSymbols(const std::wstring& file) throw(
-    FileSymbolsParserException);
-UniqueSymbolsSetPtr getUniqueSymbols(
-    const std::wstring file1,
-    const std::wstring& file2) throw(FileSymbolsParserException);
+UniqueSymbolsSetPtr getUniqueSymbols(const StrVector& fileNames);
+UniqueSymbolsSetPtr getUniqueSymbols(const std::wstring& file);
+UniqueSymbolsSetPtr getUniqueSymbols(const std::wstring file1, const std::wstring& file2);
 
 }  // namespace yloader

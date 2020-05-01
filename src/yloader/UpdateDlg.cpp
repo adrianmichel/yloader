@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -29,10 +29,7 @@ CUpdateDlg::CUpdateDlg(const VersionInfo& newVersion, bool checkAtStartup,
     : CDialogEx(IDD_DIALOG_UPDATE, pParent),
       m_checkAtStartup(checkAtStartup ? TRUE : FALSE),
       m_notifyOnlyIfNewerVersion(notifyOnlyIfNewerVersion ? TRUE : FALSE),
-      m_newVersion(newVersion),
-      m_currentVersionInfo(_T("")),
-      m_newVersionInfo(_T("")),
-      m_updateUrl(_T("")) {}
+      m_newVersion(newVersion){}
 
 CUpdateDlg::~CUpdateDlg() {}
 
@@ -43,8 +40,7 @@ void CUpdateDlg::DoDataExchange(CDataExchange* pDX) {
   DDX_Check(pDX, IDC_CHECK_SHOW_FOR_NEW_VERSION, m_notifyOnlyIfNewerVersion);
   DDX_Text(pDX, IDC_STATIC_CURRENT_VERSION_INFO, m_currentVersionInfo);
   DDX_Text(pDX, IDC_STATIC_NEW_VERSION_INFO, m_newVersionInfo);
-  DDX_Control(pDX, IDC_CHECK_SHOW_FOR_NEW_VERSION,
-              m_showOnlyIfNewerVersionCtrl);
+  DDX_Control(pDX, IDC_CHECK_SHOW_FOR_NEW_VERSION, m_showOnlyIfNewerVersionCtrl);
   DDX_Control(pDX, IDC_STATIC_CURRENT_VERSION, m_labelCurrentVersion);
   DDX_Control(pDX, IDC_STATIC_NEW_VERSION, m_labelNewVersion);
   DDX_Control(pDX, IDC_STATIC_DESCRIPTION, m_labelDescription);
@@ -67,17 +63,14 @@ BOOL CUpdateDlg::OnInitDialog() {
 
   m_description.SetWindowText(m_newVersion.hasDescription()
                                   ? m_newVersion.getDescription()->c_str()
-                                  : _T( "No description available" ));
+                                  : L"No description available");
 
   m_currentVersionInfo =
       (VersionInfo::CURRENT_VERSION_INFO.getVersion().toString() +
-       _T( ", built on " ) +
-       VersionInfo::CURRENT_VERSION_INFO.getReleaseDate()->to_simple_string())
-          .c_str();
+       L", built on " + VersionInfo::CURRENT_VERSION_INFO.getReleaseDate()->to_simple_string()).c_str();
 
-  m_newVersionInfo = (m_newVersion.getVersion().toString() + _T(", built on ") +
-                      m_newVersion.getReleaseDate()->to_simple_string())
-                         .c_str();
+  m_newVersionInfo = (m_newVersion.getVersion().toString() + L", built on " +
+                      m_newVersion.getReleaseDate()->to_simple_string()).c_str();
   m_showOnlyIfNewerVersionCtrl.EnableWindow(m_checkAtStartup);
 
   m_labelCurrentVersion.setBold();

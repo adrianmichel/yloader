@@ -77,7 +77,7 @@ class _PageInfo {
 };
 
 typedef CTypedPtrArray<CPtrArray, PAGE_INFO *> PAGE_LIST;
-typedef CMap<CWnd *, CWnd *, DWORD, DWORD &> WNDTREE_MAP;
+typedef CMap<CWnd *, CWnd *, HTREEITEM, HTREEITEM &> WNDTREE_MAP;
 
 /////////////////////////////////////////////////////////////////////////////
 // CSettingsDialog dialog

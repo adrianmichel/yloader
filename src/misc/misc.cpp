@@ -39,39 +39,18 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call,
   return TRUE;
 }
 
-MISC_API yloader::Mutex yloader::m;
+MISC_API std::mutex yloader::m;
 MISC_API int idcount = 0;
-MISC_API int ObjCount::_objCount;
-MISC_API int ObjCount::_totalObjects;
-MISC_API t_ostream& ObjCount::_os = std::wcout;
-MISC_API int yloader::RefCountable::_totalCount = 0;
 
-t_ostream& yloader::tsprint(const std::wstring& str, t_ostream& os) {
-  Lock lock(m);
+std::wostream& yloader::tsprint(const std::wstring& str, std::wostream& os) {
+  std::scoped_lock lock(m);
   os << str;
   return os;
 }
 
-/*t_ostream& yloader::tsprint( const TCHAR* str, t_ostream& os )
-{
-  return tsprint( std::wstring( str ), os );
-}
-*/
-
-t_ostream& yloader::tsprint(const std::wostringstream& o, t_ostream& os) {
+std::wostream& yloader::tsprint(const std::wostringstream& o, std::wostream& os) {
   return tsprint(o.str(), os);
 }
-
-#ifdef _DEBUG
-void yloader::tsprint_debug(const std::wostringstream& o) {
-  tsprint_debug(o.str());
-}
-
-void yloader::tsprint_debug(const std::wstring& str) {
-  Lock lock(m);
-  OutputDebugString(str.c_str());
-}
-#endif
 
 class DateImpl;
 class DateTimeImpl;
@@ -81,354 +60,284 @@ class DateDurationImpl : public DateDurationAbstr {
   friend class DateTimeImpl;
 
  private:
-  boost::gregorian::date_duration _duration;
+  boost::gregorian::date_duration m_duration;
 
  public:
   DateDurationImpl(boost::gregorian::date_duration duration)
-      : _duration(duration) {}
+      : m_duration(duration) {}
 
-  DateDurationImpl(long days) : _duration(days) {}
+  DateDurationImpl(long days) : m_duration(days) {}
 
-  DateDurationImpl() : _duration(boost::gregorian::date_duration::unit()) {}
+  DateDurationImpl() : m_duration(boost::gregorian::date_duration::unit()) {}
 
-  virtual ~DateDurationImpl() {}
+  ~DateDurationImpl() override {}
 
-  virtual long days() const { return _duration.days(); }
-  virtual bool is_negative() const { return _duration.is_negative(); }
+  long days() const override { return m_duration.days(); }
+  bool is_negative() const override { return m_duration.is_negative(); }
 
-  virtual bool operator==(const DateDurationAbstr& duration) const {
+  bool operator==(const DateDurationAbstr& duration) const override {
     try {
-      return _duration ==
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration == dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator!=(const DateDurationAbstr& duration) const {
+  bool operator!=(const DateDurationAbstr& duration) const override {
     try {
-      return _duration !=
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration != dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator>(const DateDurationAbstr& duration) const {
+  bool operator>(const DateDurationAbstr& duration) const override {
     try {
-      return _duration >
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration > dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator<(const DateDurationAbstr& duration) const {
+  bool operator<(const DateDurationAbstr& duration) const override {
     try {
-      return _duration <
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration < dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator>=(const DateDurationAbstr& duration) const {
+  bool operator>=(const DateDurationAbstr& duration) const override {
     try {
-      return _duration >=
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration >= dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator<=(const DateDurationAbstr& duration) const {
+  bool operator<=(const DateDurationAbstr& duration) const override {
     try {
-      return _duration <=
-             dynamic_cast<const DateDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration <= dynamic_cast<const DateDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateDurationAbstrPtr operator+(
-      const DateDurationAbstr& duration) const {
+  DateDurationAbstrPtr operator+(const DateDurationAbstr& duration) const override {
     try {
-      return DateDurationAbstrPtr(new DateDurationImpl(
-          _duration +
-          dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
+      return std::make_shared< DateDurationImpl>(m_duration + dynamic_cast<const DateDurationImpl&>(duration).m_duration);
     }
-  }
-  virtual DateDurationAbstrPtr operator-(
-      const DateDurationAbstr& duration) const {
-    try {
-      return DateDurationAbstrPtr(new DateDurationImpl(
-          _duration -
-          dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual DateDurationAbstrPtr operator/(int divisor) {
-    try {
-      return DateDurationAbstrPtr(new DateDurationImpl(_duration / divisor));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  /*  virtual DateDurationAbstrPtr operator*( int factor )
-    {
-      try
-      {
-        return DateDurationAbstrPtr( new DateDurationImpl( _duration * factor )
-    );
-      }
-                  catch( const std::bad_cast& )
-      {
-        assert( false );
-        throw;
-      }
-    }
-  */
-  virtual DateDurationAbstrPtr operator-=(const DateDurationAbstr& duration) {
-    try {
-      return DateDurationAbstrPtr(new DateDurationImpl(
-          _duration -=
-          dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual DateDurationAbstrPtr operator+=(const DateDurationAbstr& duration) {
-    try {
-      return DateDurationAbstrPtr(new DateDurationImpl(
-          _duration +=
-          dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual DateDurationAbstrPtr operator/=(int factor) {
-    try {
-      return DateDurationAbstrPtr(new DateDurationImpl(_duration /= factor));
-    } catch (const std::bad_cast&) {
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  /*  virtual DateDurationAbstrPtr operator*=( int factor )
-    {
-      try
-      {
-        return DateDurationAbstrPtr( new DateDurationImpl( _duration *= factor )
-    );
-      }
-                  catch( const std::bad_cast& )
-      {
-        assert( false );
-        throw;
-      }
+  DateDurationAbstrPtr operator-(const DateDurationAbstr& duration) const override {
+    try {
+      return std::make_shared< DateDurationImpl >(m_duration - dynamic_cast<const DateDurationImpl&>(duration).m_duration);
     }
-  */
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  DateDurationAbstrPtr operator/(int divisor) override {
+    try {
+      return std::make_shared< DateDurationImpl>(m_duration / divisor);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+
+  DateDurationAbstrPtr operator-=(const DateDurationAbstr& duration) override {
+    try {
+      return std::make_shared< DateDurationImpl >(m_duration -= dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  DateDurationAbstrPtr operator+=(const DateDurationAbstr& duration) override {
+    try {
+      return std::make_shared< DateDurationImpl >(m_duration += dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  DateDurationAbstrPtr operator/=(int factor) override {
+    try {
+      return std::make_shared< DateDurationImpl >(m_duration /= factor);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
 };
 
 class DateImpl : public DateAbstr {
   friend class DateTimeImpl;
 
  private:
-  boost::gregorian::date _date;
+  boost::gregorian::date m_date;
 
  public:
   DateImpl(unsigned int year, unsigned int month, unsigned int day)
-      : _date(year, month, day) {}
+      : m_date(year, month, day) {}
 
-  DateImpl(const boost::gregorian::date date) : _date(date) {}
+  DateImpl(const boost::gregorian::date date) : m_date(date) {}
 
   DateImpl() {}
 
-  virtual std::wstring to_simple_string() const {
-    return boost::gregorian::to_simple_string_type<TCHAR>(_date);
+  std::wstring to_simple_string() const override {
+    return boost::gregorian::to_simple_string_type<TCHAR>(m_date);
   }
-  virtual std::wstring to_iso_string() const {
-    return boost::gregorian::to_iso_string_type<TCHAR>(_date);
+  std::wstring to_iso_string() const override {
+    return boost::gregorian::to_iso_string_type<TCHAR>(m_date);
   }
-  virtual std::wstring to_iso_extended_string() const {
-    return boost::gregorian::to_iso_extended_string_type<TCHAR>(_date);
-  }
-
-  virtual unsigned short year() const { return _date.year(); }
-  virtual unsigned short month() const { return _date.month(); }
-  virtual unsigned short day() const { return _date.day(); }
-  virtual bool is_infinity() const { return _date.is_infinity(); }
-  virtual bool is_neg_infinity() const { return _date.is_neg_infinity(); }
-  virtual bool is_pos_infinity() const { return _date.is_pos_infinity(); }
-  virtual bool is_not_a_date() const { return _date.is_not_a_date(); }
-  virtual bool is_special() const { return _date.is_special(); }
-
-  int week_number() const { return _date.week_number(); }
-  virtual bool operator==(const DateAbstr& date) const {
-    try {
-      return _date == dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator!=(const DateAbstr& date) const {
-    try {
-      return _date != dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator>(const DateAbstr& date) const {
-    try {
-      return _date > dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator<(const DateAbstr& date) const {
-    try {
-      return _date < dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator>=(const DateAbstr& date) const {
-    try {
-      return _date >= dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator<=(const DateAbstr& date) const {
-    try {
-      return _date <= dynamic_cast<const DateImpl&>(date)._date;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
+  std::wstring to_iso_extended_string() const override {
+    return boost::gregorian::to_iso_extended_string_type<TCHAR>(m_date);
   }
 
-  virtual DateAbstrPtr operator-(const DateDurationAbstr& duration) const {
+  unsigned short year() const override { return m_date.year(); }
+  unsigned short month() const override { return m_date.month(); }
+  unsigned short day() const override { return m_date.day(); }
+  bool is_infinity() const override { return m_date.is_infinity(); }
+  bool is_neg_infinity() const override { return m_date.is_neg_infinity(); }
+  bool is_pos_infinity() const override { return m_date.is_pos_infinity(); }
+  bool is_not_a_date() const override { return m_date.is_not_a_date(); }
+  bool is_special() const override { return m_date.is_special(); }
+
+  int week_number() const { return m_date.week_number(); }
+  bool operator==(const DateAbstr& date) const override {
     try {
-      return DateAbstrPtr(new DateImpl(
-          _date - dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return m_date == dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator!=(const DateAbstr& date) const override {
+    try {
+      return m_date != dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator>(const DateAbstr& date) const override {
+    try {
+      return m_date > dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator<(const DateAbstr& date) const override {
+    try {
+      return m_date < dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator>=(const DateAbstr& date) const override {
+    try {
+      return m_date >= dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator<=(const DateAbstr& date) const override {
+    try {
+      return m_date <= dynamic_cast<const DateImpl&>(date).m_date;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateAbstrPtr operator+(const DateDurationAbstr& duration) const {
+  DateAbstrPtr operator-(const DateDurationAbstr& duration) const override {
     try {
-      return DateAbstrPtr(new DateImpl(
-          _date + dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateImpl >(m_date - dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateDurationAbstrPtr operator-(const DateAbstr& date) const {
+  DateAbstrPtr operator+(const DateDurationAbstr& duration) const override {
     try {
-      return DateDurationAbstrPtr(new DateDurationImpl(
-          _date - dynamic_cast<const DateImpl&>(date)._date));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateImpl >(m_date + dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateAbstrPtr operator-=(const DateDurationAbstr& duration) {
+  DateDurationAbstrPtr operator-(const DateAbstr& date) const override {
     try {
-      return DateAbstrPtr(new DateImpl(
-          _date -= dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateDurationImpl >(m_date - dynamic_cast<const DateImpl&>(date).m_date);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateAbstrPtr operator+=(const DateDurationAbstr& duration) {
+  DateAbstrPtr operator-=(const DateDurationAbstr& duration) override {
     try {
-      return DateAbstrPtr(new DateImpl(
-          _date += dynamic_cast<const DateDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateImpl>(m_date -= dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+
+  DateAbstrPtr operator+=(const DateDurationAbstr& duration) override {
+    try {
+      return std::make_shared< DateImpl>(m_date += dynamic_cast<const DateDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 };
 
-/*
-class DateFormat
-{
-private:
-  const TCHAR _sep;
-  const std::wstring _format;
-public:
-  DateFormat( const std::wstring& format )
-  : _format( format )
-  {
-
-  }
-
-private:
-  searchSep()
-  {
-    std::wstring::size_type pos = _format.find_first_not_of( _T( "mdy" ) );
-
-    if( pos != std::wstring::npos)
-      _sep = _format.at( pos );
-
-    Tokenizer tok( _format, _sep );
-
-    if( tok.size() != 3 )
-      throw( DateFormatException() );
-
-  }
-};
-
-MISC_API Date::Date( const std::wstring& date, const std::wstring& format )
-throw( DateException )
-{
-  Tokenizer(
-}
-*/
-
-/*MISC_API Date::Date( const std::wstring& xdate, DateFormat format, bool sep )
-throw( DateException )
-{
-        parse( xdate, format, std::wstring( sep ? _T( "/-" ) : _T( "" ) ) );
-}
-*/
-
-MISC_API Date::Date(const std::wstring& xdate, DateFormat format,
-                    const std::wstring& sep) throw(DateException) {
+MISC_API Date::Date(const std::wstring& xdate, DateFormat format, const std::wstring& sep) {
   parse(xdate, format, sep);
 }
 
-void Date::parse(const std::wstring& xdate, DateFormat format,
-                 const std::wstring& sep) throw(DateException) {
+void Date::parse(const std::wstring& xdate, DateFormat format, const std::wstring& sep) {
   std::wstring date = yloader::trim(xdate);
 
   unsigned int year;
@@ -444,20 +353,22 @@ void Date::parse(const std::wstring& xdate, DateFormat format,
     if (!sep.empty()) {
       Tokenizer tokens(date, sep);
 
-      if (tokens.size() != 3)
-        throw DateException(
-            date, yloader::format(_T( "Invalid date: \"%1%\"" ), date));
+      if (tokens.size() != 3) {
+        throw DateException(date, yloader::format(L"Invalid date: \"%1%\"", date));
+      }
 
       first = _ttoi(tokens[0].c_str());
       second = _ttoi(tokens[1].c_str());
       third = _ttoi(tokens[2].c_str());
 
-    } else {
+    }
+    else {
       if (date.length() == 6) {
         first = _ttoi(date.substr(0, 2).c_str());
         second = _ttoi(date.substr(2, 2).c_str());
         third = _ttoi(date.substr(4, 2).c_str());
-      } else if (date.length() == 8) {
+      }
+      else if (date.length() == 8) {
         switch (format) {
           case us:
           case european:
@@ -471,12 +382,13 @@ void Date::parse(const std::wstring& xdate, DateFormat format,
             third = _ttoi(date.substr(6, 2).c_str());
             break;
           default:
-            throw DateException(date, _T( "Unknown format type" ));
+            throw DateException(date, L"Unknown format type" );
             break;
         }
-      } else
-        throw DateException(
-            date, yloader::format(_T( "Invalid date: \"%1%\"" ), date));
+      }
+      else {
+        throw DateException(date, yloader::format(L"Invalid date: \"%1%\"", date));
+      }
     }
 
     switch (format) {
@@ -496,35 +408,34 @@ void Date::parse(const std::wstring& xdate, DateFormat format,
         day = third;
         break;
       default:
-        throw DateException(date, _T( "Unknown format type" ));
+        throw DateException(date, L"Unknown format type");
         break;
     }
 
     year = year < 50 ? year + 2000 : (year < 100 ? year + 1900 : year);
 
-    if (year < 1800 || year > 2100)
-      throw DateException(
-          date, _T( "Year must be an integer value between 1800 and 2100" ));
+    if (year < 1800 || year > 2100) {
+      throw DateException(date, L"Year must be an integer value between 1800 and 2100");
+    }
 
-    if (month < 1 || month > 12)
-      throw DateException(
-          date, _T( "Month must be an integer value between 1 and 12" ));
+    if (month < 1 || month > 12) {
+      throw DateException(date, L"Month must be an integer value between 1 and 12");
+    }
 
     // make sure day is valid for month and year
-    if (day < 1 || day > 31)
-      throw DateException(
-          date, _T( "Day must be an integer value between 1 and 31" ));
-
-  } else {
-    static std::wstring months[] = {_T(""),    _T("Jan"), _T("Feb"), _T("Mar"),
-                                    _T("Apr"), _T("May"), _T("Jun"), _T("Jul"),
-                                    _T("Aug"), _T("Sep"), _T("Oct"), _T("Nov"),
-                                    _T("Dec")};
+    if (day < 1 || day > 31) {
+      throw DateException(date, L"Day must be an integer value between 1 and 31");
+    }
+  }
+  else {
+    static std::wstring months[] = {L"", L"Jan", L"Feb", L"Mar", L"Apr", L"May", L"Jun",
+                                    L"Jul", L"Aug", L"Sep", L"Oct", L"Nov", L"Dec"};
 
     Tokenizer tokens(xdate, sep);
 
-    if (tokens.size() != 3)
-      throw DateException(date, _T( "Wrong date format" ));
+    if (tokens.size() != 3) {
+      throw DateException(date, L"Wrong date format");
+    }
 
     unsigned int i = 0;
     for (; i <= 12; i++) {
@@ -534,173 +445,179 @@ void Date::parse(const std::wstring& xdate, DateFormat format,
       }
     }
 
-    if (i > 12) throw DateException(date, _T( "Wrong date format" ));
+    if (i > 12) {
+      throw DateException(date, L"Wrong date format");
+    }
 
     year = _ttoi(tokens[2].c_str());
 
-    if (year < 30) year += 2000;
-    if (year < 100 && year >= 30) year += 1900;
+    if (year < 30) {
+      year += 2000;
+    }
+
+    if (year < 100 && year >= 30) {
+      year += 1900;
+    }
 
     day = _ttoi(tokens[0].c_str());
   }
-  _date = DateAbstr::make(year, month, day);
+  m_date = DateAbstr::make(year, month, day);
 }
 
 class TimeDurationImpl : public TimeDurationAbstr {
   friend class DateTimeImpl;
 
  private:
-  boost::posix_time::time_duration _duration;
+  boost::posix_time::time_duration m_duration;
 
  public:
   TimeDurationImpl(long hours, long mins, long secs, long frac_secs)
-      : _duration(hours, mins, secs, frac_secs) {}
+      : m_duration(hours, mins, secs, frac_secs) {}
 
   TimeDurationImpl(boost::posix_time::time_duration duration)
-      : _duration(duration) {}
+      : m_duration(duration) {}
 
-  virtual long hours() const { return _duration.hours(); }
-  virtual long minutes() const { return _duration.minutes(); }
-  virtual long seconds() const { return _duration.seconds(); }
-  virtual long total_seconds() const { return _duration.total_seconds(); }
-  virtual long fractional_seconds() const {
-    return _duration.fractional_seconds();
+  long hours() const override { return m_duration.hours(); }
+  long minutes() const override { return m_duration.minutes(); }
+  long seconds() const override { return m_duration.seconds(); }
+  long total_seconds() const override { return m_duration.total_seconds(); }
+  long fractional_seconds() const override {
+    return m_duration.fractional_seconds();
   }
-  virtual bool is_negative() const { return _duration.is_negative(); }
-  //	virtual time_duration invert_sign() { return _duration.hours() ;}
+  bool is_negative() const override {
+    return m_duration.is_negative();
+  }
 
-  virtual bool operator==(const TimeDurationAbstr& duration) const {
+  bool operator==(const TimeDurationAbstr& duration) const override {
     try {
-      return _duration ==
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
+      return m_duration == dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
     }
-  }
-
-  virtual bool operator!=(const TimeDurationAbstr& duration) const {
-    try {
-      return _duration !=
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator>(const TimeDurationAbstr& duration) const {
+  bool operator!=(const TimeDurationAbstr& duration) const override {
     try {
-      return _duration >
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration != dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator<(const TimeDurationAbstr& duration) const {
+  bool operator>(const TimeDurationAbstr& duration) const override {
     try {
-      return _duration <
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration > dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator>=(const TimeDurationAbstr& duration) const {
+  bool operator<(const TimeDurationAbstr& duration) const override {
     try {
-      return _duration >=
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration < dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator<=(const TimeDurationAbstr& duration) const {
+  bool operator>=(const TimeDurationAbstr& duration) const override {
     try {
-      return _duration <=
-             dynamic_cast<const TimeDurationImpl&>(duration)._duration;
-    } catch (const std::bad_cast&) {
+      return m_duration >= dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual TimeDurationAbstrPtr operator+(
-      const TimeDurationAbstr& duration) const {
+  bool operator<=(const TimeDurationAbstr& duration) const override{
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(
-          _duration +
-          dynamic_cast<const TimeDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
+      return m_duration <= dynamic_cast<const TimeDurationImpl&>(duration).m_duration;
     }
-  }
-  virtual TimeDurationAbstrPtr operator-(
-      const TimeDurationAbstr& duration) const {
-    try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(
-          _duration -
-          dynamic_cast<const TimeDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual TimeDurationAbstrPtr operator/(int divisor) {
-    try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(_duration / divisor));
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual TimeDurationAbstrPtr operator*(int factor) {
-    try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(_duration * factor));
-    } catch (const std::bad_cast&) {
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual TimeDurationAbstrPtr operator-=(const TimeDurationAbstr& duration) {
+  TimeDurationAbstrPtr operator+(const TimeDurationAbstr& duration) const override {
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(
-          _duration -=
-          dynamic_cast<const TimeDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< TimeDurationImpl >(m_duration + dynamic_cast<const TimeDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
-  virtual TimeDurationAbstrPtr operator+=(const TimeDurationAbstr& duration) {
+  TimeDurationAbstrPtr operator-(const TimeDurationAbstr& duration) const override {
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(
-          _duration +=
-          dynamic_cast<const TimeDurationImpl&>(duration)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< TimeDurationImpl >(m_duration - dynamic_cast<const TimeDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
-  virtual TimeDurationAbstrPtr operator/=(int factor) {
+  TimeDurationAbstrPtr operator/(int divisor) override {
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(_duration /= factor));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< TimeDurationImpl > (m_duration / divisor);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  TimeDurationAbstrPtr operator*(int factor) override {
+    try {
+      return std::make_shared< TimeDurationImpl >(m_duration * factor);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual TimeDurationAbstrPtr operator*=(int factor) {
+  TimeDurationAbstrPtr operator-=(const TimeDurationAbstr& duration) override {
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(_duration *= factor));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< TimeDurationImpl >(m_duration -= dynamic_cast<const TimeDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  TimeDurationAbstrPtr operator+=(const TimeDurationAbstr& duration) override {
+    try {
+      return std::make_shared< TimeDurationImpl >(m_duration += dynamic_cast<const TimeDurationImpl&>(duration).m_duration);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  TimeDurationAbstrPtr operator/=(int factor) override {
+    try {
+      return std::make_shared< TimeDurationImpl >(m_duration /= factor);
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+
+  TimeDurationAbstrPtr operator*=(int factor) override {
+    try {
+      return std::make_shared< TimeDurationImpl >(m_duration *= factor);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
@@ -709,191 +626,197 @@ class TimeDurationImpl : public TimeDurationAbstr {
 
 class DateTimeImpl : public DateTimeAbstr {
  private:
-  boost::posix_time::ptime _time;
+  boost::posix_time::ptime m_time;
 
  public:
-  DateTimeImpl() : _time() {}
+  DateTimeImpl() : m_time() {}
 
-  DateTimeImpl(boost::posix_time::ptime time) : _time(time) {}
+  DateTimeImpl(boost::posix_time::ptime time) : m_time(time) {}
 
-  DateTimeImpl(const DateImpl& date) : _time(date._date) {}
+  DateTimeImpl(const DateImpl& date) : m_time(date.m_date) {}
 
   DateTimeImpl(const DateImpl& date, const TimeDurationImpl& duration)
-      : _time(date._date, duration._duration) {}
+      : m_time(date.m_date, duration.m_duration) {}
 
-  DateTimeImpl(const DateTimeImpl& time) : _time(time._time) {}
+  DateTimeImpl(const DateTimeImpl& time) : m_time(time.m_time) {}
 
-  bool operator<(const DateTimeAbstr& xtime) const {
+  bool operator<(const DateTimeAbstr& xtime) const override {
     try {
-      return _time < dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
+      return m_time < dynamic_cast<const DateTimeImpl&>(xtime).m_time;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  bool operator>(const DateTimeAbstr& xtime) const {
+  bool operator>(const DateTimeAbstr& xtime) const override {
     try {
-      return _time > dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
+      return m_time > dynamic_cast<const DateTimeImpl&>(xtime).m_time;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual bool operator>=(const DateTimeAbstr& xtime) const {
+  bool operator>=(const DateTimeAbstr& xtime) const override {
     try {
-      return _time >= dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
+      return m_time >= dynamic_cast<const DateTimeImpl&>(xtime).m_time;
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
-  virtual bool operator<=(const DateTimeAbstr& xtime) const {
+  bool operator<=(const DateTimeAbstr& xtime) const override {
     try {
-      return _time <= dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
+      return m_time <= dynamic_cast<const DateTimeImpl&>(xtime).m_time;
     }
-  }
-
-  virtual bool operator==(const DateTimeAbstr& xtime) const {
-    try {
-      return _time == dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
-      assert(false);
-      throw;
-    }
-  }
-  virtual bool operator!=(const DateTimeAbstr& xtime) const {
-    try {
-      return _time != dynamic_cast<const DateTimeImpl&>(xtime)._time;
-    } catch (const std::bad_cast&) {
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  std::wstring to_simple_string() const {
-    return boost::posix_time::to_simple_string_type<TCHAR>(_time);
+  bool operator==(const DateTimeAbstr& xtime) const override {
+    try {
+      return m_time == dynamic_cast<const DateTimeImpl&>(xtime).m_time;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
+  }
+  bool operator!=(const DateTimeAbstr& xtime) const override {
+    try {
+      return m_time != dynamic_cast<const DateTimeImpl&>(xtime).m_time;
+    }
+    catch (const std::bad_cast&) {
+      assert(false);
+      throw;
+    }
   }
 
-  std::wstring to_iso_string() const {
-    return boost::posix_time::to_iso_string_type<TCHAR>(_time);
+  std::wstring to_simple_string() const override {
+    return boost::posix_time::to_simple_string_type<TCHAR>(m_time);
   }
 
-  __int64 to_epoch_time() const {
+  std::wstring to_iso_string() const override {
+    return boost::posix_time::to_iso_string_type<TCHAR>(m_time);
+  }
+
+  __int64 to_epoch_time() const override {
     boost::posix_time::ptime epoch(boost::gregorian::date(1970, 1, 1));
 
-    boost::posix_time::time_duration diff = _time - epoch;
+    boost::posix_time::time_duration diff = m_time - epoch;
 
     return diff.total_seconds();
   }
 
-  virtual DateAbstrPtr date() const {
-    return DateAbstrPtr(new DateImpl(_time.date()));
+  DateAbstrPtr date() const override {
+    return DateAbstrPtr(new DateImpl(m_time.date()));
   }
 
-  virtual TimeDurationAbstrPtr time_of_day() const {
-    return TimeDurationAbstrPtr(new TimeDurationImpl(_time.time_of_day()));
+  TimeDurationAbstrPtr time_of_day() const override {
+    return TimeDurationAbstrPtr(new TimeDurationImpl(m_time.time_of_day()));
   }
 
-  virtual bool is_not_a_date_time() const { return _time.is_not_a_date_time(); }
+  bool is_not_a_date_time() const override { return m_time.is_not_a_date_time(); }
 
-  virtual bool is_infinity() const { return _time.is_infinity(); }
+  bool is_infinity() const override { return m_time.is_infinity(); }
 
-  virtual bool is_pos_infinity() const { return _time.is_pos_infinity(); }
+  bool is_pos_infinity() const override { return m_time.is_pos_infinity(); }
 
-  virtual bool is_neg_infinity() const { return _time.is_neg_infinity(); }
+  bool is_neg_infinity() const override { return m_time.is_neg_infinity(); }
 
-  virtual bool is_special() const { return _time.is_special(); }
+  bool is_special() const override { return m_time.is_special(); }
 
-  virtual TimeDurationAbstrPtr operator-(const DateTimeAbstr& time) const {
+  TimeDurationAbstrPtr operator-(const DateTimeAbstr& time) const override {
     try {
-      return TimeDurationAbstrPtr(new TimeDurationImpl(
-          _time - dynamic_cast<const DateTimeImpl&>(time)._time));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< TimeDurationImpl >(m_time - dynamic_cast<const DateTimeImpl&>(time).m_time);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator+(const DateDurationAbstr& dd) const {
+  DateTimeAbstrPtr operator+(const DateDurationAbstr& dd) const override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time + dynamic_cast<const DateDurationImpl&>(dd)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateTimeImpl >(m_time + dynamic_cast<const DateDurationImpl&>(dd).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator+=(const DateDurationAbstr& dd) {
+  DateTimeAbstrPtr operator+=(const DateDurationAbstr& dd) override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time += dynamic_cast<const DateDurationImpl&>(dd)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateTimeImpl >(m_time += dynamic_cast<const DateDurationImpl&>(dd).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator-(const DateDurationAbstr& dd) const {
+  DateTimeAbstrPtr operator-(const DateDurationAbstr& dd) const override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time - dynamic_cast<const DateDurationImpl&>(dd)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateTimeImpl >(m_time - dynamic_cast<const DateDurationImpl&>(dd).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator-=(const DateDurationAbstr& dd) {
+  DateTimeAbstrPtr operator-=(const DateDurationAbstr& dd) override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time -= dynamic_cast<const DateDurationImpl&>(dd)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateTimeImpl >(m_time -= dynamic_cast<const DateDurationImpl&>(dd).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator+(const TimeDurationAbstr& td) const {
+  DateTimeAbstrPtr operator+(const TimeDurationAbstr& td) const override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time + dynamic_cast<const TimeDurationImpl&>(td)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared< DateTimeImpl >(m_time + dynamic_cast<const TimeDurationImpl&>(td).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator+=(const TimeDurationAbstr& td) {
+  DateTimeAbstrPtr operator+=(const TimeDurationAbstr& td) override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time += dynamic_cast<const TimeDurationImpl&>(td)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared < DateTimeImpl >(m_time += dynamic_cast<const TimeDurationImpl&>(td).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator-(const TimeDurationAbstr& td) const {
+  DateTimeAbstrPtr operator-(const TimeDurationAbstr& td) const override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time - dynamic_cast<const TimeDurationImpl&>(td)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared < DateTimeImpl >(m_time - dynamic_cast<const TimeDurationImpl&>(td).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
   }
 
-  virtual DateTimeAbstrPtr operator-=(const TimeDurationAbstr& td) {
+  DateTimeAbstrPtr operator-=(const TimeDurationAbstr& td) override {
     try {
-      return DateTimeAbstrPtr(new DateTimeImpl(
-          _time -= dynamic_cast<const TimeDurationImpl&>(td)._duration));
-    } catch (const std::bad_cast&) {
+      return std::make_shared < DateTimeImpl >(m_time -= dynamic_cast<const TimeDurationImpl&>(td).m_duration);
+    }
+    catch (const std::bad_cast&) {
       assert(false);
       throw;
     }
@@ -901,88 +824,69 @@ class DateTimeImpl : public DateTimeAbstr {
 };
 
 MISC_API DateTimeAbstrPtr DateTimeAbstr::localTimeSubSec() {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::date_time::microsec_clock<
-                       boost::posix_time::ptime>::local_time()));
+  return std::make_shared< DateTimeImpl >(boost::date_time::microsec_clock<boost::posix_time::ptime>::local_time());
 }
 
 MISC_API DateTimeAbstrPtr DateTimeAbstr::localTimeSec() {
-  return DateTimeAbstrPtr(new DateTimeImpl(
-      boost::date_time::second_clock<boost::posix_time::ptime>::local_time()));
+  return std::make_shared < DateTimeImpl >(boost::date_time::second_clock<boost::posix_time::ptime>::local_time());
 }
 
 MISC_API DateTimeAbstrPtr DateTimeAbstr::universalTime() {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::date_time::second_clock<
-                       boost::posix_time::ptime>::universal_time()));
+  return std::make_shared < DateTimeImpl >(boost::date_time::second_clock<boost::posix_time::ptime>::universal_time());
 }
 
 DateDurationAbstrPtr DateDurationAbstr::make(long days) {
-  return DateDurationAbstrPtr(new DateDurationImpl(days));
+  return std::make_shared < DateDurationImpl >(days);
 }
 
 DateDurationAbstrPtr DateDurationAbstr::make() {
-  return DateDurationAbstrPtr(new DateDurationImpl());
+  return std::make_shared < DateDurationImpl >();
 }
 
-DateTimeAbstrPtr DateTimeAbstr::makeFromIsoString(
-    const std::wstring& iso_string) {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::posix_time::from_iso_string(ws2s(iso_string))));
+DateTimeAbstrPtr DateTimeAbstr::makeFromIsoString(const std::wstring& iso_string) {
+  return std::make_shared < DateTimeImpl >(boost::posix_time::from_iso_string(ws2s(iso_string)));
 }
 
-DateTimeAbstrPtr DateTimeAbstr::makeFromDelimitedString(
-    const std::wstring& delimitedString) {
-  return DateTimeAbstrPtr(new DateTimeImpl(
-      boost::posix_time::time_from_string(ws2s(delimitedString))));
+DateTimeAbstrPtr DateTimeAbstr::makeFromDelimitedString(const std::wstring& delimitedString) {
+  return std::make_shared < DateTimeImpl >(boost::posix_time::time_from_string(ws2s(delimitedString)));
 }
 
-DateTimeAbstrPtr DateTimeAbstr::makeFromIsoExtendedString(
-    const std::wstring& delimitedString) {
-  boost::posix_time::ptime p(
-      boost::date_time::parse_delimited_time<boost::posix_time::ptime>(
-          ws2s(delimitedString), 'T'));
-  return DateTimeAbstrPtr(new DateTimeImpl(p));
+DateTimeAbstrPtr DateTimeAbstr::makeFromIsoExtendedString(const std::wstring& delimitedString) {
+  boost::posix_time::ptime p(boost::date_time::parse_delimited_time<boost::posix_time::ptime>(ws2s(delimitedString), 'T'));
+  return std::make_shared < DateTimeImpl >(p);
 }
 
 // YYYYMMDDHHMMSS
-DateTimeAbstrPtr DateTimeAbstr::makeFromNonDelimitedString(
-    const std::wstring& nonDelimitedString) {
-  if (nonDelimitedString.length() !=
-      std::wstring(_T( "20091007233000" )).length())
-    return DateTimeAbstrPtr(new DateTimeImpl());
+DateTimeAbstrPtr DateTimeAbstr::makeFromNonDelimitedString(const std::wstring& nonDelimitedString) {
+  if (nonDelimitedString.length() != L"20091007233000"s.length()) {
+    return std::make_shared< DateTimeImpl >();
+  }
   else {
     std::wstring str(nonDelimitedString);
-    str.insert(8, _T( "T" ));
+    str.insert(8, L"T" );
     return makeFromIsoString(str);
   }
 }
 
 DateTimeAbstrPtr DateTimeAbstr::makeFromUnixTime(const time_t time) {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::posix_time::from_time_t(time)));
+  return std::make_shared< DateTimeImpl >(boost::posix_time::from_time_t(time));
 }
 
-TimeDurationAbstrPtr TimeDurationAbstr::make(long hours, long mins, long secs,
-                                             long frac_secs) {
-  return TimeDurationAbstrPtr(
-      new TimeDurationImpl(hours, mins, secs, frac_secs));
+TimeDurationAbstrPtr TimeDurationAbstr::make(long hours, long mins, long secs, long frac_secs) {
+  return std::make_shared< TimeDurationImpl >(hours, mins, secs, frac_secs);
 }
 
-DateAbstrPtr DateAbstr::make(unsigned int year, unsigned int month,
-                             unsigned int day) {
+DateAbstrPtr DateAbstr::make(unsigned int year, unsigned int month, unsigned int day) {
   return DateAbstrPtr(new DateImpl(year, month, day));
 }
 
-DateAbstrPtr DateAbstr::make() { return DateAbstrPtr(new DateImpl()); }
+DateAbstrPtr DateAbstr::make() { return std::make_shared< DateImpl >(); }
 
-DateTimeAbstrPtr DateTimeAbstr::make(const DateAbstr& date,
-                                     const TimeDurationAbstr& duration) {
+DateTimeAbstrPtr DateTimeAbstr::make(const DateAbstr& date, const TimeDurationAbstr& duration) {
   try {
-    return DateTimeAbstrPtr(
-        new DateTimeImpl(dynamic_cast<const DateImpl&>(date),
-                         dynamic_cast<const TimeDurationImpl&>(duration)));
-  } catch (const std::bad_cast&) {
+    return std::make_shared< DateTimeImpl >(dynamic_cast<const DateImpl&>(date), dynamic_cast<const TimeDurationImpl&>(duration));
+  }
+  catch (const std::bad_cast&) {
     assert(false);
     return 0;
   }
@@ -991,11 +895,12 @@ DateTimeAbstrPtr DateTimeAbstr::make(const DateAbstr& date,
 DateTimeAbstrPtr DateTimeAbstr::make() {
   return DateTimeAbstrPtr(new DateTimeImpl());
 }
+
 DateTimeAbstrPtr DateTimeAbstr::make(const DateAbstr& date) {
   try {
-    return DateTimeAbstrPtr(
-        new DateTimeImpl(dynamic_cast<const DateImpl&>(date)));
-  } catch (const std::bad_cast&) {
+    return std::make_shared< DateTimeImpl >(dynamic_cast<const DateImpl&>(date));
+  }
+  catch (const std::bad_cast&) {
     assert(false);
     return 0;
   }
@@ -1003,9 +908,9 @@ DateTimeAbstrPtr DateTimeAbstr::make(const DateAbstr& date) {
 
 DateTimeAbstrPtr DateTimeAbstr::make(const DateTimeAbstr& time) {
   try {
-    return DateTimeAbstrPtr(
-        new DateTimeImpl(dynamic_cast<const DateTimeImpl&>(time)));
-  } catch (const std::bad_cast&) {
+    return std::make_shared< DateTimeImpl >(dynamic_cast<const DateTimeImpl&>(time));
+  }
+  catch (const std::bad_cast&) {
     assert(false);
     return 0;
   }
@@ -1013,214 +918,105 @@ DateTimeAbstrPtr DateTimeAbstr::make(const DateTimeAbstr& time) {
 
 // make special values
 MISC_API DateAbstrPtr DateAbstr::makePosInfinity() {
-  return DateAbstrPtr(
-      new DateImpl(boost::gregorian::date(boost::date_time::pos_infin)));
+  return std::make_shared< DateImpl >(boost::gregorian::date(boost::date_time::pos_infin));
 }
 MISC_API DateAbstrPtr DateAbstr::makeNegInfinity() {
-  return DateAbstrPtr(
-      new DateImpl(boost::gregorian::date(boost::date_time::neg_infin)));
+  return std::make_shared < DateImpl >(boost::gregorian::date(boost::date_time::neg_infin));
 }
 MISC_API DateAbstrPtr DateAbstr::makeMaxDate() {
-  return DateAbstrPtr(
-      new DateImpl(boost::gregorian::date(boost::date_time::max_date_time)));
+  return std::make_shared < DateImpl >(boost::gregorian::date(boost::date_time::max_date_time));
 }
 MISC_API DateAbstrPtr DateAbstr::makeMinDate() {
-  return DateAbstrPtr(
-      new DateImpl(boost::gregorian::date(boost::date_time::min_date_time)));
+  return std::make_shared < DateImpl >(boost::gregorian::date(boost::date_time::min_date_time));
 }
 MISC_API DateAbstrPtr DateAbstr::makeNotADate() {
-  return DateAbstrPtr(
-      new DateImpl(boost::gregorian::date(boost::date_time::not_a_date_time)));
+  return std::make_shared < DateImpl >(boost::gregorian::date(boost::date_time::not_a_date_time));
 }
 
 MISC_API DateTimeAbstrPtr DateTimeAbstr::makePosInfinity() {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::posix_time::ptime(boost::date_time::pos_infin)));
+  return std::make_shared < DateTimeImpl >(boost::posix_time::ptime(boost::date_time::pos_infin));
 }
 
 MISC_API DateTimeAbstrPtr DateTimeAbstr::makeNegInfinity() {
-  return DateTimeAbstrPtr(
-      new DateTimeImpl(boost::posix_time::ptime(boost::date_time::neg_infin)));
+  return std::make_shared < DateTimeImpl >(boost::posix_time::ptime(boost::date_time::neg_infin));
 }
 MISC_API DateTimeAbstrPtr DateTimeAbstr::makeMaxDateTime() {
-  return DateTimeAbstrPtr(new DateTimeImpl(
-      boost::posix_time::ptime(boost::date_time::max_date_time)));
+  return std::make_shared < DateTimeImpl >(boost::posix_time::ptime(boost::date_time::max_date_time));
 }
 MISC_API DateTimeAbstrPtr DateTimeAbstr::makeMinDateTime() {
-  return DateTimeAbstrPtr(new DateTimeImpl(
-      boost::posix_time::ptime(boost::date_time::min_date_time)));
+  return std::make_shared < DateTimeImpl >(boost::posix_time::ptime(boost::date_time::min_date_time));
 }
 MISC_API DateTimeAbstrPtr DateTimeAbstr::makeNotADateTime() {
-  return DateTimeAbstrPtr(new DateTimeImpl(
-      boost::posix_time::ptime(boost::date_time::not_a_date_time)));
+  return std::make_shared < DateTimeImpl >(boost::posix_time::ptime(boost::date_time::not_a_date_time));
 }
 
 DateAbstrPtr DateAbstr::make(const DateAbstr& date) {
   try {
-    return DateAbstrPtr(new DateImpl(dynamic_cast<const DateImpl&>(date)));
-  } catch (const std::bad_cast&) {
+    return std::make_shared < DateImpl >(dynamic_cast<const DateImpl&>(date));
+  }
+  catch (const std::bad_cast&) {
     assert(false);
     return 0;
   }
 }
 
-TimeDurationAbstrPtr TimeDurationAbstr::make(
-    const TimeDurationAbstr& duration) {
+TimeDurationAbstrPtr TimeDurationAbstr::make(const TimeDurationAbstr& duration) {
   try {
-    return TimeDurationAbstrPtr(
-        new TimeDurationImpl(dynamic_cast<const TimeDurationImpl&>(duration)));
-  } catch (const std::bad_cast&) {
+    return std::make_shared < TimeDurationImpl >(dynamic_cast<const TimeDurationImpl&>(duration));
+  }
+  catch (const std::bad_cast&) {
     assert(false);
     return 0;
   }
 }
 
-class MutexImpl : public MutexAbstr {
-  friend class LockImpl;
-
- private:
-  boost::recursive_mutex _mutex;
-};
-
-class NonRecursiveMutexImpl : public NonRecursiveMutexAbstr {
-  friend class NonRecursiveLockImpl;
-
- private:
-  boost::mutex _mutex;
-};
-
-class LockImpl : public LockAbstr {
-  friend class ConditionImpl;
-
- private:
-  boost::lock_guard<boost::recursive_mutex> _lock;
-
- public:
-  LockImpl(MutexImpl& mutex) : _lock(mutex._mutex) {}
-};
-
-class NonRecursiveLockImpl : public NonRecursiveLockAbstr {
-  friend class ConditionImpl;
-
- private:
-  boost::unique_lock<boost::mutex> _lock;
-
- public:
-  NonRecursiveLockImpl(NonRecursiveMutexImpl& mutex) : _lock(mutex._mutex) {}
-
-  virtual void lock() { _lock.lock(); }
-  virtual void unlock() { _lock.unlock(); }
-};
-
-MISC_API MutexAbstr* yloader::MutexAbstr::make() { return new MutexImpl(); }
-
-NonRecursiveMutexAbstr* NonRecursiveMutexAbstr::make() {
-  return new NonRecursiveMutexImpl();
-}
-
-MISC_API LockAbstr* yloader::LockAbstr::make(MutexAbstr& mutex) {
-  try {
-    return new LockImpl(dynamic_cast<MutexImpl&>(mutex));
-  } catch (const std::bad_cast&) {
-    assert(false);
-    return 0;
-  }
-}
-
-MISC_API yloader::Mutex::Mutex()
-    : _mutex(MutexAbstrPtr(yloader::MutexAbstr::make())) {}
-
-MISC_API yloader::Mutex::~Mutex() {}
-
-NonRecursiveLockAbstr* NonRecursiveLockAbstr::make(
-    NonRecursiveMutexAbstr& mutex) {
-  try {
-    return new NonRecursiveLockImpl(
-        dynamic_cast<NonRecursiveMutexImpl&>(mutex));
-  } catch (const std::bad_cast&) {
-    assert(false);
-    return 0;
-  }
-}
-
-class ConditionImpl : public ConditionAbstr {
- private:
-  boost::condition_variable _condition;
-
- public:
-  void wait(NonRecursiveLockAbstr& lock) {
-    try {
-      _condition.wait(dynamic_cast<NonRecursiveLockImpl&>(lock)._lock);
-    } catch (const std::bad_cast&) {
-      assert(false);
-    }
-  }
-
-  void notify_one() { _condition.notify_one(); }
-};
-
-ConditionAbstr* ConditionAbstr::make() { return new ConditionImpl(); }
 
 class TimerImpl : public TimerAbstr {
  private:
-  boost::timer _timer;
-  double _lastValue;
-  bool _running;
+  boost::timer m_timer;
+  double m_lastValue;
+  bool m_running;
 
  public:
-  TimerImpl() : _running(true), _lastValue(0.0) {}
+  TimerImpl() : m_running(true), m_lastValue(0.0) {}
 
   void restart() {
-    _timer.restart();
-    _running = true;
+    m_timer.restart();
+    m_running = true;
   }
 
-  double elapsed() const { return _running ? _timer.elapsed() : _lastValue; }
+  double elapsed() const { return m_running ? m_timer.elapsed() : m_lastValue; }
 
   void stop() {
-    if (_running) {
-      _lastValue = _timer.elapsed();
-      _running = false;
+    if (m_running) {
+      m_lastValue = m_timer.elapsed();
+      m_running = false;
     }
   }
 
-  bool isStopped() const { return !_running; }
+  bool isStopped() const { return !m_running; }
 };
 
 TimerAbstr* TimerAbstr::make() { return new TimerImpl(); }
 
-/*MISC_API UniqueId::UniqueId( LPCTSTR sx ) throw( UniqueIdException )
-{
-        UUID uuid;
-        std::wstring str( sx );
-        std::basic_string< unsigned char > s;
-        for( unsigned int n = 0; n < str.length(); n++ )
-                s += (char)str.at( n );
-        if( UuidFromString( const_cast< unsigned char* >( s.c_str() ), &uuid )
-!= RPC_S_OK ) throw UniqueIdException( str );
-
-        std::wstring::operator=( str );
-}
-*/
 MISC_API Version const Version::CURRENT(STRPRODUCT_VER);
 
 Version::Version() : Version(0, 0, 0, 0) {}
 
-yloader::Version::Version(const std::wstring& version) throw(VersionException)
+yloader::Version::Version(const std::wstring& version)
     : Version() {
   parse(version.c_str());
 }
 
-MISC_API Version::Version(const TCHAR* version) throw(VersionException)
+MISC_API Version::Version(const TCHAR* version)
     : Version() {
   parse(version);
 }
 
-Version::Version(unsigned int major, unsigned int minor, unsigned int revision,
-                 unsigned int build)
+Version::Version(unsigned int major, unsigned int minor, unsigned int revision, unsigned int build)
     : m_major(major), m_minor(minor), m_revision(revision), m_build(build) {}
 
-MISC_API void Version::parse(const TCHAR* version) throw(VersionException) {
+MISC_API void Version::parse(const TCHAR* version) {
   if (version != nullptr && _tcslen(version) > 0) {
     Tokenizer tokens(version, VERSION_SEPARATORS);
 
@@ -1241,14 +1037,13 @@ MISC_API void Version::parse(const TCHAR* version) throw(VersionException) {
             m_build = value;
             break;
           default:
-            throw VersionException(std::wstring(version) +
-                                   _T(" - too many version elements"));
+            throw VersionException(std::wstring(version) + L" - too many version elements");
         }
       }
-    } catch (const boost::bad_lexical_cast& e) {
+    }
+    catch (const boost::bad_lexical_cast& e) {
       const char* what = e.what();
-      throw VersionException(std::wstring(version) + _T(", ") +
-                             yloader::s2ws(e.what()));
+      throw VersionException(std::wstring(version) + L", " + yloader::s2ws(e.what()));
     }
   }
 }
@@ -1256,30 +1051,27 @@ MISC_API void Version::parse(const TCHAR* version) throw(VersionException) {
 MISC_API Seconds::Seconds(double seconds)
     : TimeDuration(0, 0, (long)seconds, fmod(seconds, 1.0) * 1000000) {}
 
-MISC_API std::vector<std::string> yloader::cmdLineSplitter(
-    const std::wstring& line) {
+MISC_API std::vector<std::string> yloader::cmdLineSplitter(const std::wstring& line) {
   std::vector<std::string> v;
 
   bool inQuotedString = false;
   bool inUnquotedString = false;
   bool escape = false;
 
-  std::wstring sep(_T( " \t" ));
+  std::wstring sep(L" \t" );
   std::wstring str;
   unsigned int state = 0;
 
-  for (std::wstring::size_type n = 0; n < line.size(); ++n) {
-    char c(line[n]);
-
+  for (auto c : line ) {
     switch (state) {
       case 0:
         assert(str.empty());
         switch (c) {
-          case TCHAR('"'):
+          case L'"':
             state = 1;
             break;
-          case TCHAR(' '):
-          case TCHAR('\t'):
+          case L' ':
+          case L'\t':
             break;
           default:
             str += c;
@@ -1289,10 +1081,10 @@ MISC_API std::vector<std::string> yloader::cmdLineSplitter(
         break;
       case 1:
         switch (c) {
-          case TCHAR('"'):
+          case L'"':
             state = 2;
             break;
-          case TCHAR('\\'):
+          case L'\\':
             str += c;
             state = 3;
             break;
@@ -1303,8 +1095,8 @@ MISC_API std::vector<std::string> yloader::cmdLineSplitter(
         break;
       case 2:
         switch (c) {
-          case TCHAR(' '):
-          case TCHAR('\t'):
+          case L' ':
+          case L'\t':
             // assert( !str.empty() );
             if (!str.empty()) {
               v.push_back(yloader::ws2s(str));
@@ -1319,7 +1111,7 @@ MISC_API std::vector<std::string> yloader::cmdLineSplitter(
         break;
       case 3:
         switch (c) {
-          case TCHAR('"'):
+          case L'"':
             state = 4;
             break;
           default:
@@ -1330,8 +1122,8 @@ MISC_API std::vector<std::string> yloader::cmdLineSplitter(
         break;
       case 4:
         switch (c) {
-          case TCHAR(' '):
-          case TCHAR('\t'):
+          case L' ':
+          case L'\t':
             // assert( !str.empty() );
             if (!str.empty()) {
               v.push_back(yloader::ws2s(str));
@@ -1351,14 +1143,16 @@ MISC_API std::vector<std::string> yloader::cmdLineSplitter(
     }
   }
 
-  if (!str.empty()) v.push_back(yloader::ws2s(str));
+  if (!str.empty()) {
+    v.push_back(yloader::ws2s(str));
+  }
   return v;
 }
 
-MISC_API std::wstring yloader::Date::toString(
-    DateFormat format, const std::wstring& separator) const {
-  if (is_special())
-    return _T( "" );
+MISC_API std::wstring yloader::Date::toString(DateFormat format, const std::wstring& separator) const {
+  if (is_special()) {
+    return L"";
+  }
   else {
     unsigned int first;
     unsigned int second;
@@ -1381,13 +1175,11 @@ MISC_API std::wstring yloader::Date::toString(
         third = day();
         break;
       case xyz:
-        throw DateException(_T( "" ),
-                            _T( "Format xyz not supported at this time" ));
+        throw DateException(L"", L"Format xyz not supported at this time");
       default:
-        throw DateException(_T( "" ), _T( "Unknown format type" ));
+        throw DateException(L"", L"Unknown format type" );
     }
 
-    return yloader::format(_T( "%1%%4%%2%%4%%3%" ), first, second, third,
-                           separator);
+    return yloader::format(L"%1%%4%%2%%4%%3%", first, second, third, separator);
   }
 }

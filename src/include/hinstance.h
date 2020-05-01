@@ -19,43 +19,42 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 class HInstanceException {
  private:
-  DWORD _lastError;
+  DWORD m_lastError;
 
  public:
-  HInstanceException() : _lastError(::GetLastError()) {}
+  HInstanceException() : m_lastError(::GetLastError()) {}
 
-  DWORD getLastError() const { return _lastError; }
+  DWORD getLastError() const { return m_lastError; }
 };
 
 class HInstanceMethodException {
  private:
-  const std::wstring _name;
+  const std::wstring m_name;
 
  public:
-  HInstanceMethodException(const std::wstring& name) : _name(name) {}
+  HInstanceMethodException(const std::wstring& name) : m_name(name) {}
 
-  const std::wstring& name() const { return _name; }
+  const std::wstring& name() const { return m_name; }
 };
 
 // a library instance class that deals correctly with loading/freeing the
 // library
 class HInstance {
  private:
-  const std::wstring _path;
-  HINSTANCE _hInstance;
+  const std::wstring m_path;
+  HINSTANCE m_hInstance;
 
  protected:
-  HInstance(const std::wstring& fileName) throw(HInstanceException);
+  HInstance(const std::wstring& fileName);
   ~HInstance();
 
-  bool valid() const { return _hInstance != 0; }
+  bool valid() const { return m_hInstance != 0; }
 
-  FARPROC getProcAddress(const std::wstring& procName) const
-      throw(HInstanceMethodException);
+  FARPROC getProcAddress(const std::wstring& procName) const;
 
  private:
   HINSTANCE init(const std::wstring& path);
 
  public:
-  const std::wstring& path() const { return _path; }
+  const std::wstring& path() const { return m_path; }
 };

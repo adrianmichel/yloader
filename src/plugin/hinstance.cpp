@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,28 +18,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include <hinstance.h>
 
-HInstance::HInstance(const std::wstring& fileName) throw(HInstanceException)
-    : _hInstance(init(fileName)), _path(fileName) {
-  if (!_hInstance) {
+HInstance::HInstance(const std::wstring& fileName)
+    : m_hInstance(init(fileName)), m_path(fileName) {
+  if (!m_hInstance) {
     throw HInstanceException();
   }
 }
 
 HInstance::~HInstance() {
-  if (_hInstance != 0) AfxFreeLibrary(_hInstance);
+  if (m_hInstance != 0) {
+    AfxFreeLibrary(m_hInstance);
+  }
 }
 
 HINSTANCE HInstance::init(const std::wstring& path) {
   return AfxLoadLibrary(path.c_str());
 }
 
-FARPROC HInstance::getProcAddress(const std::wstring& procName) const
-    throw(HInstanceMethodException) {
-  assert(_hInstance != 0);
-  FARPROC proc = GetProcAddress(_hInstance, yloader::ws2s(procName).c_str());
+FARPROC HInstance::getProcAddress(const std::wstring& procName) const {
+  assert(m_hInstance != 0);
+  FARPROC proc = GetProcAddress(m_hInstance, yloader::ws2s(procName).c_str());
 
-  if (proc != 0)
+  if (proc != 0) {
     return proc;
-  else
+  }
+  else {
     throw HInstanceMethodException(procName);
+  }
 }

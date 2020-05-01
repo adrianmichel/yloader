@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,26 +22,22 @@ using json = nlohmann::json;
 using namespace yloader;
 using namespace std;
 
-static const std::wstring test(
-    _T("{\
+constexpr auto test =
+    L"{\
 	\"version\": \"5.0\",\
 	\"beta\" : null,\
 	\"release_date\" : \"10/7/2016\",\
 	\"date\" : \"2016-10-31\",\
-	\"description_url\" : \"http://www.yloader.com/5.0/description\",\
-	\"download_url\" : \"http://www.yloader.com/5.0/download\"\
-	}"));
+	\"description_url\" : \"https://www.yloader.com/5.0/description\",\
+	\"download_url\" : \"https://www.yloader.com/5.0/download\"\
+	}";
 
-const std::wstring Updater::DEFAULT_YLOADER_UPDATE_HOST_NAME(
-    _T("www.yloader.com"));
-const std::wstring Updater::DEFAULT_YLOADER_UPDATE_DIRECTORY(_T("/update"));
-
-#define VERSION "version"
-#define DESCRIPTION "description"
-#define DESCRIPTION_URL "description_url"
-#define TITLE "title"
-#define RELEASE_DATE "release_date"
-#define DOWNLOAD_URL "update_url"
+constexpr auto VERSION = "version";
+constexpr auto DESCRIPTION = "description";
+constexpr auto DESCRIPTION_URL = "description_url";
+constexpr auto TITLE = "title";
+constexpr auto RELEASE_DATE = "release_date";
+constexpr auto DOWNLOAD_URL = "update_url";
 
 bool VersionInfo::operator>(const VersionInfo& otherVersion) {
   assert(version);
@@ -49,17 +45,15 @@ bool VersionInfo::operator>(const VersionInfo& otherVersion) {
 }
 
 shared_ptr<yloader::DateTime> VersionInfo::getCurrentBuildInfo() {
-  const IMAGE_NT_HEADERS* nt_header =
-      (const IMAGE_NT_HEADERS*)((char*)&__ImageBase + __ImageBase.e_lfanew);
+  const IMAGE_NT_HEADERS* nt_header = (const IMAGE_NT_HEADERS*)((char*)&__ImageBase + __ImageBase.e_lfanew);
 
-  return shared_ptr<yloader::DateTime>(
-      new yloader::DateTime(nt_header->FileHeader.TimeDateStamp));
+  return std::make_shared< yloader::DateTime >(nt_header->FileHeader.TimeDateStamp);
 }
 
 VersionInfo::VersionInfo()
     : version(Version::CURRENT), releaseDate(getCurrentBuildInfo()) {}
 
-VersionInfo::VersionInfo(boost::shared_ptr<std::string> s) {
+VersionInfo::VersionInfo(std::shared_ptr<std::string> s) {
   json j = json::parse(s->c_str());
 
   if (!j[VERSION].is_null()) {
@@ -88,45 +82,49 @@ VersionInfo::VersionInfo(boost::shared_ptr<std::string> s) {
 }
 
 const VersionInfo VersionInfo::CURRENT_VERSION_INFO = VersionInfo();
+constexpr auto DEFAULT_YLOADER_UPDATE_HOST_NAME = L"www.yloader.com";
+constexpr auto DEFAULT_YLOADER_UPDATE_DIRECTORY = L"/update";
 
-Updater::Updater(UpdaterHandler& handler, const std::wstring& lang,
-                 const StringSettable& hostName,
-                 const StringSettable& updateDirectory)
-    : Thread(_T("Updater thread")),
+Updater::Updater(UpdaterHandler& handler, const std::wstring& lang, const StringSettable& hostName, const StringSettable& updateDirectory)
+    : Thread(L"Updater thread"),
       m_handler(handler),
       m_updateHostName(hostName.getValue(DEFAULT_YLOADER_UPDATE_HOST_NAME)),
-      m_updateDirectory(
-          updateDirectory.getValue(DEFAULT_YLOADER_UPDATE_DIRECTORY)) {}
+      m_updateDirectory(updateDirectory.getValue(DEFAULT_YLOADER_UPDATE_DIRECTORY)) {}
 
-#define UNKNOWN_ERROR _T( "Uknown error" )
+constexpr auto UNKNOWN_ERROR = L"Unknown error";
+
 void Updater::run(yloader::ThreadBase::ThreadContext* context) {
   try {
-    yloader::Lock lock(m_mutex);
+    std::scoped_lock lock(m_mutex);
 
     m_handler.checkingForUpdate();
 
     CurlHTTPRequest request(m_updateHostName);
 
-    std::wstring object = m_updateDirectory + _T( "?" ) + VERSION_QUERY_ARGS;
+    std::wstring object = m_updateDirectory + L"?" + VERSION_QUERY_ARGS;
 
-    std::wstring jsonType(_T("Content-type: plain/text"));
+    std::wstring jsonType(L"Content-type: plain/text");
 
-    boost::shared_ptr<std::string> r = request.get(object, jsonType);
+    std::shared_ptr<std::string> r = request.get(object, jsonType);
 
-    m_updateInfo = std::shared_ptr<VersionInfo>(new VersionInfo(r));
+    m_updateInfo = std::make_shared< VersionInfo >(r);
 
     if (m_updateInfo && *m_updateInfo > VersionInfo::CURRENT_VERSION_INFO) {
       m_handler.updateAvailable();
-    } else {
+    }
+    else {
       m_handler.noUpdateAvailable();
     }
-  } catch (InternetException e) {
+  }
+  catch (InternetException e) {
     m_lastError = e.message();
     m_handler.updateError(m_lastError);
-  } catch (std::exception e) {
+  }
+  catch (std::exception e) {
     m_lastError = yloader::s2ws(e.what());
     m_handler.updateError(m_lastError);
-  } catch (...) {
+  }
+  catch (...) {
     m_lastError = UNKNOWN_ERROR;
     m_handler.updateError(m_lastError);
   }
@@ -135,6 +133,6 @@ void Updater::run(yloader::ThreadBase::ThreadContext* context) {
 Updater::~Updater() {}
 
 bool Updater::hasUpdate() {
-  yloader::Lock lock(m_mutex);
+  std::scoped_lock lock(m_mutex);
   return m_updateInfo && *m_updateInfo > VersionInfo();
 }

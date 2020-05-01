@@ -26,12 +26,13 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <locale>
 #include <string>
 #include <vector>
+#include <optional>
 
-// For the case the default is a space.
-// This is the default predicate for the Tokenize() function.
-template <class T>
-class CIsSpace : public std::unary_function<T, bool> {
- public:
+ // For the case the default is a space.
+ // This is the default predicate for the Tokenize() function.
+template <typename T>
+class CIsSpace {
+public:
   bool operator()(T c) const {
     // isspace<char> returns true if c is a white-space character (0x09-0x0D or
     // 0x20)
@@ -40,20 +41,20 @@ class CIsSpace : public std::unary_function<T, bool> {
 };
 
 // For the case the separator is a comma
-template <class T>
-class CIsComma : public std::unary_function<T, bool> {
- public:
+template <typename T>
+class CIsComma {
+public:
   bool operator()(T c) const { return (TCHAR(',') == c); }
 };
 
 // For the case the separator is a character from a set of characters given in a
 // string
-template <class T>
-class CIsFromString : public std::unary_function<T, bool> {
- private:
+template <typename T>
+class CIsFromString {
+private:
   std::basic_string<T> m_ostr;
 
- public:
+public:
   // Constructor specifying the separators
   CIsFromString(const std::basic_string<T>& rostr) : m_ostr(rostr) {}
 
@@ -65,27 +66,40 @@ class CIsFromString : public std::unary_function<T, bool> {
 };
 
 // String Tokenizer
-template <class T, class Pred>
+template <typename T, class Pred>
 class CTokenizer : public std::vector<std::basic_string<T> > {
- public:
+public:
   // The predicate should evaluate to true when applied to a separator.
-  CTokenizer(const std::basic_string<T>& rostr, const Pred& roPred) {
+  CTokenizer(const std::basic_string<T>& str, const Pred& pred, std::optional< size_t > maxTokens = std::nullopt) {
+    assert(!maxTokens || *maxTokens > 0);
+
     // First clear the results vector
     __super::clear();
-    std::basic_string<T>::const_iterator it = rostr.begin();
-    std::basic_string<T>::const_iterator itTokenEnd = rostr.begin();
-    while (it != rostr.end()) {
+    typename std::basic_string<T>::const_iterator it = str.begin();
+    typename std::basic_string<T>::const_iterator itTokenEnd = str.begin();
+
+    while (it != str.end()) {
       // Eat seperators
-      while (it != rostr.end() && roPred(*it)) it++;
-      // Find next token
-      itTokenEnd = find_if(it, rostr.end(), roPred);
-      // Append token to result
-      if (it < itTokenEnd)
-        __super::push_back(std::basic_string<T>(it, itTokenEnd));
-      it = itTokenEnd;
+      while (it != str.end() && pred(*it)) {
+        it++;
+      }
+
+      if (!maxTokens || __super::size() < (*maxTokens - 1)) {
+        // Find next token
+        itTokenEnd = find_if(it, str.end(), pred);
+        // Append token to result
+        if (it < itTokenEnd) {
+          __super::push_back(std::basic_string<T>(it, itTokenEnd));
+        }
+        it = itTokenEnd;
+      }
+      else {
+        __super::push_back(std::basic_string< T >(it, str.end()));
+        return;
+      }
     }
   }
 };
 
-typedef CIsFromString<TCHAR> Sep;
-typedef CTokenizer<TCHAR, Sep> Tokenizer;
+using Sep = CIsFromString<wchar_t>;
+using Tokenizer = CTokenizer<wchar_t, Sep>;

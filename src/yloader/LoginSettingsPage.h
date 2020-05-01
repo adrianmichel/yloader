@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,8 +25,7 @@ class CLoggingSettings : public CPropertyPage, public Okable {
  public:
   CLoggingSettings(CWnd* pParent = NULL);  // standard constructor
   virtual ~CLoggingSettings();
-  void init(const std::wstring& logFile, bool appendToLog, bool logOnlyErrors,
-            bool diagnosticLogging) {
+  void init(const std::wstring& logFile, bool appendToLog, bool logOnlyErrors, bool diagnosticLogging) {
     m_logOnlyErrorsValue = logOnlyErrors;
     m_logFileName = logFile.c_str();
     m_appendToLogValue = appendToLog;
@@ -72,9 +71,7 @@ class CLoggingSettings : public CPropertyPage, public Okable {
 
   void OnBnClickedButtonLogFile() {
     UpdateData();
-    CFileDialog dlg(true, 0, m_logFileName,
-                    OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                    _T( "Text files (*.txt)|*.txt|All Files (*.*)|*.*||" ));
+    CFileDialog dlg(true, 0, m_logFileName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"Text files (*.txt)|*.txt|All Files (*.*)|*.*||" );
 
     if (dlg.DoModal() == IDOK) {
       m_logFileName = dlg.GetPathName();

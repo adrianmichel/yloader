@@ -40,7 +40,7 @@ namespace yloader {
  */
 class PluginInfo : public Info {
  private:
-  const Version _version;
+  const Version m_version;
 
  public:
   /**
@@ -52,7 +52,7 @@ class PluginInfo : public Info {
    * @see Version
    */
   PluginInfo(const PluginInfo& pluginInfo)
-      : _version(pluginInfo.version()), Info(pluginInfo) {}
+      : m_version(pluginInfo.version()), Info(pluginInfo) {}
   /**
    * Constructor - takes a reference to a Info object
    *
@@ -63,7 +63,7 @@ class PluginInfo : public Info {
    * @see Info
    * @see Version
    */
-  PluginInfo(const Info& info) : _version(Version::CURRENT), Info(info) {}
+  PluginInfo(const Info& info) : m_version(Version::CURRENT), Info(info) {}
 
   /**
    * Returns the plugin version
@@ -71,7 +71,7 @@ class PluginInfo : public Info {
    * @return The plugin version
    * @see Version
    */
-  const Version& version() const { return _version; }
+  const Version& version() const { return m_version; }
 };
 
 /**
@@ -121,7 +121,7 @@ class Plugin : public PluginInfo {
    *                   Thrown in case of an error
    * @see Info
    */
-  virtual InfoPtr first() const throw(PluginException) = 0;
+  virtual InfoPtr first() const = 0;
   /**
    * Returns a pointer to an Info object for the next available configuration
    *
@@ -131,7 +131,7 @@ class Plugin : public PluginInfo {
    *                   Thrown in case of an error
    * @see Info
    */
-  virtual InfoPtr next() const throw(PluginException) = 0;
+  virtual InfoPtr next() const = 0;
   /**
    * Gets an instance of a configuration, usually as a pointer or smart pointer.
    *
@@ -143,9 +143,7 @@ class Plugin : public PluginInfo {
    * @see UniqueId
    * @see Info
    */
-  virtual ManagedPtr<Type> get(const UniqueId& id,
-                               const std::vector<std::wstring>* createStrings =
-                                   0) throw(PluginException) = 0;
+  virtual std::shared_ptr<Type> get(const UniqueId& id, const std::vector<std::wstring>* createStrings = 0) = 0;
   /**
    * Indicates the configuration capabilities of the plugin
    *
@@ -180,9 +178,7 @@ class Plugin : public PluginInfo {
    *                   Thrown in case of an error
    * @see UniqueId
    */
-  virtual ManagedPtr<Type> create(
-      const std::vector<std::wstring>* createStrings =
-          0) throw(PluginException) = 0;
+  virtual std::shared_ptr<Type> create(const std::vector<std::wstring>* createStrings = 0) = 0;
   /**
    * Determines if a specific configuration can be edited
    *
@@ -209,7 +205,7 @@ class Plugin : public PluginInfo {
    *                   Thrown in case of an internal error
    * @see UniqueId
    */
-  virtual ManagedPtr<Type> edit(const UniqueId& id) throw(PluginException) = 0;
+  virtual std::shared_ptr<Type> edit(const UniqueId& id) = 0;
   /**
    * Determines if a specific configuration can be removed
    *
@@ -234,7 +230,7 @@ class Plugin : public PluginInfo {
    * configuration can't be removed
    * @see UniqueId
    */
-  virtual void remove(const UniqueId& id) throw(PluginException) = 0;
+  virtual void remove(const UniqueId& id) = 0;
 
   /**
    * Indicates whether a plug-in configuration corresponding to a id is UI
@@ -260,27 +256,27 @@ class Plugin : public PluginInfo {
 
 class PluginTreeException {
  public:
-  std::vector<InfoPtr> _info;
+  std::vector<InfoPtr> m_info;
 
  public:
   PluginTreeException() {}
   PluginTreeException(const Info& info) { add(info); }
   PluginTreeException(const std::vector<InfoPtr>& info) {
-    _info.insert(_info.begin(), info.begin(), info.end());
+    m_info.insert(m_info.begin(), info.begin(), info.end());
   }
 
-  void add(const Info& info) { _info.push_back(InfoPtr(new Info(info))); }
-  void add(const InfoPtr infoPtr) { _info.push_back(infoPtr); }
+  void add(const Info& info) { m_info.push_back(InfoPtr(new Info(info))); }
+  void add(const InfoPtr infoPtr) { m_info.push_back(infoPtr); }
 
-  const std::vector<InfoPtr>& info() const { return _info; }
-  bool empty() const { return _info.empty(); }
+  const std::vector<InfoPtr>& info() const { return m_info; }
+  bool empty() const { return m_info.empty(); }
   const std::wstring message() const {
     std::wostringstream o;
-    o << _T( "Duplicate ids, the components with these Ids will be ignored: " )
-      << std::endl;
+    o << L"Duplicate ids, the components with these Ids will be ignored: " << std::endl;
 
-    for (unsigned int n = 0; n < _info.size(); n++)
-      o << _info[n]->id() << _T( ", name: " ) << _info[n]->name() << std::endl;
+    for (auto i : m_info) {
+      o << i->id() << L", name: " << i->name() << std::endl;
+    }
 
     return o.str();
   }
@@ -301,31 +297,27 @@ class NullPluginLoadingStatusHandler : public PluginLoadingStatusHandler {
 
 class PluginExplorer {
  private:
-  virtual void process(const std::wstring& path,
-                       PluginLoadingStatusHandler* loadingStatusHandler,
+  virtual void process(const std::wstring& path, PluginLoadingStatusHandler* loadingStatusHandler,
                        std::vector<InfoPtr>& duplicates) = 0;
 
   static void initIgnoreModulesSet(std::set<std::wstring>& ignoreModulesSet);
 
-  static bool ignoreModule(const std::wstring& _fileName);
+  static bool ignoreModule(const std::wstring& m_fileName);
 
  public:
   // searches and loads all plug-ins in several paths
   void explore(const std::vector<std::wstring>& paths, const std::wstring& ext,
-               bool recursive,
-               PluginLoadingStatusHandler*
-                   loadingStatusHandler) throw(PluginTreeException) {
+               bool recursive, PluginLoadingStatusHandler* loadingStatusHandler) {
     std::vector<InfoPtr> duplicates;
-    for (size_t n = 0; n < paths.size(); n++)
-      explore(paths[n], ext, recursive, loadingStatusHandler, duplicates);
+    for (auto const& path : paths) {
+      explore(path, ext, recursive, loadingStatusHandler, duplicates);
+    }
 
     if (!duplicates.empty()) throw PluginTreeException(duplicates);
   }
 
-  void explore(const std::wstring& path, const std::wstring& ext,
-               bool recursive,
-               PluginLoadingStatusHandler*
-                   loadingStatusHandler) throw(PluginTreeException) {
+  void explore(const std::wstring& path, const std::wstring& ext, bool recursive,
+               PluginLoadingStatusHandler* loadingStatusHandler) {
     std::vector<std::wstring> paths;
     paths.push_back(path);
 
@@ -335,8 +327,7 @@ class PluginExplorer {
  private:
   // search and loads all plug-ins in one path
   void explore(const std::wstring& p, const std::wstring& ext, bool recursive,
-               PluginLoadingStatusHandler* loadingStatusHandler,
-               std::vector<InfoPtr>& duplicates);
+               PluginLoadingStatusHandler* loadingStatusHandler, std::vector<InfoPtr>& duplicates);
 };
 
 }  // namespace yloader

@@ -19,7 +19,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include <winbase.h>
 #include <boost/regex.hpp>
-#include <boost/shared_ptr.hpp>
 #include <fstream>
 #include "misc.h"
 #include "sharedptr.h"
@@ -28,8 +27,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 namespace yloader {
 
 inline DateTime toDateTime(const SYSTEMTIME& st) {
-  return DateTime(Date(st.wYear, st.wMonth, st.wDay),
-                  TimeDuration(st.wHour, st.wMinute, st.wSecond, 0));
+  return DateTime(Date(st.wYear, st.wMonth, st.wDay), TimeDuration(st.wHour, st.wMinute, st.wSecond, 0));
 }
 
 inline DateTime toDateTime(const FILETIME fileTime) {
@@ -40,8 +38,7 @@ inline DateTime toDateTime(const FILETIME fileTime) {
 
 class FileException {};
 
-MISCWIN_API yloader::DateTime getFileLastWriteTime(
-    const std::wstring& fileName) throw(FileException);
+MISCWIN_API yloader::DateTime getFileLastWriteTime(const std::wstring& fileName);
 
 MISCWIN_API bool fileExists(const TCHAR* filepath);
 
@@ -65,10 +62,9 @@ inline std::wstring getModuleFileName() {
 
 MISCWIN_API std::wstring getAppDataPath();
 
-MISCWIN_API std::wstring getDirectory(const std::wstring& root,
-                                      const std::wstring& dir);
+MISCWIN_API std::wstring getDirectory(const std::wstring& root, const std::wstring& dir);
 
-typedef ManagedPtr<Version> VersionPtr;
+using VersionPtr = std::shared_ptr<Version>;
 MISCWIN_API VersionPtr getFileVersion(const std::wstring& fileName);
 MISCWIN_API std::wstring getFileLanguage(const std::wstring& fileName);
 
@@ -76,76 +72,84 @@ MISCWIN_API std::wstring getFilePath(const std::wstring& file);
 
 class SpecialFileException {};
 
-typedef boost::shared_ptr<std::fstream> fstream_ptr;
+using fstream_ptr = std::shared_ptr<std::fstream>;
 template <typename file_type>
 class SpecialFile {
  protected:
-  typedef boost::shared_ptr<file_type> file_type_ptr;
+  using file_type_ptr = std::shared_ptr<file_type>;
 
  private:
-  file_type_ptr _fs;
-  FILE* _f;
-  HANDLE _h;
-  int _fd;
-  const std::wstring _fileName;
+  file_type_ptr m_fs;
+  FILE* m_f;
+  HANDLE m_h;
+  int m_fd;
+  const std::wstring m_fileName;
 
  protected:
   SpecialFile(const std::wstring& fileName)
-      : _f(0), _h(0), _fd(0), _fileName(fileName) {}
+      : m_f(0), m_h(0), m_fd(0), m_fileName(fileName) {}
 
   void setHandle(HANDLE h) {
-    if (h != INVALID_HANDLE_VALUE)
-      _h = h;
+      if (h != INVALID_HANDLE_VALUE) {
+      m_h = h;
+    }
     else {
-      LOG(log_error, _T( "last error: " ) << GetLastError());
+      LOG(log_error, L"last error: ", GetLastError());
       throw SpecialFileException();
     }
   }
   void setFILE(FILE* f) {
-    if (f != 0)
-      _f = f;
+    if (f != 0) {
+      m_f = f;
+    }
     else {
-      LOG(log_error, _T( "last error: " ) << GetLastError());
+      LOG(log_error, L"last error: ", GetLastError());
       throw SpecialFileException();
     }
   }
 
   void setFStream(file_type_ptr fs) {
-    if (fs && *fs)
-      _fs = fs;
+    if (fs && *fs) {
+      m_fs = fs;
+    }
     else {
-      LOG(log_error, _T( "last error: " ) << GetLastError());
+      LOG(log_error, L"last error: ", GetLastError());
       throw SpecialFileException();
     }
   }
 
   void setFileDescriptor(int fd) {
-    if (fd >= 0)
-      _fd = fd;
+    if (fd >= 0) {
+      m_fd = fd;
+    }
     else {
-      LOG(log_error, _T( "last error: " ) << GetLastError());
+      LOG(log_error, L"last error: ", GetLastError());
       throw SpecialFileException();
     }
   }
 
   virtual ~SpecialFile() {
-    if (_fs && _fs->is_open()) _fs->close();
+    if (m_fs && m_fs->is_open()) {
+      m_fs->close();
+    }
 
-    if (_f) fclose(_f);
+    if (m_f) {
+      fclose(m_f);
+    }
   }
 
  public:
   operator file_type&() {
     assert(this->operator bool());
-    return *_fs;
+    return *m_fs;
   }
 
-  operator bool() const { return _fs && *_fs; }
+  operator bool() const { return m_fs && *m_fs; }
 };
 
-class MISCWIN_API SpecialFileRead : public SpecialFile<yloader::t_ifstream> {
+class MISCWIN_API SpecialFileRead : public SpecialFile<std::wifstream> {
  private:
-  typedef SpecialFile<yloader::t_ifstream> Base;
+  using Base = SpecialFile<std::wifstream>;
 
  private:
   void createReadFile(const std::wstring& fileName);
@@ -154,9 +158,9 @@ class MISCWIN_API SpecialFileRead : public SpecialFile<yloader::t_ifstream> {
   SpecialFileRead(const std::wstring& fileName);
 };
 
-class MISCWIN_API SpecialFileWrite : public SpecialFile<yloader::t_ofstream> {
+class MISCWIN_API SpecialFileWrite : public SpecialFile<std::wofstream> {
  private:
-  typedef SpecialFile<yloader::t_ofstream> Base;
+  using Base = SpecialFile<std::wofstream>;
 
  private:
   void createWriteFile(const std::wstring& fileName, bool append, bool binary);
@@ -166,7 +170,7 @@ class MISCWIN_API SpecialFileWrite : public SpecialFile<yloader::t_ofstream> {
                    bool binary = false);
 };
 
-typedef boost::shared_ptr<SpecialFileRead> SpecialFileReadPtr;
-typedef boost::shared_ptr<SpecialFileWrite> SpecialFileWritePtr;
+using SpecialFileReadPtr = std::shared_ptr<SpecialFileRead>;
+using SpecialFileWritePtr = std::shared_ptr<SpecialFileWrite>;
 
 }  // namespace yloader

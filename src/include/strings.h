@@ -47,60 +47,52 @@ inline const std::wstring to_lower_case(const std::wstring& str) {
   return s;
 }
 
-const std::wstring whiteSpaces(_T( " \t\n\r" ));
+constexpr auto whiteSpaces = L" \t\n\r";
 
 // removes leading and trailing white space
 inline const std::wstring trim(const std::wstring& str) {
   std::wstring::size_type start = str.find_first_not_of(whiteSpaces);
   std::wstring::size_type end = str.find_last_not_of(whiteSpaces);
 
-  if (start == std::wstring::npos)
+  if (start == std::wstring::npos) {
     // empty string
-    return _T( "" );
-  else if (end == std::wstring::npos)
+    return L"";
+  }
+  else if (end == std::wstring::npos) {
     return str.substr(start);
-  else
+  }
+  else {
     return str.substr(start, end - start + 1);
+  }
 }
 
 inline bool isBlanc(const std::wstring& str) {
   return str.find_first_not_of(whiteSpaces) == std::wstring::npos;
 }
 
-inline const std::wstring addExtension(const std::wstring& fileName,
-                                       const std::wstring& ext) {
+inline const std::wstring addExtension(const std::wstring& fileName, const std::wstring& ext) {
   std::wstring result(fileName);
-  if (!ext.empty())
-    result += std::wstring(ext[0] == TCHAR('.') ? _T( "" ) : _T( "." )) + ext;
+  if (!ext.empty()) {
+    result += std::wstring(ext[0] == L'.' ? L"" : L".") + ext;
+  }
 
   return result;
 }
 
-inline const std::wstring addTailIfNotPresent(const std::wstring& str, TCHAR c,
-                                              const std::wstring& match) {
-  return str.empty() || match.find(*str.rbegin()) != std::wstring::npos
-             ? str
-             : str + c;
+inline const std::wstring addTailIfNotPresent(const std::wstring& str, wchar_t c, const std::wstring& match) {
+  return str.empty() || match.find(*str.rbegin()) != std::wstring::npos ? str : str + c;
 }
 
 inline const std::wstring addBackSlash(const std::wstring& str) {
-  return addTailIfNotPresent(str, TCHAR('\\'), std::wstring(_T("\\/")));
+  return addTailIfNotPresent(str, L'\\', L"\\/");
 }
 
 inline const std::wstring addFwdSlash(const std::wstring& str) {
-  return addTailIfNotPresent(str, TCHAR('/'), std::wstring(_T("/")));
+  return addTailIfNotPresent(str, L'/', L"/");
 }
 
 inline const std::wstring quote(const std::wstring& str) {
-  return _T( "\"" ) + str + _T( "\"" );
-}
-
-template <typename T>
-std::wstring& operator<<(std::wstring& str, const T& t) {
-  std::wostringstream os;
-  os << t;
-  str += os.str();
-  return str;
+  return L"\"" + str + L"\"";
 }
 
 inline const std::wstring unescape(const std::wstring& str) {
@@ -111,40 +103,50 @@ inline const std::wstring unescape(const std::wstring& str) {
     TCHAR c = str[n];
 
     switch (c) {
-      case TCHAR('\\'):
+      case L'\\':
         if (escape) {
           unescaped += c;
           escape = false;
-        } else
+        }
+        else {
           escape = true;
+        }
         break;
-      case TCHAR('*'):
+      case L'*':
         if (escape) {
-          unescaped += TCHAR(' ');
+          unescaped += L' ';
           escape = false;
-        } else
+        }
+        else {
           unescaped += c;
+        }
         break;
-      case TCHAR('n'):
+      case L'n':
         if (escape) {
-          unescaped += TCHAR('\n');
+          unescaped += L'\n';
           escape = false;
-        } else
+        } 
+        else {
           unescaped += c;
+        }
         break;
-      case TCHAR('t'):
+      case L't':
         if (escape) {
-          unescaped += TCHAR('\t');
+          unescaped += L'\t';
           escape = false;
-        } else
+        }
+        else {
           unescaped += c;
+        }
         break;
-      case TCHAR('r'):
+      case L'r':
         if (escape) {
-          unescaped += TCHAR('\r');
+          unescaped += L'\r';
           escape = false;
-        } else
+        } 
+        else {
           unescaped += c;
+        }
         break;
       default:
         unescaped += c;
@@ -164,20 +166,20 @@ inline const std::wstring escape(const std::wstring& str) {
 
   for (unsigned int n = 0; n < str.length(); n++) {
     switch (str[n]) {
-      case TCHAR('\\'):
-        escaped += _T( "\\\\" );
+      case L'\\':
+        escaped += L"\\\\";
         break;
-      case TCHAR(' '):
-        escaped += _T( "\\*" );
+      case L' ':
+        escaped += L"\\*";
         break;
-      case TCHAR('\n'):
-        escaped += _T( "\\n" );
+      case L'\n':
+        escaped += L"\\n";
         break;
-      case TCHAR('\t'):
-        escaped += _T( "\\t" );
+      case L'\t':
+        escaped += L"\\t";
         break;
-      case TCHAR('\r'):
-        escaped += _T( "\\r" );
+      case L'\r':
+        escaped += L"\\r";
         break;
       default:
         escaped += str[n];
@@ -187,19 +189,48 @@ inline const std::wstring escape(const std::wstring& str) {
   return escaped;
 }
 
-inline std::wstring s2ws(const std::string& str) {
-  typedef std::codecvt_utf8<TCHAR> convert_typeX;
-  std::wstring_convert<convert_typeX, TCHAR> converterX;
+  using shared_char_array = std::shared_ptr< char[] >;
+  using shared_wchar_array = std::shared_ptr< wchar_t[] >;
 
-  return converterX.from_bytes(str);
-}
+  inline std::wstring s2ws(const char* str) {
+    if (!str) {
+      return std::wstring{};
+    }
 
-inline std::string ws2s(const std::wstring& wstr) {
-  typedef std::codecvt_utf8<wchar_t> convert_typeX;
-  std::wstring_convert<convert_typeX, wchar_t> converterX;
+    int nLen = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, NULL);
+    if (nLen > 0) {
+      auto lpszW = shared_wchar_array(new WCHAR[nLen + sizeof(WCHAR)], std::default_delete<WCHAR[]>());
+      MultiByteToWideChar(CP_UTF8, 0, str, -1, lpszW.get(), nLen);
+      return std::wstring{ lpszW.get() };
+    }
+    else {
+      return std::wstring{};
+    }
+  }
 
-  return converterX.to_bytes(wstr);
-}
+  inline std::wstring s2ws(const std::string& str) {
+    return s2ws(str.c_str());
+  }
+
+  inline std::string ws2s(const wchar_t* wstr) {
+    if (!wstr) {
+      return std::string{};
+    }
+
+    int nLen = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, NULL, NULL, NULL);
+    if (nLen > 0) {
+      auto lpsz = shared_char_array(new char[nLen + sizeof(char)], std::default_delete<char[]>());
+      WideCharToMultiByte(CP_UTF8, 0, wstr, -1, lpsz.get(), nLen, NULL, NULL);
+      return std::string{ lpsz.get() };
+    }
+    else {
+      return std::string{};
+    }
+  }
+
+  inline std::string ws2s(const std::wstring& wstr) {
+    return ws2s(wstr.c_str());
+  }
 
 // end string related classes
 //@}

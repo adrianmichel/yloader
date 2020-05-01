@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,39 +26,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define _WIN32_WINNT 0x501 // XP
 #endif
 
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
-
 #include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-
-#ifndef _AFX_NO_OLE_SUPPORT
-#include <afxole.h>         // MFC OLE classes
-#include <afxodlgs.h>       // MFC OLE dialog classes
-#include <afxdisp.h>        // MFC Automation classes
-#endif // _AFX_NO_OLE_SUPPORT
-
-#ifndef _AFX_NO_DB_SUPPORT
-#include <afxdb.h>			// MFC ODBC database classes
-#endif // _AFX_NO_DB_SUPPORT
-
-#ifndef _AFX_NO_DAO_SUPPORT
-#include <afxdao.h>			// MFC DAO database classes
-#endif // _AFX_NO_DAO_SUPPORT
-
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-#include <winbase.h>
-#include <windows.h>
-#include <userenv.h>
 
 // TODO: reference additional headers your program requires here
+#include <boost\numeric\conversion\cast.hpp>
+#include <boost\algorithm\string.hpp>
+
 #include <miscwin.h>
-
 #include <fstream>
-
 #include <log.h>
-
 #include <namevalue.h>

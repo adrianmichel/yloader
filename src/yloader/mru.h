@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,36 +40,31 @@ class MRU : public std::deque<std::wstring> {
       o << n;
 
       std::wstring mru = m_mruBase + o.str();
-      CString s = AfxGetApp()->GetProfileString(_T( "YahooData" ), mru.c_str(),
-                                                _T( "" ));
-      if (!s.IsEmpty()) __super::push_back((LPCTSTR)s);
+      CString s = AfxGetApp()->GetProfileString(L"YahooData", mru.c_str(), L"");
+      if (!s.IsEmpty()) {
+        __super::push_back((LPCTSTR)s);
+      }
     }
   }
 
   std::wstring mruTypeToString(MRUType type) {
     switch (type) {
       case symbolsFile:
-        return _T( "mruSymbolsFile" );
+        return L"mruSymbolsFile";
       case outputPath:
-        return _T( "mruOutputPath" );
+        return L"mruOutputPath";
       case outputFile:
-        return _T( "mruOutputFile" );
+        return L"mruOutputFile";
       default:
         assert(false);
-        return _T( "" );
+        return L"";
     }
   }
 
   ~MRU() {
     for (unsigned int n = 0; n < MRU_MAX; n++) {
-      std::wostringstream o;
-
-      o << n;
-
-      std::wstring mru = m_mruBase + o.str();
-      AfxGetApp()->WriteProfileString(
-          _T( "YahooData" ), mru.c_str(),
-          n < __super::size() ? (*this)[n].c_str() : _T( "" ));
+      std::wstring mru = m_mruBase + std::to_wstring(n);
+      AfxGetApp()->WriteProfileString(L"YahooData", mru.c_str(), n < __super::size() ? (*this)[n].c_str() : L"");
     }
   }
   void add(const std::wstring& item) {
@@ -86,12 +81,12 @@ class MRU : public std::deque<std::wstring> {
   }
 };
 
-#define MRU_SYMBOLS_ID 3000
-#define MRU_OUTPUT_PATH_ID 3100
-#define MRU_OUTPUT_FILE_ID 3200
-#define CLEAR_MRU_SYMBOLS_ID 3020
-#define CLEAR_MRU_OUTPUT_PATH_ID 3120
-#define CLEAR_MRU_OUTPUT_FILE_ID 3220
+constexpr auto MRU_SYMBOLS_ID = 3000;
+constexpr auto MRU_OUTPUT_PATH_ID = 3100;
+constexpr auto MRU_OUTPUT_FILE_ID = 3200;
+constexpr auto CLEAR_MRU_SYMBOLS_ID = 3020;
+constexpr auto CLEAR_MRU_OUTPUT_PATH_ID = 3120;
+constexpr auto CLEAR_MRU_OUTPUT_FILE_ID = 3220;
 
 class CMenuButton : public CButton {
  private:
@@ -107,18 +102,6 @@ class CMenuButton : public CButton {
   virtual void init() = 0;
 
   void clearMenu() {
-    /*		if( m_menu.GetSafeHmenu() )
-                    {
-                            VERIFY( m_menu.DestroyMenu() );
-                            CWinApp * pApp = ::AfxGetApp();
-                            for( unsigned int m = 0; m < MRU_MAX; m++ )
-                                    VERIFY( g_CmdManager->CmdRemove(
-       pApp->m_pszProfileName, getMRUId() + m ) );
-
-                            VERIFY( g_CmdManager->CmdRemove(
-       pApp->m_pszProfileName, getClearId() ) );
-                    }
-                    */
   }
 
   void clear() {
@@ -132,41 +115,6 @@ class CMenuButton : public CButton {
   }
 
   void setMenu() {
-    /*		m_dwMenuOpt |= TPMX_OWNERDRAW_FIXED;
-
-                    clearMenu();
-
-                    if( m_mru.size() > 0 )
-                    {
-                            VERIFY( m_menu.CreateMenu() );
-
-                            CMenu m_xmenu;
-                            VERIFY( m_xmenu.CreatePopupMenu() );
-    //			OutputDebugString( "\nmenu: \n" );
-
-                            unsigned int m;
-                            for( m = 0; m < m_mru.size(); m++ )
-                            {
-                                    const std::wstring& value = m_mru[ m ];
-    //				OutputDebugString( value.c_str() );
-    //				OutputDebugString( "\n" );
-                                    if( !value.empty() )
-                                    {
-                                            VERIFY( m_xmenu.AppendMenu(
-    MF_STRING, m+getMRUId(), value.c_str() ) );
-                                    }
-                            }
-
-                            m_xmenu.AppendMenu( MF_SEPARATOR );
-                            m_xmenu.AppendMenu( MF_STRING, getClearId(), _T(
-    "Clear list" ) );
-
-                            m_menu.AppendMenu( MF_POPUP, (UINT)m_xmenu.Detach(),
-    "mru" );
-
-                            SetSeparatedDropDown();
-                    }
-    */
   }
 
   const std::wstring& operator[](unsigned int ix) const { return m_mru[ix]; }

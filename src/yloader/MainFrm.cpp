@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,10 +43,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 ON_WM_CREATE()
 ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
 ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
-ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7,
-                 &CMainFrame::OnApplicationLook)
-ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7,
-                           &CMainFrame::OnUpdateApplicationLook)
+ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
+ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 ON_COMMAND(ID_SETTINGS, &CMainFrame::OnSettings)
 ON_WM_DESTROY()
 ON_COMMAND(ID_DOWNLOAD, &CMainFrame::OnDownload)
@@ -79,8 +77,7 @@ static UINT indicators[] = {
 
 CMainFrame::CMainFrame() {
   // TODO: add member initialization code here
-  theApp.m_nAppLook =
-      theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_OFF_2007_BLUE);
+  theApp.m_nAppLook = theApp.GetInt(L"ApplicationLook", ID_VIEW_APPLOOK_OFF_2007_BLUE);
 }
 
 CMainFrame::~CMainFrame() {}
@@ -100,18 +97,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   SetIcon(m_hIcon, TRUE);   // Set big icon
   SetIcon(m_hIcon, FALSE);  // Set small icon
 
-  m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC |
-                            CBRS_TOOLTIPS | CBRS_FLYBY);
+  m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
 
   // prevent the menu bar from taking the focus on activation
   CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
-  if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT,
-                             WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-                                 CBRS_TOOLTIPS | CBRS_FLYBY |
-                                 CBRS_SIZE_DYNAMIC) ||
-      !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAIN_TOOLBAR
-                                                       : IDR_MAIN_TOOLBAR)) {
+  if (!m_wndToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
+      !m_wndToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAIN_TOOLBAR : IDR_MAIN_TOOLBAR)) {
     TRACE0("Failed to create toolbar\n");
     return -1;  // fail to create
   }
@@ -120,13 +112,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
   ASSERT(bNameValid);
   m_wndToolBar.SetWindowText(strToolBarName);
-  /*
-          CString strCustomize;
-          bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-          ASSERT(bNameValid);
-          m_wndToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE,
-     strCustomize);
-  */
   // Allow user-defined toolbars operations:
   InitUserToolbars(NULL, uiFirstUserToolBarId, uiLastUserToolBarId);
 
@@ -159,7 +144,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
   if (CMFCToolBar::GetUserImages() == NULL) {
     // load user-defined toolbar images
-    if (m_UserImages.Load(_T(".\\UserImages.bmp"))) {
+    if (m_UserImages.Load(L".\\UserImages.bmp")) {
       CMFCToolBar::SetUserImages(&m_UserImages);
     }
   }
@@ -194,7 +179,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
-  if (!CFrameWndEx::PreCreateWindow(cs)) return FALSE;
+  if (!CFrameWndEx::PreCreateWindow(cs)) {
+    return FALSE;
+  }
   cs.style &= ~WS_MAXIMIZEBOX & ~WS_THICKFRAME & ~(LONG)FWS_ADDTOTITLE;
 
   return TRUE;
@@ -211,10 +198,6 @@ void CMainFrame::Dump(CDumpContext& dc) const { CFrameWndEx::Dump(dc); }
 // CMainFrame message handlers
 
 void CMainFrame::OnViewCustomize() {
-  //	CMFCToolBarsCustomizeDialog* pDlgCust = new
-  //CMFCToolBarsCustomizeDialog(this, TRUE /* scan menus */);
-  //	pDlgCust->EnableUserDefinedToolbars();
-  //	pDlgCust->Create();
 }
 
 LRESULT CMainFrame::OnToolbarCreateNew(WPARAM wp, LPARAM lp) {
@@ -244,108 +227,61 @@ void CMainFrame::OnApplicationLook(UINT id) {
     case ID_VIEW_APPLOOK_WIN_2000:
       CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManager));
       break;
-
     case ID_VIEW_APPLOOK_OFF_XP:
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerOfficeXP));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOfficeXP));
       break;
-
     case ID_VIEW_APPLOOK_WIN_XP:
       CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerWindows));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
       break;
-
     case ID_VIEW_APPLOOK_OFF_2003:
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerOffice2003));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2003));
       CDockingManager::SetDockingMode(DT_SMART);
       break;
-
     case ID_VIEW_APPLOOK_VS_2005:
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerVS2005));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2005));
       CDockingManager::SetDockingMode(DT_SMART);
       break;
-
     case ID_VIEW_APPLOOK_VS_2008:
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerVS2008));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
       CDockingManager::SetDockingMode(DT_SMART);
       break;
-
     case ID_VIEW_APPLOOK_WINDOWS_7:
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerWindows7));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
       CDockingManager::SetDockingMode(DT_SMART);
       break;
-
     default:
       switch (theApp.m_nAppLook) {
         case ID_VIEW_APPLOOK_OFF_2007_BLUE:
-          CMFCVisualManagerOffice2007::SetStyle(
-              CMFCVisualManagerOffice2007::Office2007_LunaBlue);
+          CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_LunaBlue);
           break;
-
         case ID_VIEW_APPLOOK_OFF_2007_BLACK:
-          CMFCVisualManagerOffice2007::SetStyle(
-              CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
+          CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
           break;
-
         case ID_VIEW_APPLOOK_OFF_2007_SILVER:
-          CMFCVisualManagerOffice2007::SetStyle(
-              CMFCVisualManagerOffice2007::Office2007_Silver);
+          CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Silver);
           break;
-
         case ID_VIEW_APPLOOK_OFF_2007_AQUA:
-          CMFCVisualManagerOffice2007::SetStyle(
-              CMFCVisualManagerOffice2007::Office2007_Aqua);
+          CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Aqua);
           break;
       }
-
-      CMFCVisualManager::SetDefaultManager(
-          RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+      CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
       CDockingManager::SetDockingMode(DT_SMART);
   }
 
-  RedrawWindow(
-      NULL, NULL,
-      RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
+  RedrawWindow(NULL, NULL, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
 
-  theApp.WriteInt(_T("ApplicationLook"), theApp.m_nAppLook);
+  theApp.WriteInt(L"ApplicationLook", theApp.m_nAppLook);
 }
 
 void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI) {
   pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
-BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle,
-                           CWnd* pParentWnd, CCreateContext* pContext) {
+BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) {
   // base class does the real work
 
-  if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd,
-                              pContext)) {
-    return FALSE;
-  }
-
-  /*
-          // enable customization button for all user toolbars
-          BOOL bNameValid;
-          CString strCustomize;
-          bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
-          ASSERT(bNameValid);
-
-          for (int i = 0; i < iMaxUserToolbars; i ++)
-          {
-                  CMFCToolBar* pUserToolbar = GetUserToolBarByIndex(i);
-                  if (pUserToolbar != NULL)
-                  {
-                          pUserToolbar->EnableCustomizeButton(TRUE,
-     ID_VIEW_CUSTOMIZE, strCustomize);
-                  }
-          }
-  */
-  return TRUE;
+  return CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext);
 }
 
 void CMainFrame::OnSettings() { getView()->OnSettings(); }
@@ -363,9 +299,6 @@ void CMainFrame::OnCancelDownload() { getView()->OnCancelDownload(); }
 
 void CMainFrame::DoDataExchange(CDataExchange* pDX) {
   __super::DoDataExchange(pDX);
-
-  //	DDX_Control(pDX, IDC_MAIN_TOOLBAR, m_wndMenuBar);
-  //	DDX_Control(pDX, IDC_MAIN_TOOLBAR, m_wndToolBar);
 }
 
 void CMainFrame::OnUpdateDownload(CCmdUI* pCmdUI) {
@@ -393,22 +326,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 
 afx_msg LRESULT CMainFrame::OnYmUpdateAvailable(WPARAM wParam, LPARAM lParam) {
   std::wstring newVersion = m_updater->getVersion().toString();
-  std::wstring updateOnlyVersion =
-      getView()->getNotifyOnlyIfNewerVersion().toString();
+  std::wstring updateOnlyVersion = getView()->getNotifyOnlyIfNewerVersion().toString();
 
-  m_wndStatusBar.SetPaneText(0, (std::wstring(_T( "New version available: " )) +
-                                 m_updater->getVersion().toString())
-                                    .c_str());
-  if (!m_autoUpdating ||
-      m_updater->getVersion() > getView()->getNotifyOnlyIfNewerVersion()) {
-    CUpdateDlg updateDlg(*m_updater->getUpdateInfo(),
-                         getView()->checkForUpdatesAtStartup(),
-                         getView()->getNotifyOnlyIfNewerVersion());
+  m_wndStatusBar.SetPaneText(0, (L"New version available: "s + m_updater->getVersion().toString()).c_str());
+  if (!m_autoUpdating || m_updater->getVersion() > getView()->getNotifyOnlyIfNewerVersion()) {
+    CUpdateDlg updateDlg(*m_updater->getUpdateInfo(), getView()->checkForUpdatesAtStartup(), getView()->getNotifyOnlyIfNewerVersion());
     updateDlg.DoModal();
 
-    getView()->setNotifyOnlyIfNewerVersion(
-        updateDlg.getNotifyOnlyIfNewerVersion() ? m_updater->getVersion()
-                                                : Version());
+    getView()->setNotifyOnlyIfNewerVersion(updateDlg.getNotifyOnlyIfNewerVersion() ? m_updater->getVersion() : Version());
     getView()->setCheckForUpdatesAtStartup(updateDlg.getCheckAtStartup());
   }
 
@@ -426,10 +351,9 @@ void CMainFrame::updateError(const std::wstring& error) {
   PostMessage(YM_UPDATE_ERROR);
 }
 
-#define LATEST_VERSION _T("You are running the latest YLoader version")
-#define UPDATE_ERROR std::wstring(_T("Update error: "))
-afx_msg LRESULT CMainFrame::OnYmNoUpdateAvailable(WPARAM wParam,
-                                                  LPARAM lParam) {
+constexpr auto LATEST_VERSION = L"You are running the latest YLoader version";
+constexpr auto UPDATE_ERROR = L"Update error: ";
+afx_msg LRESULT CMainFrame::OnYmNoUpdateAvailable(WPARAM wParam, LPARAM lParam) {
   m_wndStatusBar.SetPaneText(0, LATEST_VERSION);
   if (!m_autoUpdating) {
     AfxMessageBox(LATEST_VERSION);
@@ -437,13 +361,12 @@ afx_msg LRESULT CMainFrame::OnYmNoUpdateAvailable(WPARAM wParam,
   return 0;
 }
 
-afx_msg LRESULT CMainFrame::OnYmCheckingForUpdate(WPARAM wParam,
-                                                  LPARAM lParam) {
-  m_wndStatusBar.SetPaneText(0, _T( "Checking for updates" ));
+afx_msg LRESULT CMainFrame::OnYmCheckingForUpdate(WPARAM wParam, LPARAM lParam) {
+  m_wndStatusBar.SetPaneText(0, L"Checking for updates");
   return 0;
 }
 
-void CMainFrame::init(boost::shared_ptr<Updater> updater) {
+void CMainFrame::init(std::shared_ptr<Updater> updater) {
   getView()->setFrame(this);
   getView()->processAutoStart();
 
@@ -463,39 +386,32 @@ afx_msg LRESULT CMainFrame::OnYmUpdateError(WPARAM wParam, LPARAM lParam) {
   return 0;
 }
 
-#define YGQD_DOCUMENTATION YLOADER_URL _T( "/doc/index.html" )
-#define RELEASE_NOTES_DIRECTORY _T( "release-notes")
-#define RELEASE_NOTES_QUERY \
-  YLOADER_URL _T( "/") RELEASE_NOTES_DIRECTORY _T( "?") VERSION_QUERY_ARGS
-
-#define YLOADER_HOME YLOADER_URL _T( "?" ) VERSION_QUERY_ARGS
-#define YLOADER_ON_GITHUB _T( "https://www.github.com/adrianmichel/yloader")
-
+#define YGQD_DOCUMENTATION YLOADER_URL L"/doc/index.html"
+#define RELEASE_NOTES_DIRECTORY L"release-notes"
+#define RELEASE_NOTES_QUERY YLOADER_URL L"/" RELEASE_NOTES_DIRECTORY L"?" VERSION_QUERY_ARGS
+#define YLOADER_HOME YLOADER_URL L"?" VERSION_QUERY_ARGS
+#define YLOADER_ON_GITHUB L"https://www.github.com/adrianmichel/yloader"
 
 void CMainFrame::OnHelpYgqdhome() {
-  int ret = (int)ShellExecute(0, 0, YLOADER_HOME, 0, 0, SW_SHOWNORMAL);
+  HINSTANCE h = ShellExecute(0, 0, YLOADER_HOME, 0, 0, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnHelpEmailygqdsupport() {
-  int ret = (int)ShellExecute(0, 0, _T("mailto:info@yloader.com"), 0, 0,
-                              SW_SHOWNORMAL);
+  HINSTANCE h = ShellExecute(0, 0, L"mailto:info@yloader.com", 0, 0, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnOpensettingsfile() {
-  int ret = (int)ShellExecute(0, 0, getYLoaderSettingsFile().c_str(), 0, 0,
-                              SW_SHOWNORMAL);
+  HINSTANCE h = ShellExecute(0, 0, getYLoaderSettingsFile().c_str(), 0, 0, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnHelp() {
-  int ret = (int)ShellExecute(0, 0, YGQD_DOCUMENTATION, 0, 0, SW_SHOWNORMAL);
+  HINSTANCE h = ShellExecute(0, 0, YGQD_DOCUMENTATION, 0, 0, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnHelpReleasenotes() {
-  int ret = (int)ShellExecute(0, 0, RELEASE_NOTES_QUERY, 0, 0, SW_SHOWNORMAL);
+  HINSTANCE h = ShellExecute(0, 0, RELEASE_NOTES_QUERY, 0, 0, SW_SHOWNORMAL);
 }
 
-
-void CMainFrame::OnHelpYloaderongithub()
-{
-	int ret = (int)ShellExecute(0, 0, YLOADER_ON_GITHUB, 0, 0, SW_SHOWNORMAL);
+void CMainFrame::OnHelpYloaderongithub() {
+  HINSTANCE h = ShellExecute(0, 0, YLOADER_ON_GITHUB, 0, 0, SW_SHOWNORMAL);
 }

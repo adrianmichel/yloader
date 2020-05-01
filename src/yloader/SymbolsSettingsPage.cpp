@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,10 +23,8 @@ IMPLEMENT_DYNCREATE(CSymbolsListsSettings, CPropertyPage)
 CSymbolsListsSettings::CSymbolsListsSettings(CWnd* pParent) {}
 CSymbolsListsSettings::~CSymbolsListsSettings() {}
 
-void CSymbolsListsSettings::init(const std::wstring& errorSymbolsFile,
-                                 bool appendToErrorSymbolsFile,
-                                 bool ignoreErrorSymbolsList,
-                                 const std::wstring& ignoreSymbolsList) {
+void CSymbolsListsSettings::init(const std::wstring& errorSymbolsFile, bool appendToErrorSymbolsFile,
+                                 bool ignoreErrorSymbolsList,const std::wstring& ignoreSymbolsList) {
   m_errorSymbolsFile = errorSymbolsFile.c_str();
   m_appendToErrorSymbolsFile = appendToErrorSymbolsFile;
   m_ignoreErrorSymbolsList = ignoreErrorSymbolsList;
@@ -35,19 +33,15 @@ void CSymbolsListsSettings::init(const std::wstring& errorSymbolsFile,
 
 void CSymbolsListsSettings::DoDataExchange(CDataExchange* pDX) {
   DDX_Text(pDX, IDC_EDIT_ERRORS_SYMBOLS_FILE, m_errorSymbolsFile);
-  DDX_Check(pDX, IDC_CHECK_APPEND_TO_ERROR_SYMBOLS_LIST_FILE,
-            m_appendToErrorSymbolsFile);
+  DDX_Check(pDX, IDC_CHECK_APPEND_TO_ERROR_SYMBOLS_LIST_FILE, m_appendToErrorSymbolsFile);
 
-  DDX_Check(pDX, IDC_CHECK_IGNORE_ERRORS_SYMBOLS_LIST,
-            m_ignoreErrorSymbolsList);
+  DDX_Check(pDX, IDC_CHECK_IGNORE_ERRORS_SYMBOLS_LIST, m_ignoreErrorSymbolsList);
   DDX_Text(pDX, IDC_EDIT_IGNORE_SYMBOLS_LIST, m_ignoreSymbolsList);
 
   DDX_Control(pDX, IDC_STATIC_SYMBOLS_WITH_ERRORS_GROUP, m_errorSymbolsGroup);
 
-  DDX_Control(pDX, IDC_CHECK_APPEND_TO_ERROR_SYMBOLS_LIST_FILE,
-              m_appendToErrorSymbolsFileCtrl);
-  DDX_Control(pDX, IDC_CHECK_IGNORE_ERRORS_SYMBOLS_LIST,
-              m_ignoreErrorsSymbolsCtrl);
+  DDX_Control(pDX, IDC_CHECK_APPEND_TO_ERROR_SYMBOLS_LIST_FILE, m_appendToErrorSymbolsFileCtrl);
+  DDX_Control(pDX, IDC_CHECK_IGNORE_ERRORS_SYMBOLS_LIST, m_ignoreErrorsSymbolsCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CSymbolsListsSettings, CPropertyPage)

@@ -24,8 +24,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 using namespace yloader;
 
-typedef yloader::NameValueMapBase Base;
-typedef std::pair<Base::const_iterator, Base::const_iterator> BaseItPair;
+using Base = yloader::NameValueMapBase;
+using BaseItPair = std::pair<Base::const_iterator, Base::const_iterator>;
 
 MISC_API void NameValueMap::set(const NameValue& nameValue) {
   assert(!nameValue.name().empty());
@@ -33,12 +33,14 @@ MISC_API void NameValueMap::set(const NameValue& nameValue) {
 
   if (n == 0) {
     add(nameValue);
-  } else if (n == 1) {
+  }
+  else if (n == 1) {
     Base::iterator i = Base::find(nameValue.name());
     assert(i != Base::end());
 
     *(i->second) = nameValue;
-  } else {
+  }
+  else {
     // can't set if there are multiple values with the same name for now
     assert(false);
   }
@@ -48,24 +50,22 @@ MISC_API void NameValueMap::add(const NameValue& nameValue) {
   add(nameValue.name(), nameValue.value());
 }
 
-MISC_API yloader::NameValue yloader::NameValueMap::operator[](
-    unsigned int n) const {
+MISC_API yloader::NameValue yloader::NameValueMap::operator[](size_t n) const {
   if (size() > 0 && n < size()) {
     NameValuePtr nameValue(m_vector[n]);
 
-    return Base::count(nameValue->name()) > 1
-               ? NameValue(nameValue->name() + _T( "[]" ), nameValue->value())
-               : *nameValue;
-  } else
-    return NameValue();
+    return Base::count(nameValue->name()) > 1 ? NameValue(nameValue->name() + L"[]", nameValue->value()) : *nameValue;
+  }
+  else {
+    return NameValue{};
+  }
 }
 
 MISC_API void yloader::NameValueMap::push_back(const yloader::NameValue& nv) {
   add(nv);
 }
 
-MISC_API void NameValueMap::add(const std::wstring& name,
-                                const std::wstring& value) {
+MISC_API void NameValueMap::add(const std::wstring& name, const std::wstring& value) {
   assert(!name.empty());
 
   NameValuePtr nameValue(new NameValue(name, value));
@@ -74,8 +74,7 @@ MISC_API void NameValueMap::add(const std::wstring& name,
   __super::insert(Base::value_type(name, nameValue));
 }
 
-MISC_API yloader::StringPtr yloader::NameValueMap::toString(
-    bool phpStyle) const {
+MISC_API yloader::StringPtr yloader::NameValueMap::toString(bool phpStyle) const {
   yloader::StringPtr str(new std::wstring());
 
   for (Base::const_iterator i = Base::begin(); i != Base::end();) {
@@ -84,43 +83,22 @@ MISC_API yloader::StringPtr yloader::NameValueMap::toString(
 
     if (Base::count(name) > 1 && phpStyle) {
       for (i = its.first; i != its.second; ++i) {
-        if (!str->empty()) (*str) += _T( "&" );
+        if (!str->empty()) {
+          (*str) += L"&";
+        }
 
-        (*str) += name + _T( "[]=" ) + i->second->value();
+        (*str) += name + L"[]=" + i->second->value();
       }
-    } else {
-      if (!str->empty()) (*str) += _T("&");
+    }
+    else {
+      if (!str->empty()) {
+        (*str) += L"&";
+      }
 
-      (*str) += name + _T("=" ) + i->second->value();
+      (*str) += name + L"=" + i->second->value();
       ++i;
     }
   }
 
   return str;
 }
-
-/*
-typedef std::vector< NameValue > NameValueVectorBase;
-MISC_API void yloader::NameValueVector::add( const std::wstring& name, const
-std::wstring& value )
-{
-        assert( !name.empty() );
-
-        NameValueVectorBase::push_back( NameValue( name, value ) );
-}
-
-MISC_API yloader::StringPtr NameValueVector::toString() const
-{
-        yloader::StringPtr str( new std::wstring() );
-
-        for( __super::size_type n = 0; n < __super::size(); ++n )
-        {
-                if( n > 0 )
-                        (*str) += "&";
-
-                (*str) += *__super::operator[]( n ).toString();
-        }
-
-        return str;
-}
-*/

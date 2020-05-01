@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ class CDataValidationSettings : public CDialog, public Okable {
   enum { IDD = IDD_PROPPAGE_DATA_VALIDATION_SETTINGS };
 
  protected:
-  virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
+  void DoDataExchange(CDataExchange* pDX) override;  // DDX/DDV support
 
   DECLARE_MESSAGE_MAP()
  private:

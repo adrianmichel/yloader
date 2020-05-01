@@ -32,19 +32,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 /**/
 
-inline std::wstring hexstr(unsigned int n, unsigned int digits) {
+template< typename T > std::wstring hexstr(T n, unsigned int digits) {
   std::wostringstream os;
-  os << _T( "0x" ) << std::setw(digits) << std::setfill(_TCHAR('0')) << std::hex
-     << n;
+  os << L"0x" << std::setw(digits) << std::setfill(L'0') << std::hex << n;
   return os.str();
-}
-
-inline std::wstring hexstr(HWND n, unsigned int digits) {
-  return hexstr(reinterpret_cast<unsigned int>(n), digits);
-}
-
-inline std::wstring hexstr(const void* n, unsigned int digits) {
-  return hexstr((unsigned int)n, digits);
 }
 
 #define HEXSTR(n, digits) hexstr(n, digits).c_str()
@@ -60,132 +51,123 @@ namespace yloader {
 class LogException {};
 
 // this is the diagnostic logging
-
-typedef yloader::ManagedPtr<yloader::t_ostream> OstreamPtr;
-
 #pragma message(__TODO__ "implement log file limit")
 
 class LOG_API Log {
  private:
-  static Level _globalLevel;
-  Level _level;
-  Level _thisLevel;
+  static Level m_globalLevel;
+  Level m_level;
+  Level m_thisLevel;
 
-  static std::wstring _logToFile;
-  static bool _logToDebugOutput;
-  static bool _logToConsole;
-  static yloader::Mutex _mutex;
+  static std::wstring m_logToFile;
+  static bool m_logToDebugOutput;
+  static bool m_logToConsole;
+  static std::mutex m_mutex;
 
  public:
   // level 0 - everything passes
-  Log(Level level, TCHAR* func) : _level(level) {}
+  Log(Level level, const wchar_t* func) : m_level(level) {}
 
   // start session
-  Log() : _level(log_none) {}
+  Log() : m_level(log_none) {}
 
   ~Log() {}
 
   static std::wstring levelToString(Level level) {
     switch (level) {
       case log_debug:
-        return _T( "L0" );
+        return L"L0";
       case log_info:
-        return _T("L1");
+        return L"L1";
       case log_error:
-        return _T("L2");
+        return L"L2";
       case log_assert:
-        return _T("L3");
+        return L"L3";
       case log_none:
-        return _T("");
+        return L"";
       default:
         assert(false);
-        return _T("");
+        return L"";
     }
   }
 
   static bool checkLevel(Level level) {
-    Lock lock(_mutex);
-    return _globalLevel <= level;
+    return m_globalLevel <= level;
   }
 
   static Level level() {
-    Lock lock(_mutex);
-    return _globalLevel;
+    std::scoped_lock lock(m_mutex);
+    return m_globalLevel;
   }
 
-  static std::wstring header(Level level, TCHAR* func) {
+  static std::wstring header(Level level, const wchar_t* func) {
     assert(func != 0);
     std::wostringstream o;
-    o << _T( "[" ) << timeStamp(true) << _T( " " )
-      << HEXSTR5(GetCurrentThreadId()) << _T( "," );
-    o << HEXSTR5(GetCurrentProcessId()) << " " << levelToString(level)
-      << _T( "] [" ) << func << _T( "] " );
+    o << L"[" << timeStamp(true) << L" " << HEXSTR5(GetCurrentThreadId()) << L",";
+    o << HEXSTR5(GetCurrentProcessId()) << L" " << levelToString(level) << L"] [" << func << L"] ";
     return o.str();
   }
 
   static void setLevel(Level level);
 
   static void setDebugLevel() {
-    Lock lock(_mutex);
-    _globalLevel = log_debug;
+    std::scoped_lock lock(m_mutex);
+    m_globalLevel = log_debug;
   }
 
   static void setNormalLevel() {
-    Lock lock(_mutex);
-    _globalLevel = log_info;
+    std::scoped_lock lock(m_mutex);
+    m_globalLevel = log_info;
   }
 
   static bool isDebugLevel() {
-    Lock lock(_mutex);
+    std::scoped_lock lock(m_mutex);
 
-    return _globalLevel == log_debug;
+    return m_globalLevel == log_debug;
   }
 
   static void flipLevel();
 
   static void setLogToFile(const std::wstring& file) {
-    Lock lock(_mutex);
-    _logToFile = file;
+    std::scoped_lock lock(m_mutex);
+    m_logToFile = file;
   }
   static void setLogToConsole(bool log = true) {
-    Lock lock(_mutex);
-    _logToConsole = log;
+    std::scoped_lock lock(m_mutex);
+    m_logToConsole = log;
   }
   static void setLogToDebugOutput(bool log = true) {
-    Lock lock(_mutex);
-    _logToDebugOutput = log;
+    std::scoped_lock lock(m_mutex);
+    m_logToDebugOutput = log;
   }
 
   static bool logToFile() {
-    Lock lock(_mutex);
-    return !_logToFile.empty();
+    return !m_logToFile.empty();
   }
   static const std::wstring& getLogFileName() {
-    Lock lock(_mutex);
-    return _logToFile;
+    return m_logToFile;
   }
   static bool logToConsole() {
-    Lock lock(_mutex);
-    return _logToConsole;
+    return m_logToConsole;
   }
   static bool logToDebugOutput() {
-    Lock lock(_mutex);
-    return _logToDebugOutput;
+    return m_logToDebugOutput;
   }
 
-  static void xlog(Level level, TCHAR* function, const std::wstring& value);
-  static void xfilelog(const std::wstring& fileName, Level level,
-                       TCHAR* function, const std::wstring& value);
+  static void xlog(Level level, const wchar_t* function, const std::wstring& value);
+  static void xfilelog(const std::wstring& fileName, Level level, const wchar_t* function, const std::wstring& value);
 
  protected:
-  virtual t_ostream& getOstream() = 0;
+  virtual std::wostream& getOstream() = 0;
 
  public:
   template <typename T>
-  t_ostream& operator<<(const T& t) {
-    t_ostream& os = getOstream();
+  std::wostream& operator<<(const T& t) {
+    std::wostream& os = getOstream();
 
-    if (_globalLevel <= _level && os) os << t;
+    if (m_globalLevel <= m_level && os) {
+      os << t;
+    }
 
     return os;
   }
@@ -193,45 +175,54 @@ class LOG_API Log {
 
 class FileLog : public Log {
  private:
-  std::wofstream _ofs;
+  std::wofstream m_ofs;
 
  public:
-  FileLog(Level level, TCHAR* func)
-      : _ofs(getLogFileName().c_str(),
+  FileLog(Level level, const wchar_t* func)
+      : m_ofs(getLogFileName().c_str(),
              std::ios_base::ate | std::ios_base::out | std::ios_base::app),
         Log(level, func) {
-    if (!_ofs) {
+    if (!m_ofs) {
       throw LogException();
     }
   }
 
-  FileLog(TCHAR* fileName, Level level, TCHAR* func)
-      : _ofs(fileName,
+  FileLog(TCHAR* fileName, Level level, const wchar_t* func)
+      : m_ofs(fileName,
              std::ios_base::ate | std::ios_base::out | std::ios_base::app),
         Log(level, func) {
-    if (!_ofs) {
+    if (!m_ofs) {
       throw LogException();
     }
   }
 
-  FileLog(const std::wstring& fileName, Level level, TCHAR* func)
-      : _ofs(fileName.c_str(),
+  FileLog(const std::wstring& fileName, Level level, const wchar_t* func)
+      : m_ofs(fileName.c_str(),
              std::ios_base::ate | std::ios_base::out | std::ios_base::app),
         Log(level, func) {
-    if (!_ofs) {
+    if (!m_ofs) {
       throw LogException();
     }
   }
 
-  virtual t_ostream& getOstream() { return _ofs; }
+  virtual std::wostream& getOstream() { return m_ofs; }
 };
 
 }  // namespace yloader
 
-using yloader::operator<<;
+template<typename... T > std::wstring out(T...t) {
+  std::wostringstream os;
+  ((os << std::forward<T>(t)), ...);
+  return os.str();
+}
 
-#define LOG(level, value) \
-  yloader::Log::xlog(level, _T(__FUNCTION__), std::wstring() << value);
+
+#define LOG( level, ... ) \
+  [&](const wchar_t* function, auto... args)->void{ \
+  yloader::Log::xlog(level, function, out( args...)); \
+}(_T(__FUNCTION__), __VA_ARGS__)
+
+
 #define FILE_LOG(fileName, level, value)                    \
   yloader::Log::xfilelog(fileName, level, _T(__FUNCTION__), \
                          std::wstring() << value);

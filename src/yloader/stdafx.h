@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,19 +49,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <afxcontrolbars.h>     // MFC support for ribbons and control bars
 
 #include <boost/format.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+#include <boost\algorithm\string.hpp>
+#include <boost/regex.hpp>
+
+#if defined(_DEBUG)
+#define new DEBUG_NEW
+#endif
+
+
+#include <objcounter.h>
 
 #include <strings.h>
 #include <log.h>
 #include <yloader.h>
 #include <YPlugin.h>
-#include <threadsync.h>
 #include <miscfile.h>
 #include <thread.h>
 #include <Updater.h>
 
-
-
-
+#include "BrowseForFolder.h"
 
 inline std::wstring getLocalYLoaderDataPath()
 {
@@ -69,11 +76,8 @@ inline std::wstring getLocalYLoaderDataPath()
 
 	assert(!localAppPath.empty());
 
-	return yloader::getDirectory(localAppPath, _T( "yloader") );
+	return yloader::getDirectory(localAppPath, L"yloader");
 }
-
-
-
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,42 +20,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <hinstance.h>
 class PluginMethodException : public yloader::PluginException {
  private:
-  const std::wstring _methodName;
+  const std::wstring m_methodName;
 
  public:
-  PluginMethodException(const std::wstring& PluginName,
-                        const std::wstring& methodName)
-      : _methodName(methodName),
-        PluginException(PluginName, _T( "Method exception" )) {}
+  PluginMethodException(const std::wstring& PluginName, const std::wstring& methodName)
+      : m_methodName(methodName),
+        PluginException(PluginName, L"Method exception") {}
 
-  const std::wstring& getMethodName() const { return _methodName; }
+  const std::wstring& getMethodName() const { return m_methodName; }
 };
 
 class PluginInstanceException : public yloader::PluginException {
  public:
   PluginInstanceException(const std::wstring& pluginName)
-      : PluginException(pluginName, _T( "Plugin instance exception" )) {}
+      : PluginException(pluginName, L"Plugin instance exception") {}
 };
 
 template <class T>
 class PluginInstanceBase : protected HInstance {
  protected:
-  typedef yloader::Plugin<T>* (*GET_PLUGIN)();
-  yloader::Plugin<T>* _plugin;
+  using GET_PLUGIN = yloader::Plugin<T>* (*)();
+  yloader::Plugin<T>* m_plugin;
 
  public:
-  PluginInstanceBase(const std::wstring& path) : HInstance(path), _plugin(0) {}
+  PluginInstanceBase(const std::wstring& path) : HInstance(path), m_plugin(0) {}
 
   yloader::Plugin<T>* operator->() {
-    assert(_plugin != 0);
-    return _plugin;
+    assert(m_plugin != 0);
+    return m_plugin;
   }
 
   yloader::Plugin<T>& operator*() {
-    if (_plugin != 0)
-      return *_plugin;
-    else
+    if (m_plugin != 0) {
+      return *m_plugin;
+    }
+    else {
       throw PluginInstanceException(path());
+    }
   }
 };
 
@@ -70,27 +71,26 @@ template <class T>
 class PluginInstance : public PluginInstanceBase<T> {
  public:
   // the complete path, including name and extension
-  PluginInstance(const std::wstring& path) throw(PluginMethodException,
-                                                 PluginInstanceException) try
-      : PluginInstanceBase
-    <T>(path) {
+  PluginInstance(const std::wstring& path)
+    try
+      : PluginInstanceBase<T>(path) {
       {
         try {
           try {
-            //					LOG( log_debug, _T( "Potential plugin: ") << path
-            //);
-            GET_PLUGIN getPlugin =
-                reinterpret_cast<GET_PLUGIN>(getProcAddress(procName));
-            _plugin = (*getPlugin)();
-          } catch (const HInstanceMethodException&) {
+            GET_PLUGIN getPlugin = reinterpret_cast<GET_PLUGIN>(getProcAddress(procName));
+            m_plugin = (*getPlugin)();
+          }
+          catch (const HInstanceMethodException&) {
             //					LOG( log_debug, _T( "Not a plugin: ") << path << ", " <<
             //procName << " was not found" );
           }
-        } catch (const HInstanceException&) {
-          LOG(log_debug, _T( "HInstanceException caught" ));
-          throw PluginException(_T( "???" ), __super::path());
-        } catch (const HInstanceMethodException& e) {
-          LOG(log_debug, _T( "HInstanceMethodException caught" ));
+        }
+        catch (const HInstanceException&) {
+          LOG(log_debug, L"HInstanceException caught" );
+          throw PluginException(L"???", __super::path());
+        }
+        catch (const HInstanceMethodException& e) {
+          LOG(log_debug, L"HInstanceMethodException caught" );
           throw PluginMethodException(__super::path(), e.name());
         }
       }
@@ -99,13 +99,13 @@ class PluginInstance : public PluginInstanceBase<T> {
     throw PluginInstanceException(path);
   }
 
-  typedef void (*RELEASE_PLUGIN)();
+  using RELEASE_PLUGIN = void (*)();
   ~PluginInstance() {
     try {
-      RELEASE_PLUGIN releasePlugin =
-          reinterpret_cast<RELEASE_PLUGIN>(getProcAddress(releaseProcName));
+      RELEASE_PLUGIN releasePlugin = reinterpret_cast<RELEASE_PLUGIN>(getProcAddress(releaseProcName));
       (*releasePlugin)();
-    } catch (const HInstanceMethodException&) {
+    }
+    catch (const HInstanceMethodException&) {
     }
   }
 

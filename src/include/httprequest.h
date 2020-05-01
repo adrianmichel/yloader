@@ -18,8 +18,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <wininet.h>
-#include <boost/algorithm/string.hpp>
-#include <boost/shared_ptr.hpp>
+#include <mutex>
+#include <objcounter.h>
 #include "namevalue.h"
 
 #ifdef MISCWIN_EXPORTS
@@ -28,31 +28,33 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #define MISCWIN_API __declspec(dllimport)
 #endif
 
+using namespace std::string_literals;
+
+constexpr auto SERVER_OBJECT_NAME_KEY = L"Server object name";
+
 class ServerContext {
  private:
-  std::wstring _serverName;
-  std::wstring _objectName;
-  std::wstring _extraHeaders;
+  std::wstring m_serverName;
+  std::wstring m_objectName;
+  std::wstring m_extraHeaders;
 
-#define SERVER_OBJECT_NAME_KEY _T( "Server object name" )
 
  public:
-  ServerContext(const std::wstring& serverName, const std::wstring& objectName,
-                const std::wstring& extraHeaders = _T( "" ))
-      : _serverName(serverName),
-        _objectName(objectName),
-        _extraHeaders(extraHeaders) {
+  ServerContext(const std::wstring& serverName, const std::wstring& objectName, const std::wstring& extraHeaders = L""s )
+      : m_serverName(serverName),
+        m_objectName(objectName),
+        m_extraHeaders(extraHeaders) {
     persist();
   }
 
   ServerContext(const ServerContext& sc)
-      : _serverName(sc.serverName()),
-        _objectName(sc.objectName()),
-        _extraHeaders(sc.extraHeaders()) {}
+      : m_serverName(sc.serverName()),
+        m_objectName(sc.objectName()),
+        m_extraHeaders(sc.extraHeaders()) {}
 
-  const std::wstring& serverName() const { return _serverName; }
-  const std::wstring& objectName() const { return _objectName; }
-  const std::wstring& extraHeaders() const { return _extraHeaders; }
+  const std::wstring& serverName() const { return m_serverName; }
+  const std::wstring& objectName() const { return m_objectName; }
+  const std::wstring& extraHeaders() const { return m_extraHeaders; }
 
  private:
   void persist() {
@@ -76,36 +78,26 @@ class InternetException {
   };
 
  private:
-  const DWORD _lastError;
-  const ErrorType _errorType;
-  const unsigned int _httpResponseCode;
-  const std::wstring _additionalInfo;
+  const DWORD m_lastError;
+  const ErrorType m_errorType;
+  const unsigned int m_httpResponseCode;
+  const std::wstring m_additionalInfo;
 
  public:
   std::wstring message() const {
-    switch (_errorType) {
+    switch (m_errorType) {
       case FAILED_TO_CONNECT:
-        return _T( "failed to connect" );
-        break;
+        return L"failed to connect";
       case OPERATION_TIMEDOUT:
-        return _T( "operation timed out" );
-        break;
+        return L"operation timed out";
       case HTTP_RESPONSE_ERROR:
-        return _T( "HTTP response error" );
-        break;
+        return L"HTTP response error";
       case REQUEST_CANCELLED:
-        return _T( "Request canceled" );
-        break;
-      case CURL_ERROR: {
-        std::wostringstream os;
-
-        os << _T( "Curl error: " ) << _additionalInfo << " "
-           << httpResponseCode();
-        return os.str();
-      }
+        return L"Request canceled";
+      case CURL_ERROR:
+        return L"Curl error: "s + m_additionalInfo + L" " + std::to_wstring( httpResponseCode() );
       default:
-        return _T( "Unknown internet error" );
-        break;
+        return L"Unknown Internet error";
     }
   }
   /**
@@ -114,25 +106,25 @@ class InternetException {
    * @param errorType Error type
    */
   InternetException(ErrorType errorType, unsigned int httpResponseCode = 0,
-                    const std::wstring& additionalInfo = std::wstring())
-      : _lastError(GetLastError()),
-        _errorType(errorType),
-        _httpResponseCode(httpResponseCode),
-        _additionalInfo(additionalInfo) {}
+                    const std::wstring& additionalInfo = L"")
+      : m_lastError(GetLastError()),
+        m_errorType(errorType),
+        m_httpResponseCode(httpResponseCode),
+        m_additionalInfo(additionalInfo) {}
 
   /**
    * Returns the last error, i.e. the value set by the call to GetLastError
    *
    * @return Value returned by GetLastError
    */
-  DWORD lastError() const { return _lastError; }
+  DWORD lastError() const { return m_lastError; }
   /**
    * Returns the error type
    *
    * @return The error type
    */
-  ErrorType errorType() const { return _errorType; }
-  unsigned int httpResponseCode() const { return _httpResponseCode; }
+  ErrorType errorType() const { return m_errorType; }
+  unsigned int httpResponseCode() const { return m_httpResponseCode; }
 };
 
 class HTTPRequestBase {
@@ -146,41 +138,28 @@ class HTTPRequestBase {
 
   virtual ~HTTPRequestBase() {}
 
-  virtual boost::shared_ptr<std::string> get(
-      const std::wstring& object,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& userAgent = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
+  virtual std::shared_ptr<std::string> get(const std::wstring& object, const std::wstring& extraHeaders = L""s,
+      const std::wstring& userAgent = L""s, const std::wstring& proxyServerAddress = L""s,
+      const std::wstring& proxyServerUserName = L""s, const std::wstring& proxyServerPassword = L""s,
       unsigned int timeout = 0,
       const std::wstring& cookie = std::wstring()) = 0;
 
-  boost::shared_ptr<std::string> get(
-      const std::wstring& object, const yloader::NameValueMap& data,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& userAgent = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
-      unsigned int timeout = 0) {
+  std::shared_ptr<std::string> get(const std::wstring& object, const yloader::NameValueMap& data, const std::wstring& extraHeaders = L""s,
+      const std::wstring& userAgent = L""s, const std::wstring& proxyServerAddress = L""s,
+      const std::wstring& proxyServerUserName = L""s, const std::wstring& proxyServerPassword = L""s, unsigned int timeout = 0) {
     std::wstring query = object;
 
-    if (!query.empty() && query.find(_T( "?" )) == std::wstring::npos)
-      query += _T( "?" );
+    if (!query.empty() && query.find(L"?") == std::wstring::npos) {
+      query += L"?";
+    }
 
-    query += data.toString();
+    query += *data.toString();
 
-    return get(query, extraHeaders, userAgent, proxyServerAddress,
-               proxyServerUserName, proxyServerPassword, timeout);
+    return get(query, extraHeaders, userAgent, proxyServerAddress, proxyServerUserName, proxyServerPassword, timeout);
   }
 
-  virtual boost::shared_ptr<std::string> post(
-      const std::wstring& object, const yloader::NameValueMap& data,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
+  virtual std::shared_ptr<std::string> post(const std::wstring& object, const yloader::NameValueMap& data, const std::wstring& extraHeaders = L""s,
+      const std::wstring& proxyServerAddress = L""s, const std::wstring& proxyServerUserName = L""s, const std::wstring& proxyServerPassword = L""s,
       unsigned int timeout = 0) = 0;
 
   bool operator==(const std::wstring& serverName) const {
@@ -195,14 +174,14 @@ class HTTPRequestBase {
  protected:
   const std::wstring& getServerName() const { return m_serverName; }
   std::wstring protocol() const {
-    return m_http ? _T( "http" ) : _T( "https" );
+    return m_http ? L"http" : L"https";
   }
   std::wstring url(const std::wstring& object);
 };
 
-typedef yloader::ManagedPtr<HTTPRequestBase> HTTPRequestBasePtr;
+using HTTPRequestBasePtr = std::shared_ptr<HTTPRequestBase>;
+using StrStrMap = std::map<std::string, std::string>;
 
-typedef std::map<std::string, std::string> StrStrMap;
 class Headers : public StrStrMap {
  public:
   void add(const std::string& header) {
@@ -222,14 +201,15 @@ class Headers : public StrStrMap {
 };
 
 class MISCWIN_API CurlHTTPRequest : public HTTPRequestBase {
+  OBJ_COUNTER(CurlHTTPRequest)
  private:
-  void* _curl;
-  yloader::Mutex _mx;
-  bool _cancel;
-  bool _canceled;
+  void* m_curl;
+  std::mutex m_mx;
+  bool m_cancel;
+  bool m_canceled;
   bool m_verifyPeer;
   bool m_verifyHost;
-  Headers headers;
+  Headers m_headers;
 
   static int xprogress(void* req, double t, double d, double ultotal,
                        double ulnow);
@@ -240,44 +220,30 @@ class MISCWIN_API CurlHTTPRequest : public HTTPRequestBase {
   void setVerify();
 
  public:
-  CurlHTTPRequest(const std::wstring& serverName, bool http = true,
-                  bool verifyPeer = false, bool verifyHost = false);
+  CurlHTTPRequest(const std::wstring& serverName, bool http = true, bool verifyPeer = false, bool verifyHost = false);
   virtual ~CurlHTTPRequest();
 
-  virtual boost::shared_ptr<std::string> get(
-      const std::wstring& data,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& userAgent = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
-      unsigned int timeout = 0, const std::wstring& cookie = std::wstring());
+  virtual std::shared_ptr<std::string> get(const std::wstring& data, const std::wstring& extraHeaders = L""s,
+      const std::wstring& userAgent = L""s, const std::wstring& proxyServerAddress = L""s,
+      const std::wstring& proxyServerUserName = L""s, const std::wstring& proxyServerPassword = L""s,
+      unsigned int timeout = 0, const std::wstring& cookie = L""s);
 
-  virtual boost::shared_ptr<std::string> post(
-      const std::wstring& object, const yloader::NameValueMap& data,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
+  virtual std::shared_ptr<std::string> post(const std::wstring& object, const yloader::NameValueMap& data,
+      const std::wstring& extraHeaders = L""s, const std::wstring& proxyServerAddress = L""s,
+      const std::wstring& proxyServerUserName = L""s, const std::wstring& proxyServerPassword = L""s,
       unsigned int timeout = 0);
 
-  boost::shared_ptr<std::string> get(
-      const std::wstring& object, const yloader::NameValueMap& data,
-      const std::wstring& extraHeaders = std::wstring(),
-      const std::wstring& userAgent = std::wstring(),
-      const std::wstring& proxyServerAddress = std::wstring(),
-      const std::wstring& proxyServerUserName = std::wstring(),
-      const std::wstring& proxyServerPassword = std::wstring(),
-      unsigned int timeout = 0) {
-    return __super::get(object, data, extraHeaders, userAgent,
-                        proxyServerAddress, proxyServerUserName,
-                        proxyServerPassword, timeout);
+  std::shared_ptr<std::string> get( const std::wstring& object, const yloader::NameValueMap& data,
+      const std::wstring& extraHeaders = L""s, const std::wstring& userAgent = L""s,
+      const std::wstring& proxyServerAddress = L""s, const std::wstring& proxyServerUserName = L""s,
+      const std::wstring& proxyServerPassword = L""s, unsigned int timeout = 0) {
+    return __super::get(object, data, extraHeaders, userAgent, proxyServerAddress, proxyServerUserName, proxyServerPassword, timeout);
   }
 
   virtual void cancel();
   void unCancel();
 
-  void addHeader(const std::string& header) { headers.add(header); }
+  void addHeader(const std::string& header) { m_headers.add(header); }
 
-  const Headers& getHeaders() const { return headers; }
+  const Headers& getHeaders() const { return m_headers; }
 };

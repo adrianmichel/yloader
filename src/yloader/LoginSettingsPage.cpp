@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,6 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "StdAfx.h"
 #include "LoginSettingsPage.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 IMPLEMENT_DYNCREATE(CLoggingSettings, CPropertyPage)
 
@@ -51,11 +55,6 @@ END_MESSAGE_MAP()
 
 BOOL CLoggingSettings::OnInitDialog() {
   __super::OnInitDialog();
-
-  /*  GeneralSettings gs;
-    m_searchForUpdatesAtStartupBool = gs.searchForUpdatesAtStartup();
-    UpdateData( false );
-    */
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE

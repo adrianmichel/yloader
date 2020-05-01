@@ -17,16 +17,18 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#pragma warning(disable : 4800 4275 4251 4244 4003)
-
 #include <map>
 #include "sharedptr.h"
 #include "strings.h"
 
-#include <boost/shared_ptr.hpp>
+#ifdef MISC_EXPORTS
+#define MISC_API __declspec(dllexport)
+#else
+#define MISC_API __declspec(dllimport)
+#endif
 
 namespace yloader {
-typedef std::pair<std::wstring, std::wstring> NameValueBase;
+using NameValueBase = std::pair<std::wstring, std::wstring>;
 
 class NameValue : public NameValueBase {
  public:
@@ -34,45 +36,28 @@ class NameValue : public NameValueBase {
 
   template <typename T>
   NameValue(const std::wstring& name, const T& value)
-      : NameValueBase(name, std::wstring() << value) {
+      : NameValueBase(name, value) {
     assert(!name.empty());
   }
 
-  /*	NameValue( const std::wstring& name, const std::wstring& value )
-          : std::pair< std::wstring, std::wstring >( name, value )
-          {
-                  assert( !name.empty() );
-          }
-
-          NameValue( const std::wstring& name, double value )
-          {
-                  assert( !name.empty() );
-                  __super::first = name;
-                  std::wostringstream os;
-                  os << value;
-                  __super::second = os.str();
-
-          }
-  */
   const std::wstring& name() const { return __super::first; }
   const std::wstring& value() const { return __super::second; }
 
   operator bool() const { return !NameValueBase::first.empty(); }
 
   yloader::StringPtr yloader::NameValue::toString() const {
-    yloader::StringPtr str(new std::wstring());
-    (*str) += name() + _T( "=" ) + value();
+    yloader::StringPtr str(std::make_shared< std::wstring >());
+    *str += name() + L"=" + value();
     return str;
   }
 };
 
-typedef boost::shared_ptr<NameValue> NameValuePtr;
-
-typedef std::multimap<std::wstring, NameValuePtr> NameValueMapBase;
+using NameValuePtr = std::shared_ptr<NameValue>;
+using NameValueMapBase = std::multimap<std::wstring, NameValuePtr>;
 
 class MISC_API NameValueMap : public NameValueMapBase {
  private:
-  typedef std::vector<NameValueMapBase::const_iterator> NameValueVector;
+  using NameValueVector = std::vector<NameValueMapBase::const_iterator>;
   std::vector<NameValuePtr> m_vector;
 
  public:
@@ -82,7 +67,7 @@ class MISC_API NameValueMap : public NameValueMapBase {
   }
   void set(const NameValue& nameValue);
   void add(const NameValue& nameValue);
-  NameValue operator[](unsigned int n) const;
+  NameValue operator[](size_t n) const;
   void push_back(const yloader::NameValue& nv);
   template <typename T>
   void add(const std::wstring& name, const T& value) {

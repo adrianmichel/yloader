@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,8 +60,7 @@ void CDataFileSettings::DoDataExchange(CDataExchange* pDX) {
   DDX_Text(pDX, IDC_DATA_FILE_HEADER_EDIT, m_fileHeaderStr);
   DDX_Control(pDX, IDC_STATIC_CH_MAPPING, m_chMappingGroup);
   DDX_Check(pDX, IDC_CHECK_CREATE_SUBDIRS, m_createSubdirsValue);
-  DDX_Control(pDX, IDC_STATIC_FILE_NAME_TRANSFORMATIONS,
-              m_fileNameTransformationsGroup);
+  DDX_Control(pDX, IDC_STATIC_FILE_NAME_TRANSFORMATIONS, m_fileNameTransformationsGroup);
   DDX_Control(pDX, IDC_EDIT_FILE_NAME_EXTENSION, m_fileNameExtensionEdit);
   DDX_Text(pDX, IDC_EDIT_FILE_NAME_EXTENSION, m_fileNameExtensionValue);
   DDX_Control(pDX, IDC_EDIT_PREPEND_TO_FILE_NAME, m_prependToFileNameEdit);
@@ -70,18 +69,15 @@ void CDataFileSettings::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, IDC_STATIC_APPEND_TO_FILE_NAME, m_appendToFileNameLabel);
   DDX_Text(pDX, IDC_EDIT_PREPEND_TO_FILE_NAME, m_prependToFileNameValue);
   DDX_Text(pDX, IDC_EDIT_APPEND_TO_FILE_NAME, m_appendToFileNameValue);
-  DDX_Control(pDX, IDC_CHECK_AUTO_SELECT_OUTPUT_PATH,
-              m_autoSelectOutputPathButton);
-  DDX_Check(pDX, IDC_CHECK_AUTO_SELECT_OUTPUT_PATH,
-            m_autoSelectOutputPathValue);
+  DDX_Control(pDX, IDC_CHECK_AUTO_SELECT_OUTPUT_PATH, m_autoSelectOutputPathButton);
+  DDX_Check(pDX, IDC_CHECK_AUTO_SELECT_OUTPUT_PATH, m_autoSelectOutputPathValue);
   DDX_Control(pDX, IDC_EDIT_AUTO_DATA_PATH, m_autoSelectOutputPathEdit);
   DDX_Text(pDX, IDC_EDIT_AUTO_DATA_PATH, m_autoSelectOutputPathName);
 }
 
 BEGIN_MESSAGE_MAP(CDataFileSettings, CPropertyPage)
 ON_EN_CHANGE(IDC_EDIT_AUTO_DATA_PATH, OnEnChangeEditAutoDataPath)
-ON_BN_CLICKED(IDC_CHECK_AUTO_SELECT_OUTPUT_PATH,
-              OnBnClickedCheckAutoSelectOutputPath)
+ON_BN_CLICKED(IDC_CHECK_AUTO_SELECT_OUTPUT_PATH, OnBnClickedCheckAutoSelectOutputPath)
 END_MESSAGE_MAP()
 
 // GeneralSettings message handlers
@@ -89,8 +85,7 @@ END_MESSAGE_MAP()
 BOOL CDataFileSettings::OnInitDialog() {
   __super::OnInitDialog();
 
-  m_autoSelectOutputPathEdit.ShowWindow(m_autoSelectOutputPathValue ? SW_SHOW
-                                                                    : SW_HIDE);
+  m_autoSelectOutputPathEdit.ShowWindow(m_autoSelectOutputPathValue ? SW_SHOW : SW_HIDE);
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -108,6 +103,5 @@ void CDataFileSettings::OnEnChangeEditAutoDataPath() {
 void CDataFileSettings::OnBnClickedCheckAutoSelectOutputPath() {
   UpdateData();
 
-  m_autoSelectOutputPathEdit.ShowWindow(m_autoSelectOutputPathValue ? SW_SHOW
-                                                                    : SW_HIDE);
+  m_autoSelectOutputPathEdit.ShowWindow(m_autoSelectOutputPathValue ? SW_SHOW : SW_HIDE);
 }

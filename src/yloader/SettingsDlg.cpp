@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ CSettingsDialog::CSettingsDialog(CWnd *pParent /*=NULL*/)
   // NOTE: the ClassWizard will add member initialization here
   //}}AFX_DATA_INIT
   m_pInfo.RemoveAll();  // Empty the page info
-  m_csTitle = _T("");
+  m_csTitle = L"";
   m_pParent = pParent;  // Parent wnd pointer, must be null for modal dialog
 }
 
@@ -45,7 +45,9 @@ CSettingsDialog::~CSettingsDialog() {
   for (int i = 0; i < m_pInfo.GetSize(); i++) {
     PAGE_INFO *pInfo = (PAGE_INFO *)m_pInfo.GetAt(i);
     if (pInfo) {
-      if (!(pInfo->bViewClass)) delete (pInfo->pWnd);  // Delete the C++ object
+      if (!(pInfo->bViewClass)) {
+        delete (pInfo->pWnd);  // Delete the C++ object
+      }
 
       delete pInfo;
     }
@@ -120,10 +122,12 @@ void CSettingsDialog::InitTreeCtrl() {
     if (!pInfo) continue;
     TV_INSERTSTRUCT tvi;
 
-    if (pInfo->pWndParent)
+    if (pInfo->pWndParent) {
       tvi.hParent = FindItem(pInfo->pWndParent);
-    else
+    }
+    else {
       tvi.hParent = FindItem(pInfo->csParentCaption);
+    }
     tvi.hInsertAfter = TVI_LAST;
     tvi.item.cchTextMax = 0;
     tvi.item.pszText = LPSTR_TEXTCALLBACK;
@@ -133,8 +137,7 @@ void CSettingsDialog::InitTreeCtrl() {
 
     // Keep track of the pages we've added (for parent selection)
     if (hTree && pInfo->pWnd) {
-      DWORD dwTree = reinterpret_cast<DWORD>(hTree);
-      m_wndMap.SetAt(pInfo->pWnd, dwTree);
+      m_wndMap.SetAt(pInfo->pWnd, hTree);
     }
   }
 }
@@ -168,7 +171,9 @@ CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption,
   pInfo->bViewClass = TRUE;  // Default to generic CWnd or CView class
   if (pWnd)                  // If it is a dialog or dialog-derived class
   {                          // Set bViewClass = FALSE
-    if (pWnd->IsKindOf(RUNTIME_CLASS(CDialog))) pInfo->bViewClass = FALSE;
+    if (pWnd->IsKindOf(RUNTIME_CLASS(CDialog))) {
+      pInfo->bViewClass = FALSE;
+    }
   }
 
   pInfo->nID = nID;                // ID of the page
@@ -193,8 +198,7 @@ CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption,
 // Return value: A CWnd type pointer to the page created if successful,
 //		otherwise return NULL
 //
-CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption,
-                               UINT nID, LPCTSTR pParentCaption) {
+CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption, UINT nID, LPCTSTR pParentCaption) {
   CWnd *pWnd = NULL;
   if (m_hWnd) {
     // Can't add once the window has been created
@@ -208,14 +212,15 @@ CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption,
   pInfo->bViewClass = TRUE;  // Default to generic CWnd or CView class
   if (pWnd)                  // If it is a dialog or dialog-derived class
   {                          // Set bViewClass = FALSE
-    if (pWnd->IsKindOf(RUNTIME_CLASS(CDialog))) pInfo->bViewClass = FALSE;
+    if (pWnd->IsKindOf(RUNTIME_CLASS(CDialog))) {
+      pInfo->bViewClass = FALSE;
+    }
   }
   pInfo->nID = nID;             // ID of the page
   pInfo->pWnd = pWnd;           // Point to the page
   pInfo->csCaption = pCaption;  // Caption of page in the tree control
   pInfo->pWndParent = NULL;     // Parent page is not specified yet
-  pInfo->csParentCaption =
-      pParentCaption;  // Parent caption to be inserted under
+  pInfo->csParentCaption = pParentCaption;  // Parent caption to be inserted under
   m_pInfo.Add(pInfo);  // Add to to page list
 
   return pWnd;
@@ -231,12 +236,14 @@ CWnd *CSettingsDialog::AddPage(CRuntimeClass *pWndClass, LPCTSTR pCaption,
 HTREEITEM CSettingsDialog::FindItem(CWnd *pWnd) {
   // If you didn't specify a parent in AddPage(...) , the
   // dialog becomes a root-level entry
-  if (pWnd == NULL)
+  if (pWnd == NULL) {
     return TVI_ROOT;
+  }
   else {
-    DWORD dwHTree;
-    if (m_wndMap.Lookup(pWnd, dwHTree))
-      return (HTREEITEM)dwHTree;
+    HTREEITEM dwHTree;
+    if (m_wndMap.Lookup(pWnd, dwHTree)) {
+      return dwHTree;
+    }
     else {
       // Specified a parent that has not
       // been added to the tree - can't do that.
@@ -264,7 +271,9 @@ HTREEITEM CSettingsDialog::FindItem(const CString &csCaption) {
   HTREEITEM hCurrent = m_TreeCtrl.GetRootItem();
   while (hCurrent) {
     CString strText = m_TreeCtrl.GetItemText(hCurrent);
-    if (!strText.CompareNoCase(csCaption)) return hCurrent;
+    if (!strText.CompareNoCase(csCaption)) {
+      return hCurrent;
+    }
     hCurrent = GetNextItemCOrS(hCurrent);
   }
   return TVI_ROOT;
@@ -280,8 +289,9 @@ HTREEITEM CSettingsDialog::FindItem(const CString &csCaption) {
 //
 HTREEITEM CSettingsDialog::GetNextItemCOrS(HTREEITEM hItem) {
   HTREEITEM hti;
-  if (m_TreeCtrl.ItemHasChildren(hItem))
+  if (m_TreeCtrl.ItemHasChildren(hItem)) {
     return m_TreeCtrl.GetChildItem(hItem);  // return first child
+  }
   else {
     // Return next sibling item
     // Go up the tree to find a parent's sibling if needed.
@@ -305,22 +315,20 @@ HTREEITEM CSettingsDialog::GetNextItemCOrS(HTREEITEM hItem) {
 //displayed
 // Return value: NULL
 //
-void CSettingsDialog::ShowPage(const PAGE_INFO *pInfo,
-                               UINT nShow /* = SW_SHOW */) {
+void CSettingsDialog::ShowPage(const PAGE_INFO *pInfo, UINT nShow /* = SW_SHOW */) {
   if (!pInfo) return;
-  m_CaptionBarCtrl.SetWindowText(_T( "" ));  // Clear the caption bar
-  m_PageFrame.SetWindowText(_T( "" ));
+  m_CaptionBarCtrl.SetWindowText(L"");  // Clear the caption bar
+  m_PageFrame.SetWindowText(L"");
 
   if (pInfo->pWnd)  // If the page is valid
   {
-    if (!::IsWindow(
-            pInfo->pWnd->m_hWnd)) {  // Window has not been created, create it
+    if (!::IsWindow(pInfo->pWnd->m_hWnd)) {  // Window has not been created, create it
       CreatePage(pInfo);
       pInfo->pWnd->SetWindowPos(&m_TreeCtrl, 0, 0, 0, 0, 0);
-      pInfo->pWnd->MoveWindow(m_FrameRect.left, m_FrameRect.top,
-                              m_FrameRect.Width(), m_FrameRect.Height());
-      if (pInfo->pWnd->IsKindOf(RUNTIME_CLASS(CView)))
-        ((CView *)pInfo->pWnd)->OnInitialUpdate();
+      pInfo->pWnd->MoveWindow(m_FrameRect.left, m_FrameRect.top, m_FrameRect.Width(), m_FrameRect.Height());
+      if (pInfo->pWnd->IsKindOf(RUNTIME_CLASS(CView))) {
+        ((CView*)pInfo->pWnd)->OnInitialUpdate();
+      }
     }
 
     pInfo->pWnd->ShowWindow(nShow);  // Show or hide the window
@@ -346,24 +354,19 @@ void CSettingsDialog::ShowPage(const PAGE_INFO *pInfo,
 BOOL CSettingsDialog::CreatePage(const PAGE_INFO *pInfo) {
   BOOL bCode = FALSE;
 
-  if (!pInfo || !pInfo->pWnd)
+  if (!pInfo || !pInfo->pWnd) {
     return (FALSE);  // If no page is specified, return NULL
-  if (!::IsWindow(
-          pInfo->pWnd->m_hWnd))  // If the window has not yet been created,
-  {
-    if (pInfo->pWnd->IsKindOf(RUNTIME_CLASS(
-            CDialog)))  // If the page indow is kind of dialog window
-    {
+  }
+  if (!::IsWindow(pInfo->pWnd->m_hWnd)) { // If the window has not yet been created,
+    if (pInfo->pWnd->IsKindOf(RUNTIME_CLASS(CDialog))) { // If the page indow is kind of dialog window
       CDialog *pDlg = (CDialog *)pInfo->pWnd;
       bCode = pDlg->Create(pInfo->nID, this);
       pDlg->ModifyStyle(WS_CAPTION, 0);
-    } else if (pInfo->pWnd->IsKindOf(
-                   RUNTIME_CLASS(CWnd)))  // generic CWnd derived Window
-    {
+    }
+    else if (pInfo->pWnd->IsKindOf(RUNTIME_CLASS(CWnd))) {  // generic CWnd derived Window
       CWnd *pWnd = (CWnd *)pInfo->pWnd;
       bCode = CreateWnd(pInfo->pWnd);  // Create Window
-      pWnd->ModifyStyle(WS_BORDER | WS_THICKFRAME,
-                        0);  // Remoce border and thick frame styles
+      pWnd->ModifyStyle(WS_BORDER | WS_THICKFRAME, 0);  // Remoce border and thick frame styles
     }
   }
   return (bCode);
@@ -374,8 +377,7 @@ BOOL CSettingsDialog::CreatePage(const PAGE_INFO *pInfo) {
 // Description:	Create generic CWnd based Window of a page
 // Return value: TRUE if successful, NULL if failed
 //
-BOOL CSettingsDialog::CreateWnd(CWnd *pWnd,
-                                CCreateContext *pContext /* = NULL */) {
+BOOL CSettingsDialog::CreateWnd(CWnd *pWnd, CCreateContext *pContext /* = NULL */) {
   CCreateContext context;
   if (pContext == NULL) {
     // If no context specified, generate one from the currently selected
@@ -443,12 +445,11 @@ void CSettingsDialog::OnTreeSelChanged(NMHDR *pNMHDR, LRESULT *pResult) {
 //
 void CSettingsDialog::OnCancel() {
   // TODO: Add extra cleanup here
-  if (false)  // ( m_pParent != NULL )	// Modaless dialog case
-  {
+  if (false) { // ( m_pParent != NULL )	// Modaless dialog case
     // Inform the parent, the modaless case
     m_pParent->PostMessage(WM_SETTINGSDIALOG_CLOSE, IDCANCEL, 0);
-  } else  // Modal dialog case
-  {
+  }
+  else { // Modal dialog case
     DestroyPages();  // Destroy the Windows of the setting pages
     __super::OnCancel();
   }
@@ -485,8 +486,8 @@ void CSettingsDialog::OnOK() {
     {
       // Inform the parent, the modaless case
       m_pParent->PostMessage(WM_SETTINGSDIALOG_CLOSE, IDOK, 0);
-    } else  // Modal dialog case
-    {
+    }
+    else { // Modal dialog case
       DestroyPages();  // First destroy all the pages
       __super::OnOK();
     }
@@ -505,11 +506,16 @@ BOOL CSettingsDialog::RefreshData() {
     pInfo = (PAGE_INFO *)m_pInfo.GetAt(i);
     if (pInfo && pInfo->pWnd) {
       if (::IsWindow(pInfo->pWnd->m_hWnd)) {
-        if (!pInfo->pWnd->UpdateData(TRUE)) return false;
+        if (!pInfo->pWnd->UpdateData(TRUE)) {
+          return false;
+        }
         try {
           Okable *ok = dynamic_cast<Okable *>(pInfo->pWnd);
-          if (!ok->onOk()) return false;
-        } catch (const std::bad_cast &) {
+          if (!ok->onOk()) {
+            return false;
+          }
+        }
+        catch (const std::bad_cast &) {
           ASSERT(false);
           return false;
         }
@@ -528,12 +534,9 @@ BOOL CSettingsDialog::DestroyPages() {
   for (int i = 0; i < m_pInfo.GetSize(); i++) {
     PAGE_INFO *pInfo = (PAGE_INFO *)m_pInfo.GetAt(i);
     if (pInfo) {
-      if (pInfo->pWnd && ::IsWindow(pInfo->pWnd->m_hWnd))
+      if (pInfo->pWnd && ::IsWindow(pInfo->pWnd->m_hWnd)) {
         pInfo->pWnd->DestroyWindow();  // Destroy the windows
-                                       /*			if (!(pInfo->bViewClass))
-                                                                       delete(pInfo->pWnd);	// Delete the C++
-                                          object
-                                       */
+      }
     }
   }
 
@@ -550,14 +553,17 @@ void CSettingsDialog::OnPreferenceHelp() {
   if (!hItem) return;
 
   PAGE_INFO *pInfo = (PAGE_INFO *)m_TreeCtrl.GetItemData(hItem);
-  if (!pInfo || !pInfo->pWnd) return;
+  if (!pInfo || !pInfo->pWnd) {
+    return;
+  }
+
   if (::IsWindow(pInfo->pWnd->m_hWnd)) {
     // Help!
     NMHDR nm;
     nm.code = PSN_HELP;
     nm.hwndFrom = m_hWnd;
     nm.idFrom = CSettingsDialog::IDD;
-    pInfo->pWnd->SendMessage(WM_NOTIFY, 0, (long)&nm);
+    pInfo->pWnd->SendMessage(WM_NOTIFY, 0, reinterpret_cast< LPARAM>( &nm ));
   }
 }
 
@@ -570,20 +576,28 @@ BOOL CSettingsDialog::PreTranslateMessage(MSG *pMsg) {
   ASSERT(m_hWnd != NULL);
 
   // Don't let CDialog process the Escape key.
-  if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE)) return TRUE;
+  if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE)) {
+    return TRUE;
+  }
 
-  if (CWnd::PreTranslateMessage(pMsg)) return TRUE;
+  if (CWnd::PreTranslateMessage(pMsg)) {
+    return TRUE;
+  }
 
   // Don't translate dialog messages when
   // application is in help mode
   CFrameWnd *pFrameWnd = GetTopLevelFrame();
-  if (pFrameWnd != NULL && pFrameWnd->m_bHelpMode) return FALSE;
+  if (pFrameWnd != NULL && pFrameWnd->m_bHelpMode) {
+    return FALSE;
+  }
 
   // Ensure the dialog messages will not
   // eat frame accelerators
   pFrameWnd = GetParentFrame();
   while (pFrameWnd != NULL) {
-    if (pFrameWnd->PreTranslateMessage(pMsg)) return TRUE;
+    if (pFrameWnd->PreTranslateMessage(pMsg)) {
+      return TRUE;
+    }
     pFrameWnd = pFrameWnd->GetParentFrame();
   }
 

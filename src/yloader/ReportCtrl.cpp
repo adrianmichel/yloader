@@ -53,6 +53,14 @@ using ::CYReportCtrl;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#if defined(max)
+#undef max
+#endif
+
+#if defined(min)
+#undef min
+#endif
+
 // Below styles MUST be present in a report ctrl
 #define MUST_STYLE \
   (WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | LVS_REPORT)
@@ -459,8 +467,8 @@ int CYReportCtrl::MoveTo(int nItem, int nNewPosition) {
 
   EndEdit(TRUE);
   const int ITEMS = CListCtrl::GetItemCount();
-  nNewPosition = max2(0, nNewPosition);
-  nNewPosition = min2(ITEMS - 1, nNewPosition);
+  nNewPosition = std::max(0, nNewPosition);
+  nNewPosition = std::min(ITEMS - 1, nNewPosition);
 
   if (nItem == nNewPosition) return nNewPosition;
 
@@ -1077,7 +1085,7 @@ int CYReportCtrl::GetItemCount(DWORD dwStates) const {
 
 int CYReportCtrl::GetFirstItem(DWORD dwStates, int nStartAfter) const {
   const int ITEMS = CListCtrl::GetItemCount();
-  nStartAfter = max2(-1, nStartAfter);
+  nStartAfter = std::max(-1, nStartAfter);
   for (int i = nStartAfter + 1; i < ITEMS; i++) {
     if (ExamItemStates(i, dwStates)) return i;
   }
@@ -1086,7 +1094,7 @@ int CYReportCtrl::GetFirstItem(DWORD dwStates, int nStartAfter) const {
 
 int CYReportCtrl::GetLastItem(DWORD dwStates, int nStartBefore) const {
   const int ITEMS = CListCtrl::GetItemCount();
-  nStartBefore = nStartBefore < 0 ? ITEMS - 1 : min2(ITEMS, nStartBefore);
+  nStartBefore = nStartBefore < 0 ? ITEMS - 1 : std::min(ITEMS, nStartBefore);
   for (int i = nStartBefore - 1; i >= 0; i--) {
     if (ExamItemStates(i, dwStates)) return i;
   }
@@ -1205,6 +1213,9 @@ CString CYReportCtrl::GetHeaderText(int nColumn) const {
   return GetHeaderCtrl()->GetItem(nColumn, &hd) ? hd.pszText : _T("");
 }
 
+#pragma warning(push)
+#pragma warning( disable : 4267 )
+
 BOOL CYReportCtrl::SetHeaderText(int nColumn, LPCTSTR lpText) {
   if (!HasColumnHeader()) return FALSE;
 
@@ -1223,6 +1234,8 @@ BOOL CYReportCtrl::SetHeaderText(int nColumn, LPCTSTR lpText) {
   delete[] psz;
   return RES;
 }
+
+#pragma warning(pop)
 
 const CHeaderCtrl* CYReportCtrl::GetHeaderCtrl() const {
   // Yes, CListCtrl already provides "GetHeaderCtrl", but not const.

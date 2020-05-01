@@ -100,7 +100,6 @@
     <ClInclude Include="stringformat.h" />
     <ClInclude Include="strings.h" />
     <ClInclude Include="thread.h" />
-    <ClInclude Include="threadsync.h" />
     <ClInclude Include="tokenizer.h" />
     <ClInclude Include="versionno.h" />
     <ClInclude Include="yloader.h" />

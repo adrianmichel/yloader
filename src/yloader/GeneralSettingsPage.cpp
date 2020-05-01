@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,6 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "StdAfx.h"
 #include "GeneralSettingsPage.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 // GeneralSettings dialog
 
 IMPLEMENT_DYNCREATE(CGeneralSettings, CPropertyPage)
@@ -29,13 +33,10 @@ CGeneralSettings::~CGeneralSettings() {}
 void CGeneralSettings::DoDataExchange(CDataExchange* pDX) {
   __super::DoDataExchange(pDX);
 
-  DDX_Control(pDX, IDC_CHECK_AUTO_START_DOWNLOADING,
-              m_autoStartDownloadingCheck);
+  DDX_Control(pDX, IDC_CHECK_AUTO_START_DOWNLOADING, m_autoStartDownloadingCheck);
   DDX_Control(pDX, IDC_CHECK_MINIMIZE_TO_TRAY, m_minimizeToTrayCheck);
-  DDX_Control(pDX, IDC_CHECK_CHECK_FOR_UPDATES_AT_STARTUP,
-              m_checkForUpdatesAtStartupButton);
-  DDX_Control(pDX, IDC_SIMULTANEOUS_CONNECTIONS_LABEL,
-              m_simultaneousConnectionsLabel);
+  DDX_Control(pDX, IDC_CHECK_CHECK_FOR_UPDATES_AT_STARTUP, m_checkForUpdatesAtStartupButton);
+  DDX_Control(pDX, IDC_SIMULTANEOUS_CONNECTIONS_LABEL, m_simultaneousConnectionsLabel);
   DDX_Control(pDX, IDC_EDIT_THREADS, m_threadsEdit);
   DDX_Control(pDX, IDC_PROXY_SERVER_GROUP, m_proxyServerGroup);
   DDX_Control(pDX, IDC_PROXY_SERVER_ADDRESS_EDIT, m_proxyServerAddressEdit);
@@ -45,13 +46,11 @@ void CGeneralSettings::DoDataExchange(CDataExchange* pDX) {
 
   DDX_Control(pDX, IDC_EDIT_OPEN_DATA_FILE_WITH, m_openDataFileWithAppEdit);
   DDX_Control(pDX, IDC_BUTTON_BROWSE_FOR_APP, m_browseForAppButton);
-  DDX_Control(pDX, IDC_CHECK_DONT_RELOAD_IN_UPDATE_MODE,
-              m_dontReloadOldDataInUpdateMode);
+  DDX_Control(pDX, IDC_CHECK_DONT_RELOAD_IN_UPDATE_MODE, m_dontReloadOldDataInUpdateMode);
 
   DDX_Check(pDX, IDC_CHECK_AUTO_START_DOWNLOADING, m_autoStartDownloading);
   DDX_Check(pDX, IDC_CHECK_MINIMIZE_TO_TRAY, m_minimizeToTrayValue);
-  DDX_Check(pDX, IDC_CHECK_CHECK_FOR_UPDATES_AT_STARTUP,
-            m_checkForUpdatesAtStartupValue);
+  DDX_Check(pDX, IDC_CHECK_CHECK_FOR_UPDATES_AT_STARTUP, m_checkForUpdatesAtStartupValue);
   DDX_Text(pDX, IDC_EDIT_THREADS, m_threadsValue);
   DDV_MinMaxUInt(pDX, m_threadsValue, 1, 50);
   DDX_Control(pDX, IDC_SPIN_THREADS, m_threadsSpin);
@@ -64,8 +63,7 @@ void CGeneralSettings::DoDataExchange(CDataExchange* pDX) {
   DDV_MinMaxUInt(pDX, m_httpRequestTimeout, 0, 9999);
   DDX_Control(pDX, IDC_SPIN_TIMEOUT, m_timeoutSpin);
 
-  DDX_Check(pDX, IDC_CHECK_DONT_RELOAD_IN_UPDATE_MODE,
-            m_dontReloadOldDataInUpdateModeBool);
+  DDX_Check(pDX, IDC_CHECK_DONT_RELOAD_IN_UPDATE_MODE, m_dontReloadOldDataInUpdateModeBool);
 }
 
 BEGIN_MESSAGE_MAP(CGeneralSettings, CPropertyPage)
@@ -84,8 +82,7 @@ BOOL CGeneralSettings::OnInitDialog() {
 }
 
 void CGeneralSettings::OnBnClickedButtonBrowseForApp() {
-  CFileDialog dlg(true, 0, 0, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                  _T( "EXE files (*.exe)|*.exe|All Files (*.*)|*.*||" ));
+  CFileDialog dlg(true, 0, 0, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"EXE files (*.exe)|*.exe|All Files (*.*)|*.*||" );
 
   if (dlg.DoModal() == IDOK) {
     m_openDataFileWithAppStr = dlg.GetPathName();

@@ -19,7 +19,10 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <datetime.h>
 #include <time.h>
 #include <boost/shared_array.hpp>
-#include <boost/shared_ptr.hpp>
+
+#pragma warning(push)
+#pragma warning( disable : 4267 )
+#pragma warning( disable : 4018 )
 
 namespace yloader {
 // base 64 code taken from http://www.adp-gmbh.ch/cpp/common/base64.html
@@ -177,7 +180,7 @@ result is zero assumes 32 bit ‘long’ and same endian coding and decoding
     memcpy(m_key, key, sizeof(uint32_t) * 4);
   }
 
-  boost::shared_ptr<std::string> en(const std::string& str) {
+  std::shared_ptr<std::string> en(const std::string& str) {
     if (!str.empty()) {
       std::string ts(ws2s(timeStamp(true)));
 
@@ -214,18 +217,18 @@ result is zero assumes 32 bit ‘long’ and same endian coding and decoding
       char* p((char*)output.get());
 
       if (m_base64)
-        return boost::shared_ptr<std::string>(new std::string(
+        return std::shared_ptr<std::string>(new std::string(
             base64_encode((unsigned char*)p, n * sizeof(uint32_t))));
       else
-        return boost::shared_ptr<std::string>(
+        return std::shared_ptr<std::string>(
             new std::string(p, n * sizeof(uint32_t)));
 
     } else
-      return boost::shared_ptr<std::string>();
+      return std::shared_ptr<std::string>();
   }
 
   // an encrypted string will always be align to the size of a unit32_t
-  boost::shared_ptr<std::string> de(const std::string& s) {
+  std::shared_ptr<std::string> de(const std::string& s) {
     std::string str;
     if (m_base64)
       str = base64_decode(s);
@@ -249,15 +252,16 @@ result is zero assumes 32 bit ‘long’ and same endian coding and decoding
       if (size <= (n * sizeof(uint32_t) - 1)) {
         char* p((char*)input.get());
 
-        return boost::shared_ptr<std::string>(
+        return std::shared_ptr<std::string>(
             new std::string(p + sizeof(unsigned int), size));
       } else
         // the string has been tampered with most likely, so return an empty
         // string
-        return boost::shared_ptr<std::string>();
+        return std::shared_ptr<std::string>();
 
     } else
-      return boost::shared_ptr<std::string>();
+      return std::shared_ptr<std::string>();
   }
 };
 }  // namespace yloader
+#pragma warning(pop)

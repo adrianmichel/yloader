@@ -2,13 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "yloader", "yloader", "{FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}"
-	ProjectSection(SolutionItems) = preProject
-		licenses.txt = licenses.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{0CB13A32-7171-44F4-95CE-42B44036F3DC}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filesymbols", "filesymbols\filesymbols.vcxproj", "{EA3BCD75-7B37-40D6-959A-93F52425315D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "include", "include\include.vcxproj", "{56860C3B-866D-4AEB-A7A2-3F37B0FC9A31}"
@@ -19,19 +12,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "miscwin", "miscwin\miscwin.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plugin", "plugin\plugin.vcxproj", "{C2840461-55C7-4436-875D-F66435CB88A3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "symbols", "sympreproc\sympreproc.vcxproj", "{E5EC4E21-2C9E-40E5-B5F9-08F23234E825}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "symbols", "symbols\symbols.vcxproj", "{E5EC4E21-2C9E-40E5-B5F9-08F23234E825}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ygqdconsole", "ygqdconsole\ygqdconsole.vcxproj", "{DE51113D-4633-411E-B21C-9996A5848880}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yloaderconsole", "yloaderconsole\yloaderconsole.vcxproj", "{DE51113D-4633-411E-B21C-9996A5848880}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yyahoodsplugin", "yyahoodsplugin\yyahoodsplugin.vcxproj", "{B69B5F45-DE3D-445E-BE90-701A59626871}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yahooplugin", "yahooplugin\yahooplugin.vcxproj", "{B69B5F45-DE3D-445E-BE90-701A59626871}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ydspluginhelper", "ydspluginhelper\ydspluginhelper.vcxproj", "{1803644B-83F5-4DBC-A140-29EA44B92D6A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dspluginhelper", "dspluginhelper\dspluginhelper.vcxproj", "{1803644B-83F5-4DBC-A140-29EA44B92D6A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yloadercore", "yloadercore\yloadercore.vcxproj", "{4D7C9A81-2E6E-4AFC-8A41-B0DB7CDC2A93}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "core\core.vcxproj", "{4D7C9A81-2E6E-4AFC-8A41-B0DB7CDC2A93}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ycmdline", "ycmdline\ycmdline.vcxproj", "{7836E55F-584B-404D-9748-3FC99609EB5B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C154AD7E-0C8F-44CB-9CE1-920C600366EE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cmdline", "cmdline\cmdline.vcxproj", "{7836E55F-584B-404D-9748-3FC99609EB5B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yloader", "yloader\yloader.vcxproj", "{5E0D9CAF-92A7-4DB8-BDEA-75B312C64AB7}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -46,10 +37,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yloader", "yloader\yloader.
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "updater", "updater\updater.vcxproj", "{1721770C-82F2-472F-8E55-E338A8A74C45}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "version", "version\version.vcxproj", "{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VersionInfo", "VersionInfo\VersionInfo.vcxproj", "{07FA345A-E943-482B-98DC-61C47311C574}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{CC025A0D-F1D1-4E9D-B77D-4E0C055CA612}"
 	ProjectSection(SolutionItems) = preProject
@@ -69,8 +56,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{CC025A0D-F1D
 		doc\quickstart.htm = doc\quickstart.htm
 		doc\regexformatting.htm = doc\regexformatting.htm
 		doc\styles.css = doc\styles.css
+		doc\symbols.htm = doc\symbols.htm
 		doc\symbolsfileformat.htm = doc\symbolsfileformat.htm
-		doc\sympreproc.htm = doc\sympreproc.htm
 		doc\whatsnew.htm = doc\whatsnew.htm
 		doc\ydoc.cfg = doc\ydoc.cfg
 	EndProjectSection
@@ -143,8 +130,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "installer", "installer", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D03E16D8-DCED-4DF7-BF2D-7D300D3AB4FE}"
 	ProjectSection(SolutionItems) = preProject
+		..\bootstrap.bat = ..\bootstrap.bat
+		licenses.txt = licenses.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "tests\tests.vcxproj", "{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -254,42 +245,19 @@ Global
 		{1721770C-82F2-472F-8E55-E338A8A74C45}.Release|Win32.Build.0 = Release|Win32
 		{1721770C-82F2-472F-8E55-E338A8A74C45}.Release|x64.ActiveCfg = Release|x64
 		{1721770C-82F2-472F-8E55-E338A8A74C45}.Release|x64.Build.0 = Release|x64
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Debug|Win32.Build.0 = Debug|Win32
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Debug|x64.ActiveCfg = Debug|x64
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Debug|x64.Build.0 = Debug|x64
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Release|Win32.ActiveCfg = Release|Win32
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Release|Win32.Build.0 = Release|Win32
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Release|x64.ActiveCfg = Release|x64
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264}.Release|x64.Build.0 = Release|x64
-		{07FA345A-E943-482B-98DC-61C47311C574}.Debug|Win32.ActiveCfg = Debug|Win32
-		{07FA345A-E943-482B-98DC-61C47311C574}.Debug|Win32.Build.0 = Debug|Win32
-		{07FA345A-E943-482B-98DC-61C47311C574}.Debug|x64.ActiveCfg = Debug|x64
-		{07FA345A-E943-482B-98DC-61C47311C574}.Debug|x64.Build.0 = Debug|x64
-		{07FA345A-E943-482B-98DC-61C47311C574}.Release|Win32.ActiveCfg = Release|Win32
-		{07FA345A-E943-482B-98DC-61C47311C574}.Release|Win32.Build.0 = Release|Win32
-		{07FA345A-E943-482B-98DC-61C47311C574}.Release|x64.ActiveCfg = Release|x64
-		{07FA345A-E943-482B-98DC-61C47311C574}.Release|x64.Build.0 = Release|x64
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Debug|Win32.Build.0 = Debug|Win32
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Debug|x64.ActiveCfg = Debug|x64
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Debug|x64.Build.0 = Debug|x64
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Release|Win32.ActiveCfg = Release|Win32
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Release|Win32.Build.0 = Release|Win32
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Release|x64.ActiveCfg = Release|x64
+		{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EA3BCD75-7B37-40D6-959A-93F52425315D} = {0CB13A32-7171-44F4-95CE-42B44036F3DC}
-		{56860C3B-866D-4AEB-A7A2-3F37B0FC9A31} = {0CB13A32-7171-44F4-95CE-42B44036F3DC}
-		{4428EDDC-6D10-4F0A-9F3C-7E34EFEE0A11} = {0CB13A32-7171-44F4-95CE-42B44036F3DC}
-		{9C793CF1-986E-46FA-93D8-E0243982CB41} = {0CB13A32-7171-44F4-95CE-42B44036F3DC}
-		{C2840461-55C7-4436-875D-F66435CB88A3} = {0CB13A32-7171-44F4-95CE-42B44036F3DC}
-		{E5EC4E21-2C9E-40E5-B5F9-08F23234E825} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{DE51113D-4633-411E-B21C-9996A5848880} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{B69B5F45-DE3D-445E-BE90-701A59626871} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{1803644B-83F5-4DBC-A140-29EA44B92D6A} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{4D7C9A81-2E6E-4AFC-8A41-B0DB7CDC2A93} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{7836E55F-584B-404D-9748-3FC99609EB5B} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{5E0D9CAF-92A7-4DB8-BDEA-75B312C64AB7} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{1721770C-82F2-472F-8E55-E338A8A74C45} = {FFFD9BD3-5D92-4DCE-96A2-DCCBA528666B}
-		{B1D465D9-D8D6-48EB-B69A-35E56C4DF264} = {C154AD7E-0C8F-44CB-9CE1-920C600366EE}
-		{07FA345A-E943-482B-98DC-61C47311C574} = {C154AD7E-0C8F-44CB-9CE1-920C600366EE}
 		{48210AB9-DE7D-47AB-BCD8-766938E5B775} = {CC025A0D-F1D1-4E9D-B77D-4E0C055CA612}
 		{49F9AEDE-0564-4C02-BC12-C50C03953D3E} = {CC025A0D-F1D1-4E9D-B77D-4E0C055CA612}
 		{6A730DDF-C7DC-462E-831B-08E2EA3D07D3} = {CC025A0D-F1D1-4E9D-B77D-4E0C055CA612}

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,29 +18,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include <plugin.h>
 
-void yloader::PluginExplorer::initIgnoreModulesSet(
-    std::set<std::wstring>& ignoreModulesSet) {
-  ignoreModulesSet.insert(yloader::to_lower_case(_T( "misc.dll" )));
-  ignoreModulesSet.insert(yloader::to_lower_case(_T( "miscwin.dll" )));
+void yloader::PluginExplorer::initIgnoreModulesSet(std::set<std::wstring>& ignoreModulesSet) {
+  ignoreModulesSet.insert(yloader::to_lower_case(L"misc.dll"));
+  ignoreModulesSet.insert(yloader::to_lower_case(L"miscwin.dll"));
 }
 
-bool yloader::PluginExplorer::ignoreModule(const std::wstring& _fileName) {
+bool yloader::PluginExplorer::ignoreModule(const std::wstring& m_fileName) {
   static std::set<std::wstring> ignoreModules;
 
   initIgnoreModulesSet(ignoreModules);
 
-  const std::wstring fileName(yloader::to_lower_case(_fileName));
+  const std::wstring fileName(yloader::to_lower_case(m_fileName));
 
   return ignoreModules.find(fileName) != ignoreModules.end();
 }
 
-void yloader::PluginExplorer::explore(
-    const std::wstring& p, const std::wstring& ext, bool recursive,
-    PluginLoadingStatusHandler* loadingStatusHandler,
-    std::vector<InfoPtr>& duplicates) {
-  std::wstring path = p.length() == 0 ? _T( "." ) : p;
+void yloader::PluginExplorer::explore(const std::wstring& p, const std::wstring& ext, bool recursive,
+    PluginLoadingStatusHandler* loadingStatusHandler, std::vector<InfoPtr>& duplicates) {
+  std::wstring path = p.length() == 0 ? L"." : p;
   {
-    std::wstring fileName(yloader::addBackSlash(path) + _T( "*.*" ));
+    std::wstring fileName(yloader::addBackSlash(path) + L"*.*");
 
     CFileFind finder;
 
@@ -50,24 +47,29 @@ void yloader::PluginExplorer::explore(
 
       // skip . and .. files; otherwise, we'd
       // recur infinitely!
-      if (finder.IsDots()) continue;
+      if (finder.IsDots()) {
+        continue;
+      }
 
       // if it's a directory, recursively search it
-      if (finder.IsDirectory() && recursive)
-        explore(std::wstring(finder.GetFilePath()), ext, recursive,
-                loadingStatusHandler, duplicates);
+      if (finder.IsDirectory() && recursive) {
+        explore(std::wstring(finder.GetFilePath()), ext, recursive, loadingStatusHandler, duplicates);
+      }
     }
     finder.Close();
   }
   {
     std::wstring fileName(yloader::addBackSlash(path));
 
-    if (ext.length() == 0)
-      fileName += _T( "*.*" );
-    else if (fileName.at(0) == _TCHAR('.'))
-      fileName += std::wstring(_T( "*" )) + ext;
-    else
-      fileName += std::wstring(_T( "*." )) + ext;
+    if (ext.length() == 0) {
+      fileName += L"*.*";
+    }
+    else if (fileName.at(0) == L'.') {
+      fileName += std::wstring(L"*") + ext;
+    }
+    else {
+      fileName += std::wstring(L"*.") + ext;
+    }
 
     CFileFind finder;
 
@@ -79,8 +81,9 @@ void yloader::PluginExplorer::explore(
       // recur infinitely!
       if (finder.IsDots()) continue;
 
-      if (finder.IsDirectory() || ignoreModule((LPCTSTR)(finder.GetFileName())))
+      if (finder.IsDirectory() || ignoreModule((LPCTSTR)(finder.GetFileName()))) {
         continue;
+      }
       else {
         std::wstring filePath(finder.GetFilePath());
 

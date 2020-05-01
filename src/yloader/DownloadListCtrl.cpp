@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ ON_MESSAGE(WM_YAHOO_EVENT, onEvent)
 END_MESSAGE_MAP()
 
 afx_msg LRESULT CYahooEventList::onEvent(WPARAM wp, LPARAM lp) {
-  std::auto_ptr<YahooEvent> event((YahooEvent*)wp);
+  std::shared_ptr<YahooEvent> event((YahooEvent*)wp);
   insert(*event);
   return 0;
 }

@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5E0D9CAF-92A7-4DB8-BDEA-75B312C64AB7}</ProjectGuid>
     <RootNamespace>yloader</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -110,7 +110,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)core;$(SolutionDir)updater;$(SolutionDir)cmdline;</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,8 +139,9 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)core;$(SolutionDir)updater;$(SolutionDir)cmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,8 +174,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)core;$(SolutionDir)updater;$(SolutionDir)cmdline;</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -217,7 +220,8 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)yloadercore;$(SolutionDir)updater;$(SolutionDir)ycmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)core;$(SolutionDir)updater;$(SolutionDir)cmdline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -257,6 +261,7 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BrowseForFolder.h" />
     <ClInclude Include="ColorStaticST.h" />
     <ClInclude Include="DataFormattingSettingsPage.h" />
     <ClInclude Include="DataValidationSettingsPage.h" />
@@ -285,6 +290,7 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
     <ClInclude Include="YSettingsDialog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BrowseForFolder.cpp" />
     <ClCompile Include="ColorStaticST.cpp" />
     <ClCompile Include="DataFormattingSettingsPage.cpp" />
     <ClCompile Include="DataValidationSettingsPage.cpp" />
@@ -343,23 +349,23 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
     <ProjectReference Include="..\miscwin\miscwin.vcxproj">
       <Project>{9c793cf1-986e-46fa-93d8-e0243982cb41}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\sympreproc\sympreproc.vcxproj">
+    <ProjectReference Include="..\symbols\symbols.vcxproj">
       <Project>{e5ec4e21-2c9e-40e5-b5f9-08f23234e825}</Project>
     </ProjectReference>
     <ProjectReference Include="..\updater\updater.vcxproj">
       <Project>{1721770c-82f2-472f-8e55-e338a8a74c45}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ycmdline\ycmdline.vcxproj">
+    <ProjectReference Include="..\cmdline\cmdline.vcxproj">
       <Project>{7836e55f-584b-404d-9748-3fc99609eb5b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ydspluginhelper\ydspluginhelper.vcxproj">
+    <ProjectReference Include="..\dspluginhelper\dspluginhelper.vcxproj">
       <Project>{1803644b-83f5-4dbc-a140-29ea44b92d6a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ygqdconsole\ygqdconsole.vcxproj">
-      <Project>{de51113d-4633-411e-b21c-9996a5848880}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\yloadercore\yloadercore.vcxproj">
+    <ProjectReference Include="..\core\core.vcxproj">
       <Project>{4d7c9a81-2e6e-4afc-8a41-b0db7cdc2a93}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\yahooplugin\yahooplugin.vcxproj">
+      <Project>{b69b5f45-de3d-445e-be90-701a59626871}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

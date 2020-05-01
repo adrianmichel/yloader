@@ -19,6 +19,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "misc.h"
 
+using namespace std::string_literals;
+
 
 namespace yloader
 {
@@ -42,8 +44,8 @@ enum ErrorCode {
  */
 class YLoaderException {
  private:
-  const ErrorCode _code;
-  std::wstring _message;
+  const ErrorCode m_code;
+  std::wstring m_message;
 
  protected:
   /**
@@ -53,7 +55,7 @@ class YLoaderException {
    *
    * @param str    THe message string
    */
-  void setMessage(const std::wstring& str) { _message = str; }
+  void setMessage(const std::wstring& str) { m_message = str; }
 
   /**
    * Sets the exception message
@@ -64,7 +66,7 @@ class YLoaderException {
    * @see std::ostringstream
    * @see std::wostringstream
    */
-  void setMessage(const std::wostringstream& str) { _message = str.str(); }
+  void setMessage(const std::wostringstream& str) { m_message = str.str(); }
 
  public:
   /**
@@ -74,7 +76,7 @@ class YLoaderException {
    * @return
    * @see ErrorCode
    */
-  explicit YLoaderException(ErrorCode code) : _code(code) {}
+  explicit YLoaderException(ErrorCode code) : m_code(code) {}
 
   /**
    * Constructor that takes an error code and a pointer to a string as
@@ -86,7 +88,7 @@ class YLoaderException {
    * @see ErrorCode
    */
   explicit YLoaderException(ErrorCode code, const TCHAR* message)
-      : _code(code), _message(message) {}
+      : m_code(code), m_message(message) {}
 
   /**
    * Consructor that takes an error code and a reference to a std::wstring as
@@ -99,7 +101,7 @@ class YLoaderException {
    * @see std::wstring
    */
   explicit YLoaderException(ErrorCode code, const std::wstring& message)
-      : _code(code), _message(message) {}
+      : m_code(code), m_message(message) {}
 
   virtual ~YLoaderException() {}
 
@@ -108,7 +110,7 @@ class YLoaderException {
    *
    * @return message
    */
-  const std::wstring& message() const { return _message; }
+  const std::wstring& message() const { return m_message; }
 
   /**
    * Returns the error code of the exception
@@ -116,7 +118,7 @@ class YLoaderException {
    * @return Error code
    * @see ErrorCode
    */
-  ErrorCode code() const { return _code; }
+  ErrorCode code() const { return m_code; }
 };
 
 
@@ -144,12 +146,16 @@ class BarException : public YLoaderException {
 
 
 class PluginException : public YLoaderException {
-  const std::wstring _name;
+  const std::wstring m_name;
 
  public:
-  PluginException(const std::wstring& name, const std::wstring& message)
-      : YLoaderException(PLUGIN_ERROR, message), _name(name) {}
-  const std::wstring& name() const { return _name; }
+   PluginException()
+     : PluginException(L""s, L""s){}
+
+   PluginException(const std::wstring& name, const std::wstring& message)
+      : YLoaderException(PLUGIN_ERROR, message), m_name(name) {}
+
+   const std::wstring& name() const { return m_name; }
 };
 
 

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,8 +40,7 @@ class CUpdateDlg : public CDialogEx {
 
  public:
   CUpdateDlg(const VersionInfo& newVersion, bool checkAtStartup,
-             bool showForNewerVersion,
-             CWnd* pParent = NULL);  // standard constructor
+             bool showForNewerVersion, CWnd* pParent = NULL); 
   virtual ~CUpdateDlg();
 
 // Dialog Data
@@ -70,7 +69,7 @@ class CUpdateDlg : public CDialogEx {
 
   bool getCheckAtStartup() const;
   bool getNotifyOnlyIfNewerVersion() const;
-  virtual BOOL OnInitDialog();
+  BOOL OnInitDialog() override;
   CString m_currentVersionInfo;
   CString m_newVersionInfo;
   afx_msg void OnBnClickedCheckStartup();

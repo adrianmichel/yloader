@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ class CSymbolsListsSettings : public CPropertyPage, public Okable {
 
  private:
  public:
-  virtual BOOL OnInitDialog();
+  BOOL OnInitDialog() override;
 
   const std::wstring errorSymbolsFile() const {
     return (LPCTSTR)m_errorSymbolsFile;

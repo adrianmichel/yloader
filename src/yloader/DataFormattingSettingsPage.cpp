@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "DataFormattingSettingsPage.h"
 #include "defaults.h"
 #include <boost/regex.hpp>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 IMPLEMENT_DYNCREATE(CDataFormattingSettings, CPropertyPage)
 CDataFormattingSettings::CDataFormattingSettings(CWnd* pParent /*=NULL*/)
@@ -42,8 +46,7 @@ void CDataFormattingSettings::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, IDC_EDIT_FIELD_SEPARATOR, m_fieldSeparatorCtrl);
   DDX_Control(pDX, IDC_EDIT_VOLUME_MULTIPLIER_EDIT, m_volumeMultiplierCtrl);
   DDX_Control(pDX, IDC_EDIT_DATE_SEPARATOR, m_dateSeparatorCtrl);
-  DDX_Control(pDX, IDC_BUTTON_RESET_REGEX_FORMATTING_TO_DEFAULT,
-              m_resetRegexFormattingCtrl);
+  DDX_Control(pDX, IDC_BUTTON_RESET_REGEX_FORMATTING_TO_DEFAULT, m_resetRegexFormattingCtrl);
 
   DDX_Check(pDX, IDC_CHECK_ADD_SYMBOLS_TO_COLUMN, m_addSymbolsToColumnBool);
   DDX_Text(pDX, IDC_EDIT_COLUMN_NUMBER, m_columnNumberUInt);
@@ -60,8 +63,7 @@ void CDataFormattingSettings::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, IDC_CHECK_UNLOCK_MATCH_REGEX, m_unlockMatchRegexCtrl);
   DDX_Control(pDX, IDC_EDIT_MATCH_REGEX, m_matchRegexCtrl);
   DDX_Control(pDX, IDC_EDIT_FORMAT_STRING, m_formatStringCtrl);
-  DDX_Control(pDX, IDC_STATIC_REGEX_FORMATTING_GROUP,
-              m_regexFormattingGroupCtrl);
+  DDX_Control(pDX, IDC_STATIC_REGEX_FORMATTING_GROUP, m_regexFormattingGroupCtrl);
 
   DDX_Check(pDX, IDC_CHECK_USE_REGEX_FORMATTING, m_enableRegexFormatting);
   DDX_Text(pDX, IDC_EDIT_MATCH_REGEX, m_matchRegex);
@@ -76,13 +78,10 @@ void CDataFormattingSettings::updateColumnNumber(CCmdUI* pCmdUI) {
 
 BEGIN_MESSAGE_MAP(CDataFormattingSettings, CPropertyPage)
 ON_UPDATE_COMMAND_UI(IDC_EDIT_COLUMN_NUMBER, updateColumnNumber)
-ON_BN_CLICKED(IDC_CHECK_ADD_SYMBOLS_TO_COLUMN,
-              OnBnClickedCheckAddSymbolsToColumn)
-ON_BN_CLICKED(IDC_BUTTON_RESET_REGEX_FORMATTING_TO_DEFAULT,
-              OnBnClickedButtonResetRegexFormattingToDefault)
+ON_BN_CLICKED(IDC_CHECK_ADD_SYMBOLS_TO_COLUMN, OnBnClickedCheckAddSymbolsToColumn)
+ON_BN_CLICKED(IDC_BUTTON_RESET_REGEX_FORMATTING_TO_DEFAULT, OnBnClickedButtonResetRegexFormattingToDefault)
 ON_BN_CLICKED(IDC_CHECK_UNLOCK_MATCH_REGEX, OnBnClickedCheckUnlockMatchRegex)
-ON_BN_CLICKED(IDC_CHECK_USE_REGEX_FORMATTING,
-              OnBnClickedCheckUseRegexFormatting)
+ON_BN_CLICKED(IDC_CHECK_USE_REGEX_FORMATTING, OnBnClickedCheckUseRegexFormatting)
 END_MESSAGE_MAP()
 
 // GeneralSettings message handlers
@@ -94,19 +93,12 @@ BOOL CDataFormattingSettings::OnInitDialog() {
   lockRegexFormatting();
   setEnableRegexFormatting();
 
-  /*  GeneralSettings gs;
-    m_searchForUpdatesAtStartupBool = gs.searchForUpdatesAtStartup();
-    UpdateData( false );
-    */
-
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDataFormattingSettings::OnBnClickedButtonResetRegexFormattingToDefault() {
-  int x = AfxMessageBox(
-      _T( "Are you sure you want to reset the regex formatting parameters to their default values?" ),
-      MB_YESNO);
+  int x = AfxMessageBox(L"Are you sure you want to reset the regex formatting parameters to their default values?", MB_YESNO);
 
   if (x == IDYES) {
     m_matchRegex = DEFAULT_MATCH_REGEX;
@@ -122,8 +114,7 @@ void CDataFormattingSettings::OnBnClickedCheckUnlockMatchRegex() {
 }
 
 void CDataFormattingSettings::lockRegexFormatting() {
-  m_unlockMatchRegexCtrl.SetWindowText(m_matchRegexUnlocked ? _T( "Lock" )
-                                                            : _T( "Unlock" ));
+  m_unlockMatchRegexCtrl.SetWindowText(m_matchRegexUnlocked ? L"Lock" : L"Unlock");
   m_resetRegexFormattingCtrl.EnableWindow(m_matchRegexUnlocked);
   m_matchRegexCtrl.SetReadOnly(!m_matchRegexUnlocked);
   m_formatStringCtrl.SetReadOnly(!m_matchRegexUnlocked);
@@ -151,19 +142,15 @@ void CDataFormattingSettings::setEnableRegexFormatting() {
   m_matchRegexCtrl.EnableWindow(m_enableRegexFormatting);
   m_formatStringCtrl.EnableWindow(m_enableRegexFormatting);
   m_regexFormattingGroupCtrl.EnableWindow(m_enableRegexFormatting);
-  m_resetRegexFormattingCtrl.EnableWindow(m_enableRegexFormatting &&
-                                          m_matchRegexUnlocked);
+  m_resetRegexFormattingCtrl.EnableWindow(m_enableRegexFormatting && m_matchRegexUnlocked);
 }
 
 bool CDataFormattingSettings::onOk() {
   try {
     boost::wregex rx(matchRegex());
-  } catch (const boost::bad_expression& e) {
-    AfxMessageBox((std::wstring(_T( "Regular expression error:\n\n" )) +
-                   yloader::s2ws(e.what()) +
-                   _T( "\n\nPlease fix the error and try again." ))
-                      .c_str(),
-                  MB_OK);
+  }
+  catch (const boost::bad_expression& e) {
+    AfxMessageBox((L"Regular expression error:\n\n"s + yloader::s2ws(e.what()) + L"\n\nPlease fix the error and try again." ).c_str(), MB_OK);
     return false;
   }
 

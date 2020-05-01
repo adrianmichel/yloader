@@ -34,12 +34,12 @@ namespace yloader
 
 class THREAD_API ThreadBase {
  private:
-  HANDLE _hThread;
-  DWORD _threadId;
-  const std::wstring _diag_string;
-  bool _priority;
-  bool _run;
-  bool _running;
+  HANDLE m_hThread;
+  DWORD m_threadId;
+  const std::wstring m_diag_string;
+  bool m_priority;
+  bool m_run;
+  bool m_running;
 
  public:
   /**
@@ -73,58 +73,58 @@ class THREAD_API ThreadBase {
   void restart(ThreadContext* context = 0);
   bool isRunning() const;
   bool stopping();
-  const std::wstring& name() const { return _diag_string; }
+  const std::wstring& name() const { return m_diag_string; }
   bool postMessage(unsigned int message, WPARAM wParam = 0, LPARAM lParam = 0) {
-    assert(_threadId != 0);
-    return ::PostThreadMessage(_threadId, message, wParam, lParam) != 0;
+    assert(m_threadId != 0);
+    return ::PostThreadMessage(m_threadId, message, wParam, lParam) != 0;
   }
 
   bool isThreadActive() {
-    return ((_hThread != NULL) &&
-            (::WaitForSingleObject(_hThread, 0) != WAIT_OBJECT_0));
+    return ((m_hThread != NULL) &&
+            (::WaitForSingleObject(m_hThread, 0) != WAIT_OBJECT_0));
   }
 
   // returns false if timeout
-  // true if the objet has become signaled
+  // true if the object has become signaled
   bool waitForThread(DWORD timeout = INFINITE) {
-    return ::WaitForSingleObject(_hThread, timeout) != WAIT_TIMEOUT;
+    return ::WaitForSingleObject(m_hThread, timeout) != WAIT_TIMEOUT;
   }
 
-  HANDLE handle() { return _hThread; }
+  HANDLE handle() { return m_hThread; }
 
  protected:
   ThreadBase(const std::wstring& diag_string, bool priority = false)
-      : _hThread(0),
-        _run(false),
-        _running(false),
-        _diag_string(diag_string),
-        _priority(priority),
-        _threadId(0) {}
+      : m_hThread(0),
+        m_run(false),
+        m_running(false),
+        m_diag_string(diag_string),
+        m_priority(priority),
+        m_threadId(0) {}
 
  public:
   virtual ~ThreadBase() {
-    if (_hThread != 0) CloseHandle(_hThread);
+    if (m_hThread != 0) CloseHandle(m_hThread);
   }
 
  protected:
   class Context {
    private:
-    ThreadBase* _thread;
-    std::auto_ptr<ThreadBase::ThreadContext> _context;
+    ThreadBase* m_thread;
+    std::shared_ptr<ThreadBase::ThreadContext> m_context;
 
    public:
     Context(ThreadBase* thread, ThreadBase::ThreadContext* context = 0)
-        : _thread(thread), _context(context) {}
+        : m_thread(thread), m_context(context) {}
 
     virtual ~Context() {}
 
-    ThreadBase* thread() { return _thread; }
+    ThreadBase* thread() { return m_thread; }
 
-    ThreadBase::ThreadContext* threadContext() { return _context.get(); }
+    ThreadBase::ThreadContext* threadContext() { return m_context.get(); }
 
     const std::wstring& diagString() const {
-      assert(_thread != 0);
-      return _thread->_diag_string;
+      assert(m_thread != 0);
+      return m_thread->m_diag_string;
     }
   };
 

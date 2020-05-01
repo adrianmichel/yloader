@@ -58,9 +58,6 @@
     <ClInclude Include="thread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="threadsync.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tokenizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

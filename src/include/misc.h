@@ -28,11 +28,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #define __TODO__ __LOC__ "warning Todo: "
 #define todo __TODO__
 
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4800)
-#pragma warning(disable : 4290)
-
 #ifdef MISC_EXPORTS
 #define MISC_API __declspec(dllexport)
 #else
@@ -54,49 +49,32 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <set>
 #include <sstream>
 #include <vector>
+#include <mutex>
+#include <optional>
 
 #include "rpc.h"
 #include "rpcdce.h"
 
+#ifdef MISC_EXPORTS
+#define MISC_API __declspec(dllexport)
+#else
+#define MISC_API __declspec(dllimport)
+#endif
+
+
 #include "datetime.h"
 #include "sharedptr.h"
 #include "strings.h"
-#include "threadsync.h"
 #include "versionno.h"
+
+using namespace std::string_literals;
 
 namespace yloader {
 /**\defgroup Uitilities Utility definitions
  * @{
  */
 
-/** \defgroup MinMax Min and Max
- * Definitions of min and max template functions with 2 respective 3 operators
- * @{
- */
-template <class T>
-const T& max2(const T& x, const T& y) {
-  return x > y ? x : y;
-}
-template <class T>
-const T& min2(const T& x, const T& y) {
-  return x < y ? x : y;
-}
-template <class T>
-const T& max3(const T& x, const T& y, const T& z) {
-  return max2(x, max2(y, z));
-}
-template <class T>
-const T& min3(const T& x, const T& y, const T& z) {
-  return min2(x, min2(y, z));
-}
 //@}
-
-/*typedef std::wstring std::wstring;
-typedef std::wostringstream std::wostringstream;
-typedef std::wistringstream std::wistringstream;
-*/
-
-using yloader::operator<<;
 
 /**
  * a unique id, currently implemented as a string
@@ -104,30 +82,25 @@ using yloader::operator<<;
 
 class UniqueIdException {
  private:
-  const std::wstring _id;
+  const std::wstring m_id;
 
  public:
-  UniqueIdException(const TCHAR* id) : _id(id) {}
+  UniqueIdException(const TCHAR* id) : m_id(id) {}
 
-  UniqueIdException(const std::wstring& id) : _id(id) {}
+  UniqueIdException(const std::wstring& id) : m_id(id) {}
 
-  const std::wstring& id() const { return _id; }
+  const std::wstring& id() const { return m_id; }
 };
-
-inline std::wstring s2ws(const char* str) { return s2ws(std::string(str)); }
 
 class UniqueId : public std::wstring {
  public:
-  UniqueId::UniqueId() : std::wstring(MakeUuidString()) {
-    //	TSPRINT_DEBUG( _T( "Unique id: " ) );
-    //	TSPRINT_DEBUG( *this );
-    //	TSPRINT_DEBUG( _T( "\n" ) );
+  UniqueId::UniqueId()
+    : std::wstring(MakeUuidString()) {
   }
 
-  UniqueId::UniqueId(const TCHAR* str) throw(UniqueIdException) {
+  UniqueId::UniqueId(const TCHAR* str){
     UUID uuid;
-    if (UuidFromString(reinterpret_cast<RPC_WSTR>(const_cast<TCHAR*>(str)),
-                       &uuid) != RPC_S_OK)
+    if (UuidFromString(reinterpret_cast<RPC_WSTR>(const_cast<TCHAR*>(str)), &uuid) != RPC_S_OK)
       throw UniqueIdException(str);
 
     std::wstring::operator=(reinterpret_cast<LPCTSTR>(str));
@@ -171,41 +144,23 @@ class UniqueId : public std::wstring {
 class UniqueIdVector : public std::vector<UniqueId> {
  public:
   UniqueIdVector(const std::vector<std::wstring>& ids) {
-    for (size_t n = 0; n < ids.size(); n++) push_back(UniqueId(ids[n].c_str()));
+    for (const auto& id : ids) {
+      push_back(UniqueId(id.c_str()));
+    }
   }
 
   UniqueIdVector() {}
 };
 
-typedef std::vector<const UniqueId*> UniqueIdPtrVector;
-
-#if defined UNICODE
-// typedef std::wifstream t_ifstream;
-typedef std::wostream t_ostream;
-typedef std::wofstream t_ofstream;
-typedef std::wifstream t_ifstream;
-#else
-// typedef std::ifstream t_ifstream;
-typedef std::basic_ostream<TCHAR> t_ostream;
-#endif
+using UniqueIdPtrVector = std::vector<const UniqueId*>;
 
 /**\defgroup Multithreading Multithreading functions and classes
  *
  * @{
  */
 
-MISC_API t_ostream& tsprint(const std::wstring& str, t_ostream& os);
-MISC_API t_ostream& tsprint(const std::wostringstream& o, t_ostream& os);
-// this prints to the debug output stream (on Windows this uses
-// OuptputDebugString
-
-#ifdef _DEBUG
-MISC_API void tsprint_debug(const std::wostringstream& o);
-MISC_API void tsprint_debug(const std::wstring& str);
-#define TSPRINT_DEBUG(str) tsprint_debug(str)
-#else
-#define TSPRINT_DEBUG(str)
-#endif
+MISC_API std::wostream& tsprint(const std::wstring& str, std::wostream& os);
+MISC_API std::wostream& tsprint(const std::wostringstream& o, std::wostream& os);
 
 /**
  * This mutex is used internally by print and dump calls.
@@ -216,7 +171,7 @@ MISC_API void tsprint_debug(const std::wstring& str);
  * @see std::wstring
  * @see PositionsManager::dump
  */
-extern MISC_API Mutex m;
+extern MISC_API std::mutex m;
 
 //@}
 
@@ -239,7 +194,7 @@ extern MISC_API Mutex m;
 template <class T>
 class PtrVector : public std::vector<T*> {
  private:
-  typedef std::vector<T*> PtrVectorBase;
+  using PtrVectorBase = std::vector<T*>;
 
  public:
   virtual ~PtrVector() { deleteAll(); }
@@ -269,7 +224,7 @@ class ConstPtrVector : public PtrVector<const T> {};
 template <class T, class U>
 class PtrMap : public std::map<T, U*> {
  private:
-  typedef std::map<T, U*> PtrMapBase;
+  using PtrMapBase = std::map<T, U*>;
 
  public:
   virtual ~PtrMap() { deleteAll(); }
@@ -298,7 +253,7 @@ class ConstPtrMap : public PtrMap<T, const U> {};
 template <class T>
 class PtrSet : public std::set<T*> {
  private:
-  typedef std::set<T*> PtrSetBase;
+  using PtrSetBase = std::set<T*>;
 
  public:
   virtual ~PtrSet() { deleteAll(); }
@@ -322,7 +277,7 @@ class ConstPtrSet : public PtrSet<const T> {};
  * of the virtual destructor
  */
 
-typedef std::vector<std::wstring> StrVectorBase;
+using StrVectorBase = std::vector<std::wstring>;
 
 class StrVector : public StrVectorBase {
  public:
@@ -339,7 +294,7 @@ class StrVector : public StrVectorBase {
   }
 };
 
-typedef std::set<std::wstring> StrSet;
+using StrSet = std::set<std::wstring>;
 
 /**
  * Generic Info that all plug-ins and plug-in configurations, as well as other
@@ -349,9 +304,9 @@ typedef std::set<std::wstring> StrSet;
  */
 class Info {
  private:
-  const UniqueId _id;
-  const std::wstring _name;
-  const std::wstring _description;
+  const UniqueId m_id;
+  const std::wstring m_name;
+  const std::wstring m_description;
 
  public:
   /**
@@ -365,14 +320,14 @@ class Info {
    */
   Info(const UniqueId& id, const std::wstring& name,
        const std::wstring& description)
-      : _id(id), _name(name), _description(description) {}
+      : m_id(id), m_name(name), m_description(description) {}
   /**
    * Copy constructor - takes another Info as argument
    *
    * @param info   The source Info for the copy operation
    */
   Info(const Info& info)
-      : _id(info.id()), _name(info.name()), _description(info.description()) {}
+      : m_id(info.id()), m_name(info.name()), m_description(info.description()) {}
   /**
    * default constructor - generates a new unique id and sets the name and
    * description to empty strings
@@ -384,35 +339,35 @@ class Info {
    *
    * @return the unique id
    */
-  const UniqueId& id() const { return _id; }
+  const UniqueId& id() const { return m_id; }
   /**
    * Returns the name
    *
    * @return the name
    */
-  const std::wstring& name() const { return _name; }
+  const std::wstring& name() const { return m_name; }
   /**
    * Returns the description
    *
    * @return the description
    */
-  const std::wstring& description() const { return _description; }
+  const std::wstring& description() const { return m_description; }
 };
 
-typedef ManagedPtr<Info> InfoPtr;
-typedef ManagedPtr<UniqueId> UniqueIdPtr;
+using InfoPtr = std::shared_ptr<Info>;
+using UniqueIdPtr = std::shared_ptr<UniqueId>;
 
 class Range;
 class DataRequester;
 
 class VersionException {
  private:
-  const std::wstring _message;
+  const std::wstring m_message;
 
  public:
-  VersionException(const std::wstring& message) : _message(message) {}
+  VersionException(const std::wstring& message) : m_message(message) {}
 
-  const std::wstring& message() const { return _message; }
+  const std::wstring& message() const { return m_message; }
 };
 /**
  * Version contains:
@@ -431,11 +386,11 @@ class MISC_API Version {
   unsigned int m_minor;
   unsigned int m_revision;
   unsigned int m_build;
-#define VERSION_SEPARATOR _T( ".")
-#define VERSION_SEPARATORS VERSION_SEPARATOR _T( ",")
+#define VERSION_SEPARATOR L"."
+#define VERSION_SEPARATORS VERSION_SEPARATOR L","
 
  private:
-  void parse(const TCHAR* version) throw(VersionException);
+  void parse(const TCHAR* version);
 
  public:
   static const Version CURRENT;
@@ -443,7 +398,7 @@ class MISC_API Version {
    * Default constructor - sets the current version from the package version
    * string
    */
-  Version() throw(VersionException);
+  Version();
   /**
    * Constructor - takes the 4 values that define a version as parameters
    *
@@ -463,8 +418,8 @@ class MISC_API Version {
    * 1.2.3
    * 1.2.3.4
    */
-  Version(const std::wstring& version) throw(VersionException);
-  Version(const TCHAR* version) throw(VersionException);
+  Version(const std::wstring& version);
+  Version(const TCHAR* version);
 
   /**
    * Returns the major number
@@ -526,68 +481,28 @@ class MISC_API Version {
 };
 
 #if defined(_WIN64)
-#define BUILD_TYPE _T( "64 bit")
+constexpr auto BUILD_TYPE = L"64 bit";
 #else
-#define BUILD_TYPE _T( "32 bit")
+constexpr auto BUILD_TYPE = L"32 bit";
 #endif
 
 inline void printLine(const std::wstring& str) {
-  yloader::tsprint(str + _T("\n"), std::wcout);
+  yloader::tsprint(str + L"\n", std::wcout);
 }
 
 inline void printLine() { printLine(std::wstring()); }
 
 inline std::wstring getCaption(const std::wstring& productName) {
-  return productName + _T(" v") + Version::CURRENT.toString() + _T( ", " ) +
-         BUILD_TYPE;
+  return productName + L" v" + Version::CURRENT.toString() + L", " + BUILD_TYPE;
 }
 
 inline void printDashedLine(const std::wstring& str) {
-  const std::wstring DASHES(_T("------"));
-  const std::wstring SPACE(_T(" "));
-  printLine(DASHES + SPACE + str + SPACE + DASHES);
+  printLine(L"------"s + L" " + str + L" " + L"------"s);
 }
 
 inline void printDashedLine(const TCHAR* str) {
   printDashedLine(std::wstring(str));
 }
-
-#pragma warning(default : 4800)
-/**
- * Diagnostic class - counts instances of a class as they are created and
- * destroyed -
- *
- * can be used to make sure that all instances of a class are destroyed, or to
- * see how many instances there are at any given moment
- *
- * By default _os is initialized with std::cout, but it can be assigned another
- * reference at runtime
- */
-class ObjCount {
- private:
-  MISC_API static int _objCount;
-  MISC_API static t_ostream& _os;
-  MISC_API static int _totalObjects;
-
-  const std::wstring _name;
-
- public:
-  ObjCount(const std::wstring& name = _T( "" )) : _name(name) {
-    _objCount++;
-    _totalObjects++;
-    std::wostringstream o;
-    o << _name << _T( " constructor, count: " ) << _objCount
-      << _T( ", total objects: " ) << _totalObjects << std::endl;
-    TSPRINT_DEBUG(o);
-  }
-
-  virtual ~ObjCount() {
-    _objCount--;
-    std::wostringstream o;
-    o << _name << _T( " destructor, count: " ) << _objCount << std::endl;
-    TSPRINT_DEBUG(o);
-  }
-};
 
 /**
  * Generates file name for a symbol file.
@@ -606,33 +521,33 @@ class ObjCount {
  */
 class FileName {
  private:
-  const bool _flatData;
+  const bool m_flatData;
 
-  TCHAR transformInvalidFileChars(TCHAR c) const {
-    if (c == _TCHAR('\\'))
-      return _TCHAR('a');
-    else if (c == _TCHAR('/'))
-      return _TCHAR('b');
-    else if (c == _TCHAR(':'))
-      return _TCHAR('c');
-    else if (c == _TCHAR('*'))
-      return _TCHAR('d');
-    else if (c == _TCHAR('?'))
-      return _TCHAR('e');
-    else if (c == _TCHAR('\"'))
-      return _TCHAR('f');
-    else if (c == _TCHAR('<'))
-      return _TCHAR('g');
-    else if (c == _TCHAR('>'))
-      return _TCHAR('h');
-    else if (c == _TCHAR('|'))
-      return _TCHAR('i');
+  wchar_t transformInvalidFileChars(wchar_t c) const {
+    if (c == L'\\')
+      return L'a';
+    else if (c == L'/')
+      return L'b';
+    else if (c == L':')
+      return L'c';
+    else if (c == L'*')
+      return L'd';
+    else if (c == L'?')
+      return L'e';
+    else if (c == L'\"')
+      return L'f';
+    else if (c == L'<')
+      return L'g';
+    else if (c == L'>')
+      return L'h';
+    else if (c == L'|')
+      return L'i';
     else
       return c;
   }
 
  public:
-  FileName(bool flatData) : _flatData(flatData) {}
+  FileName(bool flatData) : m_flatData(flatData) {}
 
   virtual ~FileName() {}
 
@@ -644,21 +559,19 @@ class FileName {
     std::wostringstream path;
     path << addBackSlash(p);
 
-    if (!_flatData) {
+    if (!m_flatData) {
       std::wstring first(1, transformInvalidFileChars(symbol[0]));
-      std::wstring second(1, symbol.length() == 1
-                                 ? symbol[0]
-                                 : transformInvalidFileChars(symbol[1]));
+      std::wstring second(1, symbol.length() == 1 ? symbol[0] : transformInvalidFileChars(symbol[1]));
 
       path << first;
 
       createDir(path.str());
 
-      path << _T( "\\" ) << second;
+      path << L"\\" << second;
 
       createDir(path.str());
 
-      path << _T( "\\" );
+      path << L"\\";
     }
 
     path << fileName;
@@ -669,92 +582,42 @@ class FileName {
   virtual void createDir(const std::wstring& path) const {}
 };
 
-/*
-template< class Key, class Value > class Element
-{
-}
-
-
-template< class Key, class Value >class Map
-{
-  private:
-    typedef std::map< Key, Value > _Map;
-
-    _Map _map;
-
-  public:
-    void insert( Key key, Value value )
-    {
-    }
-
-*/
-
-#define COUT std::cout << _T( "[" ) << __FUNCTION__ << _T( "] " )
-
 MISC_API std::vector<std::string> cmdLineSplitter(const std::wstring& line);
 
 }  // end namespace yloader
-// utility macro - define a basic exception class
-#define BASIC_EXCEPTION(name)                                             \
-  \
-class name : public std::exception\
-{\
-\
-public : name(const std::wstring& message) : std::exception(              \
-                 yloader::ws2s(message).c_str()){} std::wstring message() \
-                 const {return yloader::s2ws(__super::what());            \
-  }                                                                       \
-  \
-}                                                                      \
-  ;
-
-#define BASIC_EXCEPTION_DEF_CONSTRUCTOR(name) \
-  \
-BASIC_EXCEPTION(name##Base)                   \
-  \
-class name : public name##Base\
-{              \
-    \
-public : name() : name##Base(""){}            \
-  \
-};
 
 // class used by command line
-
-template <class T>
-class Settable {
+template <class T> class Settable {
  private:
-  bool _set;
-  T _value;
-
+   std::optional< T > m_value;
  public:
-  Settable() : _set(false) {}
-
+   const Settable() = default;
+   const Settable(const T& t)
+     : m_value(t) {
+   }
   const Settable& operator=(const T& t) {
-    _set = true;
-    _value = t;
+    *m_value = t;
 
     return *this;
   }
 
   void set(const T& t) {
-    _set = true;
-    _value = t;
+    m_value = t;
   }
 
-  bool isSet() const { return _set; }
-  const T& getValue() const { return _value; }
-  operator const T&() const { return _value; }
-  const T& getValue(const T& def) const { return isSet() ? _value : def; }
+  bool isSet() const { return m_value.has_value(); }
+  const T& getValue() const { return *m_value; }
+  operator const T&() const { return *m_value; }
+  const T& getValue(const T& def) const { return isSet() ? *m_value : def; }
 };
 
-typedef Settable<std::wstring> StringSettable;
-typedef Settable<bool> BoolSettable;
-typedef Settable<unsigned int> UIntSettable;
-typedef Settable<double> DoubleSettable;
-typedef Settable<unsigned long> ULongSettable;
-typedef Settable<int> IntSettable;
-typedef Settable<std::vector<std::string> > StrVectorSettable;
+using StringSettable = Settable<std::wstring>;
+using BoolSettable = Settable<bool>;
+using UIntSettable = Settable<unsigned int>;
+using DoubleSettable = Settable<double>;
+using ULongSettable = Settable<unsigned long>;
+using IntSettable = Settable<int>;
+using StrVectorSettable = Settable<std::vector<std::string> >;
 
 ////////////////////
 ///
@@ -765,8 +628,8 @@ inline double round(double x) {
 }
 
 inline std::wstring char2hex(char dec) {
-  TCHAR dig1 = (dec & 0xF0) >> 4;
-  TCHAR dig2 = (dec & 0x0F);
+  wchar_t dig1 = (dec & 0xF0) >> 4;
+  wchar_t dig2 = (dec & 0x0F);
   if (0 <= dig1 && dig1 <= 9) dig1 += 48;         // 0,48inascii
   if (10 <= dig1 && dig1 <= 15) dig1 += 97 - 10;  // a,97inascii
   if (0 <= dig2 && dig2 <= 9) dig2 += 48;
@@ -778,19 +641,19 @@ inline std::wstring char2hex(char dec) {
   return r;
 }
 
-inline std::wstring urlencode(const std::wstring& c) {
+inline std::wstring urlencode(const std::wstring& url) {
   std::wstring escaped;
-  int max = c.length();
-  for (int i = 0; i < max; i++) {
-    if ((48 <= c[i] && c[i] <= 57) ||   // 0-9
-        (65 <= c[i] && c[i] <= 90) ||   // abc...xyz
-        (97 <= c[i] && c[i] <= 122) ||  // ABC...XYZ
-        (c[i] == TCHAR('~') || c[i] == TCHAR('!') || c[i] == TCHAR('*') ||
-         c[i] == TCHAR('(') || c[i] == TCHAR(')') || c[i] == TCHAR('\''))) {
-      escaped.append(&c[i], 1);
-    } else {
-      escaped.append(_T("%"));
-      escaped.append(char2hex(c[i]));  // converts char 255 to string "ff"
+  for (wchar_t c : url) {
+    if ((L'0' <= c && c <= L'9') ||   // 0-9
+        (L'a' <= c && c <= L'z') ||   // abc...xyz
+        (L'A' <= c && c <= L'Z') ||  // ABC...XYZ
+        (c == L'~' || c == L'!' || c == L'*' ||
+         c == L'(' || c == L')' || c == L'\'')) {
+      escaped.append(&c, 1);
+    }
+    else {
+      escaped.append(L"%");
+      escaped.append(char2hex(c));  // converts char 255 to string "ff"
     }
   }
   return escaped;

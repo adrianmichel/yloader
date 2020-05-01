@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -71,14 +71,14 @@ void CPrefsStatic::OnPaint() {
     }
   } else {
     // create a font, if we need to
-    if (m_captionFont.GetSafeHandle() == NULL)
-      m_captionFont.CreateFont(m_fontSize, 0, 0, 0, m_fontWeight, 0, 0, 0,
-                               ANSI_CHARSET, OUT_DEFAULT_PRECIS,
-                               CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_MODERN,
-                               m_csFontName);
+    if (m_captionFont.GetSafeHandle() == NULL) {
+      m_captionFont.CreateFont(m_fontSize, 0, 0, 0, m_fontWeight, 0, 0, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+        CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_MODERN, m_csFontName);
+    }
 
-    if (m_captionFont.GetSafeHandle() != NULL)
+    if (m_captionFont.GetSafeHandle() != NULL) {
       pOldFont = dc.SelectObject(&m_captionFont);
+    }
   }
 
   // Draw text
@@ -170,9 +170,7 @@ void CPrefsStatic::MakeCaptionBitmap() {
     x -= xDelta;                     // next band
     int wmx2 = (w1 - x) * (w1 - x);  // w minus x squared
     int w2 = w1 * w1;                // w squared
-    PaintRect(
-        dc, x, 0, xDelta, h,
-        RGB(r - (r * wmx2) / w2, g - (g * wmx2) / w2, b - (b * wmx2) / w2));
+    PaintRect(dc, x, 0, xDelta, h, RGB(r - (r * wmx2) / w2, g - (g * wmx2) / w2, b - (b * wmx2) / w2));
   }
 
   PaintRect(dc, 0, 0, x, h, RGB(0, 0, 0));  // whatever's left ==> black
@@ -182,8 +180,7 @@ void CPrefsStatic::MakeCaptionBitmap() {
   // create a font, if we need to
   if (m_nameFont.GetSafeHandle() == NULL)
     m_nameFont.CreateFont(18, 0, 0, 0, FW_BOLD, 0, 0, 0, ANSI_CHARSET,
-                          OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-                          DEFAULT_QUALITY, FF_MODERN, m_csFontName);
+                          OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FF_MODERN, m_csFontName);
 
   CFont* OldFont = dc.SelectObject(&m_nameFont);
 
@@ -193,8 +190,7 @@ void CPrefsStatic::MakeCaptionBitmap() {
   // draw text in DC
   dc.SetBkMode(TRANSPARENT);
   dc.SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
-  dc.DrawText(m_csConstantText, cr + CPoint(1, 1),
-              DT_SINGLELINE | DT_RIGHT | DT_VCENTER);
+  dc.DrawText(m_csConstantText, cr + CPoint(1, 1), DT_SINGLELINE | DT_RIGHT | DT_VCENTER);
   dc.SetTextColor(::GetSysColor(COLOR_3DSHADOW));
   dc.DrawText(m_csConstantText, cr, DT_SINGLELINE | DT_RIGHT | DT_VCENTER);
 

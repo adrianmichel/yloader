@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
+#include <boost\algorithm\string.hpp>
 
 #include <httprequest.h>
 

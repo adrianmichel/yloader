@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ class YSettingsDialog : public CSettingsDialog {
     return (!_disableExtraFeatures) ? m_gs->threads() : 1;
   }
   const CString logFile() const {
-    return (!_disableExtraFeatures) ? m_ls->logFile() : _T( "" );
+    return (!_disableExtraFeatures) ? m_ls->logFile() : L"";
   }
   bool appendToLog() const { return m_ls->appendToLog(); }
   bool padDate() const { return m_dfs->padDate(); }
@@ -147,6 +147,6 @@ class YSettingsDialog : public CSettingsDialog {
   CSymbolsListsSettings* m_slls;
   void OnOK();
 
-  bool _showInitialMB;
-  bool _hasSelectedPlugin;
+  bool m_showInitialMB;
+  bool m_hasSelectedPlugin;
 };

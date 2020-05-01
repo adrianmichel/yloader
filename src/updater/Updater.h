@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class VersionInfo {
   // builds update info for current version
   VersionInfo();
   // builds UpdateInfo from json string
-  VersionInfo(boost::shared_ptr<std::string> s);
+  VersionInfo(std::shared_ptr<std::string> s);
 
   bool operator>(const VersionInfo& versionInfo);
 
@@ -65,30 +65,26 @@ class Updater : public yloader::Thread {
  private:
   std::shared_ptr<VersionInfo> m_updateInfo;
   std::wstring m_lastError;
-  mutable yloader::Mutex m_mutex;
+  mutable std::mutex m_mutex;
   UpdaterHandler& m_handler;
   std::wstring m_updateHostName;
   std::wstring m_updateDirectory;
-  static const std::wstring DEFAULT_YLOADER_UPDATE_HOST_NAME;
-  static const std::wstring DEFAULT_YLOADER_UPDATE_DIRECTORY;
 
  public:
-  Updater(UpdaterHandler& handler, const std::wstring& lang,
-          const StringSettable& hostName,
-          const StringSettable& updateDirectory);
+  Updater(UpdaterHandler& handler, const std::wstring& lang, const StringSettable& hostName, const StringSettable& updateDirectory);
   virtual ~Updater();
 
   std::shared_ptr<VersionInfo> getUpdateInfo() {
-    yloader::Lock lock(m_mutex);
+    std::scoped_lock lock(m_mutex);
     return m_updateInfo;
   }
 
   bool hasUpdate();
 
   yloader::Version getVersion() const {
-    yloader::Lock lock(m_mutex);
+    std::scoped_lock lock(m_mutex);
     return m_updateInfo ? m_updateInfo->getVersion() : yloader::Version();
   }
 
-  virtual void run(ThreadContext* context);
+  void run(ThreadContext* context) override;
 };

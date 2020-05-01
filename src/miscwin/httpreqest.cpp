@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,9 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <curl/curl.h>
 #include <curl/easy.h>
-
-#include <boost/shared_ptr.hpp>
-
 #include <strings.h>
 
 using namespace yloader;
@@ -33,122 +30,120 @@ using namespace yloader;
 
 class ResponseString {
  private:
-  boost::shared_ptr<std::string> _str;
+  std::shared_ptr<std::string> m_str;
 
  public:
-  ResponseString() : _str(new std::string()) {}
+  ResponseString() : m_str(new std::string()) {}
 
-  void append(char* s, size_t size) { _str->append(s, size); }
+  void append(char* s, size_t size) { m_str->append(s, size); }
 
-  boost::shared_ptr<std::string> get() { return _str; }
+  std::shared_ptr<std::string> get() { return m_str; }
 };
 
 static size_t responseCallback(void* ptr, size_t size, size_t nmemb,
                                void* data) {
-  int realsize = size * nmemb;
+  size_t realsize = size * nmemb;
   ResponseString* rs = static_cast<ResponseString*>(data);
   rs->append((char*)ptr, realsize);
   return realsize;
 }
 
-int CurlHTTPRequest::xprogress(void* req, double t, double d, double ultotal,
-                               double ulnow) {
-  //	OutputDebugString( "curl request progress\n" );
+int CurlHTTPRequest::xprogress(void* req, double t, double d, double ultotal, double ulnow) {
   CurlHTTPRequest* p = static_cast<CurlHTTPRequest*>(req);
   return p->progress();
 }
 
 void CurlHTTPRequest::cancel() {
-  Lock lock(_mx);
-  _cancel = true;
+  std::scoped_lock lock(m_mx);
+  m_cancel = true;
 }
 
 void CurlHTTPRequest::unCancel() {
-  yloader::Lock lock(_mx);
-  _cancel = false;
-  _canceled = false;
+  std::scoped_lock lock(m_mx);
+  m_cancel = false;
+  m_canceled = false;
 }
 
 int CurlHTTPRequest::progress() {
-  Lock lock(_mx);
-  if (_cancel) {
-    _cancel = false;
-    _canceled = true;
+  std::scoped_lock lock(m_mx);
+  if (m_cancel) {
+    m_cancel = false;
+    m_canceled = true;
     return 1;
-  } else
+  }
+  else {
     return 0;
+  }
 }
 
 // encapsulation of the formpost struct and code
 class FormPost {
  private:
-  curl_httppost* _formpost;
-  curl_httppost* _lastptr;
-  void* _curl;
+  curl_httppost* m_formpost;
+  curl_httppost* m_lastptr;
+  void* m_curl;
 
  private:
-  curl_httppost** formpost() { return &_formpost; }
-  curl_httppost** lastptr() { return &_lastptr; }
+  curl_httppost** formpost() { return &m_formpost; }
+  curl_httppost** lastptr() { return &m_lastptr; }
 
   void add(const NameValue& nv) {
-    boost::shared_ptr<char> str(
-        curl_easy_escape(_curl, ws2s(nv.value()).c_str(), nv.value().length()),
-        curl_free);
-    curl_formadd(formpost(), lastptr(), CURLFORM_COPYNAME, nv.name().c_str(),
-                 CURLFORM_COPYCONTENTS, str.get(), CURLFORM_END);
+    std::shared_ptr<char> str(curl_easy_escape(m_curl, ws2s(nv.value()).c_str(), boost::numeric_cast< int >( nv.value().length())), curl_free);
+    curl_formadd(formpost(), lastptr(), CURLFORM_COPYNAME, nv.name().c_str(), CURLFORM_COPYCONTENTS, str.get(), CURLFORM_END);
   }
 
   void add(const NameValueMap& data) {
-    for (NameValueMap::size_type n = 0; n < data.size(); ++n) add(data[n]);
+    for (NameValueMap::size_type n = 0; n < data.size(); ++n) {
+      add(data[n]);
+    }
   }
 
  public:
   FormPost(const NameValueMap& data, void* curl)
-      : _formpost(0), _lastptr(0), _curl(curl) {
+      : m_formpost(0), m_lastptr(0), m_curl(curl) {
     assert(curl != 0);
 
     add(data);
   }
 
-  ~FormPost() { curl_formfree(_formpost); }
+  ~FormPost() { curl_formfree(m_formpost); }
 
-  operator curl_httppost*() { return _formpost; }
+  operator curl_httppost*() { return m_formpost; }
 };
 
 void CurlHTTPRequest::setVerify() {
-  if (!m_verifyPeer)
-    handleCurlResult(curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYPEER, 0L),
-                     "curl_easy_setopt( CURLOPT_SSL_VERIFYPEER )");
+  if (!m_verifyPeer) {
+    handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, 0L), "curl_easy_setopt( CURLOPT_SSL_VERIFYPEER )");
+  }
 
-  if (!m_verifyHost)
-    handleCurlResult(curl_easy_setopt(_curl, CURLOPT_SSL_VERIFYHOST, 0L),
-                     "curl_easy_setopt( CURLOPT_SSL_VERIFYHOST )");
+  if (!m_verifyHost) {
+    handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, 0L), "curl_easy_setopt( CURLOPT_SSL_VERIFYHOST )");
+  }
 }
 
 std::wstring HTTPRequestBase::url(const std::wstring& object) {
-  return protocol() << _T( "://" ) + getServerName() + object;
+  return protocol() + L"://" + getServerName() + object;
 }
 
-size_t header_callback(char* buffer, size_t size, size_t nitems,
-                       void* userdata) {
+size_t header_callback(char* buffer, size_t size, size_t nitems, void* userdata) {
   CurlHTTPRequest* request = (CurlHTTPRequest*)userdata;
   std::string header(buffer, size * nitems);
   request->addHeader(header);
   return nitems * size;
 }
 
-boost::shared_ptr<std::string> CurlHTTPRequest::post(
-    const std::wstring& object, const NameValueMap& data,
-    const std::wstring& extraHeaders, const std::wstring& proxyServerAddress,
-    const std::wstring& proxyServerUserName,
+std::shared_ptr<std::string> CurlHTTPRequest::post(const std::wstring& object, const NameValueMap& data,
+    const std::wstring& extraHeaders, const std::wstring& proxyServerAddress, const std::wstring& proxyServerUserName,
     const std::wstring& proxyServerPassword, unsigned int timeout) {
-  LOG(log_debug, "data: " << *data.toString());
+  LOG(log_debug, L"data: ", *data.toString());
   curl_version_info_data* info = curl_version_info(CURLVERSION_NOW);
 
-  if (info->features & CURL_VERSION_ASYNCHDNS)
-    OutputDebugString(_T( "ares enabled\n"));
-  else
-    OutputDebugString(_T( "ares NOT enabled\n"));
+  if (info->features & CURL_VERSION_ASYNCHDNS) {
+    OutputDebugString(L"ares enabled\n");
+  }
+  else {
+    OutputDebugString(L"ares NOT enabled\n");
+  }
 
   /* First set the URL that is about to receive our POST. This URL can
      just as well be a https:// URL if that is what should receive the
@@ -161,13 +156,12 @@ boost::shared_ptr<std::string> CurlHTTPRequest::post(
           struct curl_httppost *lastptr=NULL;
           */
 
-  FormPost fp(data, _curl);
+  FormPost fp(data, m_curl);
 
-  //	yloader::ManagedPtr< curl_httppost* > x( &formpost, cleanformpost );
+  //	std::shared_ptr< curl_httppost* > x( &formpost, cleanformpost );
 
   std::wstring url(url(object));
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_URL, url.c_str()),
-                   "curl_easy_setopt( CURLOPT_URL )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str()), "curl_easy_setopt( CURLOPT_URL )");
 
   /* Now specify the POST data */
   //	handleCurlResult( curl_easy_setopt( _curl, CURLOPT_POSTFIELDS,
@@ -175,173 +169,131 @@ boost::shared_ptr<std::string> CurlHTTPRequest::post(
 
   setVerify();
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, responseCallback),
-      "curl_easy_setopt( CURLOPT_WRITEFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_FILE, (void*)&rs),
-                   "curl_easy_setopt( CURLOPT_FILE )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_NOPROGRESS, 0L),
-                   "curl_easy_setopt( CURLOPT_NOPROGRESS )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, xprogress),
-                   "curl_easy_setopt( CURLOPT_PROGRESSFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROGRESSDATA, this),
-                   "curl_easy_setopt( CURLOPT_PROGRESSDATA )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, responseCallback), "curl_easy_setopt( CURLOPT_WRITEFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_FILE, (void*)&rs), "curl_easy_setopt( CURLOPT_FILE )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_NOPROGRESS, 0L), "curl_easy_setopt( CURLOPT_NOPROGRESS )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROGRESSFUNCTION, xprogress), "curl_easy_setopt( CURLOPT_PROGRESSFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROGRESSDATA, this), "curl_easy_setopt( CURLOPT_PROGRESSDATA )");
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_HEADERFUNCTION, header_callback),
-      "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_HEADERDATA, this),
-                   "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, header_callback), "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_HEADERDATA, this), "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
 
   // this sets the level of verbosity
   //	handleCurlResult( curl_easy_setopt( _curl, CURLOPT_VERBOSE, 1),
   //"curl_easy_setopt( CURLOPT_VERBOSE )" );
 
-  //	boost::shared_ptr< FILE > curllog( fopen( "c:\\dev\\curl.log", "a" ),
+  //	std::shared_ptr< FILE > curllog( fopen( "c:\\dev\\curl.log", "a" ),
   // fclose ); 	handleCurlResult( curl_easy_setopt( _curl, CURLOPT_STDERR,
   // curllog.get()), "curl_easy_setopt( CURLOPT_STDERR )" );
 
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_HTTPPOST, fp),
-                   "curl_easy_setopt( CURLOPT_HTTPPOST )");
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_PROXY, proxyServerAddress.c_str()),
-      "curl_easy_setup( CURLOPT_PROXY )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_HTTPPOST, fp), "curl_easy_setopt( CURLOPT_HTTPPOST )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXY, proxyServerAddress.c_str()), "curl_easy_setup( CURLOPT_PROXY )");
 
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROXYUSERNAME,
-                                    proxyServerUserName.c_str()),
-                   "curl_easy_setup( CURLOPT_PROXYUSERNAME )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROXYPASSWORD,
-                                    proxyServerPassword.c_str()),
-                   "curl_easy_setup( CURLOPT_PROXYPASSWORD )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXYUSERNAME, proxyServerUserName.c_str()), "curl_easy_setup( CURLOPT_PROXYUSERNAME )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXYPASSWORD, proxyServerPassword.c_str()), "curl_easy_setup( CURLOPT_PROXYPASSWORD )");
 
   // set a timeout of 40 seconds - should be enough. What is the default
   // timeout?
-  if (timeout > 0)
-    handleCurlResult(curl_easy_setopt(_curl, CURLOPT_TIMEOUT, timeout),
-                     "curl_easy_setopt( CURLOPT_TIMEOUT )");
+  if (timeout > 0) {
+    handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, timeout), "curl_easy_setopt( CURLOPT_TIMEOUT )");
+  }
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_USERAGENT, "libcurl-agent/1.0"),
-      "curl_easy_setopt( CURLOPT_USERAGENT )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_USERAGENT, "libcurl-agent/1.0"), "curl_easy_setopt( CURLOPT_USERAGENT )");
   /* Perform the request, res will get the return code */
-  handleCurlResult(curl_easy_perform(_curl), "curl_easy_perform");
+  handleCurlResult(curl_easy_perform(m_curl), "curl_easy_perform");
 
   long responseCode;
 
-  curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &responseCode);
+  curl_easy_getinfo(m_curl, CURLINFO_RESPONSE_CODE, &responseCode);
 
-  LOG(log_debug, "curl response code: " << responseCode);
+  LOG(log_debug, L"curl response code: ", responseCode);
 
-  if (_canceled)
+  if (m_canceled) {
     throw InternetException(InternetException::REQUEST_CANCELLED, -1);
+  }
   /* always cleanup */
 
-  if (responseCode != 200 && responseCode != 0)
-    throw InternetException(InternetException::HTTP_RESPONSE_ERROR,
-                            responseCode);
+  if (responseCode != 200 && responseCode != 0) {
+    throw InternetException(InternetException::HTTP_RESPONSE_ERROR, responseCode);
+  }
 
   return rs.get();
 }
 
-boost::shared_ptr<std::string> CurlHTTPRequest::get(
-    const std::wstring& object, const std::wstring& extraHeaders,
-    const std::wstring& userAgent, const std::wstring& proxyServerAddress,
-    const std::wstring& proxyServerUserName,
-    const std::wstring& proxyServerPassword, unsigned int timeout,
-    const std::wstring& cookie) {
+std::shared_ptr<std::string> CurlHTTPRequest::get(const std::wstring& object, const std::wstring& extraHeaders,
+    const std::wstring& userAgent, const std::wstring& proxyServerAddress, const std::wstring& proxyServerUserName,
+    const std::wstring& proxyServerPassword, unsigned int timeout, const std::wstring& cookie) {
   ResponseString rs;  // for the response
   ResponseString hs;  // for the header
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_URL, yloader::ws2s(url(object)).c_str()),
-      "curl_easy_setopt( CURLOPT_URL )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_URL, yloader::ws2s(url(object)).c_str()), "curl_easy_setopt( CURLOPT_URL )");
 
   setVerify();
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, responseCallback),
-      "curl_easy_setopt( CURLOPT_WRITEFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_WRITEDATA, (void*)&rs),
-                   "curl_easy_setopt( CURLOPT_WRITEDATA )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_NOPROGRESS, 0L),
-                   "curl_easy_setopt( CURLOPT_NOPROGRESS )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROGRESSFUNCTION, xprogress),
-                   "curl_easy_setopt( CURLOPT_PROGRESSFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROGRESSDATA, this),
-                   "curl_easy_setopt( CURLOPT_PROGRESSDATA )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, responseCallback), "curl_easy_setopt( CURLOPT_WRITEFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, (void*)&rs), "curl_easy_setopt( CURLOPT_WRITEDATA )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_NOPROGRESS, 0L), "curl_easy_setopt( CURLOPT_NOPROGRESS )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROGRESSFUNCTION, xprogress), "curl_easy_setopt( CURLOPT_PROGRESSFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROGRESSDATA, this), "curl_easy_setopt( CURLOPT_PROGRESSDATA )");
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_HEADERFUNCTION, header_callback),
-      "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
-  handleCurlResult(curl_easy_setopt(_curl, CURLOPT_HEADERDATA, this),
-                   "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, header_callback), "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_HEADERDATA, this), "curl_easy_setopt( CURLOPT_HEADERFUNCTION )");
 
   if (!proxyServerAddress.empty()) {
-    handleCurlResult(
-        curl_easy_setopt(_curl, CURLOPT_PROXY, proxyServerAddress.c_str()),
-        "curl_easy_setup( CURLOPT_PROXY )");
+    handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXY, proxyServerAddress.c_str()), "curl_easy_setup( CURLOPT_PROXY )");
 
     if (!proxyServerUserName.empty()) {
-      handleCurlResult(
-          curl_easy_setopt(_curl, CURLOPT_PROXYAUTH, CURLAUTH_BASIC),
-          "curl_easy_setup( CURLOPT_PROXYAUTH )");
+      handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXYAUTH, CURLAUTH_BASIC), "curl_easy_setup( CURLOPT_PROXYAUTH )");
 
-      handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROXYUSERNAME,
-                                        proxyServerUserName.c_str()),
-                       "curl_easy_setup( CURLOPT_PROXYUSERNAME )");
-      handleCurlResult(curl_easy_setopt(_curl, CURLOPT_PROXYPASSWORD,
-                                        proxyServerPassword.c_str()),
-                       "curl_easy_setup( CURLOPT_PROXYPASSWORD )");
+      handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXYUSERNAME, proxyServerUserName.c_str()), "curl_easy_setup( CURLOPT_PROXYUSERNAME )");
+      handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_PROXYPASSWORD, proxyServerPassword.c_str()), "curl_easy_setup( CURLOPT_PROXYPASSWORD )");
     }
   }
 
-  if (timeout > 0)
-    handleCurlResult(curl_easy_setopt(_curl, CURLOPT_TIMEOUT, timeout),
-                     "curl_easy_setopt( CURLOPT_TIMEOUT )");
+  if (timeout > 0) {
+    handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, timeout), "curl_easy_setopt( CURLOPT_TIMEOUT )");
+  }
 
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_USERAGENT, userAgent.c_str()),
-      "curl_easy_setopt( CURLOPT_USERAGENT )");
-  handleCurlResult(
-      curl_easy_setopt(_curl, CURLOPT_COOKIE, yloader::ws2s(cookie).c_str()),
-      "curl_easy_setopt( CURLOPT_COOKIE )");
-  handleCurlResult(curl_easy_perform(_curl), "curl_easy_perform");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_USERAGENT, userAgent.c_str()), "curl_easy_setopt( CURLOPT_USERAGENT )");
+  handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_COOKIE, yloader::ws2s(cookie).c_str()), "curl_easy_setopt( CURLOPT_COOKIE )");
+  handleCurlResult(curl_easy_perform(m_curl), "curl_easy_perform");
 
   long responseCode;
 
-  curl_easy_getinfo(_curl, CURLINFO_RESPONSE_CODE, &responseCode);
+  curl_easy_getinfo(m_curl, CURLINFO_RESPONSE_CODE, &responseCode);
 
-  LOG(log_debug, "curl response code: " << responseCode);
+  LOG(log_debug, L"curl response code: ", responseCode);
 
-  if (_canceled)
+  if (m_canceled) {
     throw InternetException(InternetException::REQUEST_CANCELLED, -1);
+  }
 
-  if (responseCode != 200 && responseCode != 0)
-    throw InternetException(InternetException::HTTP_RESPONSE_ERROR,
-                            responseCode);
+  if (responseCode != 200 && responseCode != 0) {
+    throw InternetException(InternetException::HTTP_RESPONSE_ERROR, responseCode);
+  }
 
   return rs.get();
 }
 
-CurlHTTPRequest::CurlHTTPRequest(const std::wstring& serverName, bool http,
-                                 bool verifyPeer, bool verifyHost)
+CurlHTTPRequest::CurlHTTPRequest(const std::wstring& serverName, bool http, bool verifyPeer, bool verifyHost)
     : HTTPRequestBase(serverName, http),
-      _curl(curl_easy_init()),
-      _cancel(false),
-      _canceled(false),
+      m_curl(curl_easy_init()),
+      m_cancel(false),
+      m_canceled(false),
       m_verifyPeer(verifyPeer),
       m_verifyHost(verifyHost) {
-  if (!_curl)
-    throw InternetException(InternetException::CURL_ERROR, -1,
-                            _T( "Curl initialization error" ));
+  if (!m_curl) {
+    throw InternetException(InternetException::CURL_ERROR, -1, L"Curl initialization error");
+  }
 }
 
-CurlHTTPRequest::~CurlHTTPRequest() { curl_easy_cleanup(_curl); }
+CurlHTTPRequest::~CurlHTTPRequest() {
+  curl_easy_cleanup(m_curl);
+}
 
 void CurlHTTPRequest::handleCurlResult(unsigned int res, const char* name) {
   std::wstring message;
-  message << name << ", " << curl_easy_strerror((CURLcode)res) << " (" << res
-          << ")";
+  message += s2ws( name ) + L", " + s2ws( curl_easy_strerror((CURLcode)res)) + L" (" + std::to_wstring( res ) + L")";
   switch (res) {
     case CURLE_OK:
       return;

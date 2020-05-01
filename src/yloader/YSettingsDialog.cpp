@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,62 +36,35 @@ YSettingsDialog::YSettingsDialog(
     const std::wstring& proxyServerUserName,
     const std::wstring& proxyServerPassword, unsigned int httpTimeout,
     const std::wstring& openDataFileWithithApp,
-    bool dontReloadOldDataInUpdateMode, bool minimizeToTray
-
-    ,
+    bool dontReloadOldDataInUpdateMode, bool minimizeToTray,
     bool showInitialMB, bool enableRegexFormatting, bool unlockMatchRegex,
     const std::wstring& matchRegex, const std::wstring& formatString,
     const std::wstring& errorSymbolsFile, bool appendToErrorSymbolsFile,
-    bool ignoreErrorSymbolsList, const std::wstring& ignoreSymbolsList,
-    CWnd* parent)
-    : /*_enableExtraFeatures( enableExtraFeatures ), */ _disableExtraFeatures(
-          false),
-      CSettingsDialog(parent),
-      _showInitialMB(showInitialMB),
-      _hasSelectedPlugin(
-          selectedDataSourcePlugin &&
-          plugins.getDataSourcePlugin(selectedDataSourcePlugin)) {
-  m_ps = dynamic_cast<CPluginSettings*>(AddPage(RUNTIME_CLASS(CPluginSettings),
-                                                _T("Data Sources"),
-                                                CPluginSettings::IDD));
-  m_gs = dynamic_cast<CGeneralSettings*>(
-      AddPage(RUNTIME_CLASS(CGeneralSettings), _T( "General Preferences" ),
-              CGeneralSettings::IDD));
-  m_dfs = dynamic_cast<CDataFormattingSettings*>(
-      AddPage(RUNTIME_CLASS(CDataFormattingSettings), _T( "Formatting" ),
-              CDataFormattingSettings::IDD));
-  m_dvs = dynamic_cast<CDataValidationSettings*>(
-      AddPage(RUNTIME_CLASS(CDataValidationSettings), _T("Validation"),
-              CDataValidationSettings::IDD));
-  m_dffs = dynamic_cast<CDataFileSettings*>(
-      AddPage(RUNTIME_CLASS(CDataFileSettings), _T( "Output" ),
-              CDataFileSettings::IDD, _T( "Session Settings" )));
-  m_slls = dynamic_cast<CSymbolsListsSettings*>(
-      AddPage(RUNTIME_CLASS(CSymbolsListsSettings), _T( "Symbols Lists" ),
-              CSymbolsListsSettings::IDD, _T( "Session Settings" )));
-  m_ls = dynamic_cast<CLoggingSettings*>(
-      AddPage(RUNTIME_CLASS(CLoggingSettings), _T( "Logging" ),
-              CLoggingSettings::IDD, _T( "Session Settings" )));
+    bool ignoreErrorSymbolsList, const std::wstring& ignoreSymbolsList, CWnd* parent)
+    : /*_enableExtraFeatures( enableExtraFeatures ), */ _disableExtraFeatures(false),
+      CSettingsDialog(parent), m_showInitialMB(showInitialMB),
+      m_hasSelectedPlugin(selectedDataSourcePlugin && plugins.getDataSourcePlugin(selectedDataSourcePlugin)) {
+  m_ps = dynamic_cast<CPluginSettings*>(AddPage(RUNTIME_CLASS(CPluginSettings), L"Data Sources", CPluginSettings::IDD));
+  m_gs = dynamic_cast<CGeneralSettings*>(AddPage(RUNTIME_CLASS(CGeneralSettings), L"General Preferences", CGeneralSettings::IDD));
+  m_dfs = dynamic_cast<CDataFormattingSettings*>(AddPage(RUNTIME_CLASS(CDataFormattingSettings), L"Formatting",CDataFormattingSettings::IDD));
+  m_dvs = dynamic_cast<CDataValidationSettings*>(AddPage(RUNTIME_CLASS(CDataValidationSettings), L"Validation", CDataValidationSettings::IDD));
+  m_dffs = dynamic_cast<CDataFileSettings*>(AddPage(RUNTIME_CLASS(CDataFileSettings), L"Output", CDataFileSettings::IDD, L"Session Settings"));
+  m_slls = dynamic_cast<CSymbolsListsSettings*>(AddPage(RUNTIME_CLASS(CSymbolsListsSettings), L"Symbols Lists", CSymbolsListsSettings::IDD, L"Session Settings"));
+  m_ls = dynamic_cast<CLoggingSettings*>(AddPage(RUNTIME_CLASS(CLoggingSettings), L"Logging", CLoggingSettings::IDD, L"Session Settings"));
 
   m_ps->init(plugins, selectedDataSourcePlugin);
   m_ls->init(logFile, appendToLog, logOnlyErrors, diagnosticLogging);
-  m_dfs->init(addSymbolsToColumn, columnNumber, padDate, dateFormat,
-              fieldSeparator, volumeMultiplier, dateSeparator,
-              enableRegexFormatting, unlockMatchRegex, matchRegex,
-              formatString);
+  m_dfs->init(addSymbolsToColumn, columnNumber, padDate, dateFormat, fieldSeparator, volumeMultiplier, dateSeparator,
+              enableRegexFormatting, unlockMatchRegex, matchRegex, formatString);
   m_dvs->init(invalidDataHandling, volume0invalid);
-  m_gs->init(autoStartDownloading, checkForUpdatesAtStartup, minimizeToTray,
-             threads, proxyServerAddress, proxyServerUserName,
-             proxyServerPassword, httpTimeout, openDataFileWithithApp,
-             dontReloadOldDataInUpdateMode);
-  m_dffs->init(prependToFileName, appendToFileName, fileNameExtension,
-               createSubdirs, autoSelectOutputPath, autoSelectOutputPathName,
+  m_gs->init(autoStartDownloading, checkForUpdatesAtStartup, minimizeToTray, threads, proxyServerAddress, proxyServerUserName,
+             proxyServerPassword, httpTimeout, openDataFileWithithApp, dontReloadOldDataInUpdateMode);
+  m_dffs->init(prependToFileName, appendToFileName, fileNameExtension, createSubdirs, autoSelectOutputPath, autoSelectOutputPathName,
                cm, fileHeader, sortBarsInAscendingOrder);
-  m_slls->init(errorSymbolsFile, appendToErrorSymbolsFile,
-               ignoreErrorSymbolsList, ignoreSymbolsList);
+  m_slls->init(errorSymbolsFile, appendToErrorSymbolsFile, ignoreErrorSymbolsList, ignoreSymbolsList);
 
-  SetTitle(_T( "YLoader Settings" ));
-  SetLogoText(_T( "YLoader"));
+  SetTitle(L"YLoader Settings");
+  SetLogoText(L"YLoader");
 }
 
 YSettingsDialog::~YSettingsDialog(void) {}
@@ -99,9 +72,8 @@ YSettingsDialog::~YSettingsDialog(void) {}
 BOOL YSettingsDialog::OnInitDialog() {
   CSettingsDialog::OnInitDialog();
 
-  if (!_hasSelectedPlugin && _showInitialMB) {
-    AfxMessageBox(
-        _T( "Please select a data source plug-in in the next dialog.\n\nYou can also configure various other settings and parameters of the YGQD" ));
+  if (!m_hasSelectedPlugin && m_showInitialMB) {
+    AfxMessageBox(L"Please select a data source plug-in in the next dialog.\n\nYou can also configure various other settings and parameters");
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control
@@ -109,22 +81,5 @@ BOOL YSettingsDialog::OnInitDialog() {
 }
 
 void YSettingsDialog::OnOK() {
-  /*	m_ls->UpdateData();
-          m_dfs->UpdateData();
-          m_dvs->UpdateData();
-          m_gs->UpdateData();
-          m_dffs->UpdateData();
-  */
   CSettingsDialog::OnOK();
-
-  /*	if( ( threads() > 1 || logFile().GetLength() > 0 ||
-     autoStartDownloading() ))
-          {
-            _disableExtraFeatures = true;
-            AfxMessageBox( _T( "The \"Multiple simultaneous connections\", \"Log
-     file\" and \"Auto start downloading\" \nfeatures are disabled in the
-     unregistered version of the application\nThese fields have been reset to
-     their default values\n" ) );
-          }
-          */
 }

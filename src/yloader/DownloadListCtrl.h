@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace yloader;
 
-const unsigned int WM_YAHOO_EVENT = WM_USER + 1;
+constexpr unsigned int WM_YAHOO_EVENT = WM_USER + 1;
 
 class CYahooEventList : public ::CYReportCtrl, public YahooEventSink {
  private:
-  CImageList _imageList;
+  CImageList m_imageList;
 
  public:
   CYahooEventList() {}
@@ -52,17 +52,17 @@ class CYahooEventList : public ::CYReportCtrl, public YahooEventSink {
     dwStyle |= LVS_EX_FLATSB | LVS_EX_GRIDLINES | LVS_EX_SUBITEMIMAGES;
     SendMessage(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, dwStyle);
 
-    _imageList.Create(16, 16, ILC_MASK, 2, 2);
-    _imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_INFO));
-    _imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_ERROR));
-    _imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_FATAL_ERROR));
-    _imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_WARNING));
+    m_imageList.Create(16, 16, ILC_MASK, 2, 2);
+    m_imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_INFO));
+    m_imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_ERROR));
+    m_imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_FATAL_ERROR));
+    m_imageList.Add(::AfxGetApp()->LoadIcon(IDI_ICON_WARNING));
 
-    SetImageList(&_imageList);
+    SetImageList(&m_imageList);
 
-    InsertColumn(0, _T( "" ), LVCFMT_LEFT, 22);
-    InsertColumn(1, _T( "Symbol" ), LVCFMT_LEFT, 50);
-    InsertColumn(2, _T( "Status" ), LVCFMT_LEFT, 410);
+    InsertColumn(0, L"", LVCFMT_LEFT, 22);
+    InsertColumn(1, L"Symbol", LVCFMT_LEFT, 50);
+    InsertColumn(2, L"Status", LVCFMT_LEFT, 410);
   }
 
   void insert(const YahooEvent& event) {
@@ -75,7 +75,7 @@ class CYahooEventList : public ::CYReportCtrl, public YahooEventSink {
     item.iSubItem = 0;
     item.state = 0;
     item.stateMask = 0;
-    CString time = _T( "" );
+    CString time = L"";
     item.pszText = const_cast<LPTSTR>((LPCTSTR)time);
     item.cchTextMax = time.GetLength();
     item.iIndent = 0;
@@ -120,7 +120,7 @@ class CYahooEventList : public ::CYReportCtrl, public YahooEventSink {
     EnsureVisible(GetItemCount() - 1, FALSE);
   }
 
-  std::wstring getSelectedSymbol() { return _T( "" ); }
+  std::wstring getSelectedSymbol() { return L""; }
 
  public:
   afx_msg LRESULT onEvent(WPARAM wp, LPARAM lp);

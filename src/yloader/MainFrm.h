@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,32 +38,22 @@ class SymbolsButton : public CMenuButton {
   SymbolsButton() : CMenuButton(symbolsFile) {}
 
   void init() {
-    /*		setMenu();
-                    m_icon.AssignFromHICON((HICON)
-       ::LoadImage(::AfxGetInstanceHandle(),
-       MAKEINTRESOURCE(IDI_ICON_OPEN_SYMBOLS), IMAGE_ICON, 16, 16, 0), false);
-                    */
   }
 
  protected:
-  virtual unsigned int getMRUId() const { return MRU_SYMBOLS_ID; }
-  virtual unsigned int getClearId() const { return CLEAR_MRU_SYMBOLS_ID; }
+  unsigned int getMRUId() const override { return MRU_SYMBOLS_ID; }
+  unsigned int getClearId() const override { return CLEAR_MRU_SYMBOLS_ID; }
 };
 
 class OutputPathButton : public CMenuButton {
  public:
   OutputPathButton() : CMenuButton(outputPath) {}
   void init() {
-    /*		setMenu();
-                    m_icon.AssignFromHICON((HICON)
-       ::LoadImage(::AfxGetInstanceHandle(),
-       MAKEINTRESOURCE(IDI_ICON_OUTPUT_PATH), IMAGE_ICON, 16, 16, 0), false);
-                    */
   }
 
  protected:
-  virtual unsigned int getMRUId() const { return MRU_OUTPUT_PATH_ID; }
-  virtual unsigned int getClearId() const { return CLEAR_MRU_OUTPUT_PATH_ID; }
+  unsigned int getMRUId() const override { return MRU_OUTPUT_PATH_ID; }
+  unsigned int getClearId() const override { return CLEAR_MRU_OUTPUT_PATH_ID; }
 };
 
 class OutputFileButton : public CMenuButton {
@@ -71,42 +61,28 @@ class OutputFileButton : public CMenuButton {
   OutputFileButton() : CMenuButton(outputFile) {}
 
   void init() {
-    /*		setMenu();
-                    m_icon.AssignFromHICON((HICON)
-       ::LoadImage(::AfxGetInstanceHandle(),
-       MAKEINTRESOURCE(IDI_ICON_SAVE_ONE_FILE), IMAGE_ICON, 16, 16, 0), false);
-                    */
   }
 
  protected:
-  virtual unsigned int getMRUId() const { return MRU_OUTPUT_FILE_ID; }
-  virtual unsigned int getClearId() const { return CLEAR_MRU_OUTPUT_FILE_ID; }
+  unsigned int getMRUId() const override { return MRU_OUTPUT_FILE_ID; }
+  unsigned int getClearId() const override { return CLEAR_MRU_OUTPUT_FILE_ID; }
 };
 
 class EditSymbolsListButton : public CButton {
  public:
   void init() {
-    //		m_icon.AssignFromHICON((HICON) ::LoadImage(::AfxGetInstanceHandle(),
-    //MAKEINTRESOURCE(IDI_ICON_EDIT_SYMBOLS_LIST), IMAGE_ICON, 16, 16, 0),
-    //false);
   }
 };
 
 class ExploreOutputFolderButton : public CButton {
  public:
   void init() {
-    //		m_icon.AssignFromHICON((HICON) ::LoadImage(::AfxGetInstanceHandle(),
-    //MAKEINTRESOURCE(IDI_ICON_EXPLORE_OUTPUT_PATH), IMAGE_ICON, 16, 16, 0),
-    //false);
   }
 };
 
 class OpenOneOutputFile : public CButton {
  public:
   void init() {
-    //		m_icon.AssignFromHICON((HICON) ::LoadImage(::AfxGetInstanceHandle(),
-    //MAKEINTRESOURCE(IDI_ICON_OPEN_ONE_OUTPUT_FILE), IMAGE_ICON, 16, 16, 0),
-    //false);
   }
 };
 
@@ -118,8 +94,9 @@ enum {
 };
 
 class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
+  OBJ_COUNTER(CMainFrame)
  public:
-  CYloaderView* getView() { return (CYloaderView*)(this->GetActiveView()); }
+  CYLoaderView* getView() { return (CYLoaderView*)(this->GetActiveView()); }
 
   virtual void Frame::closeFrame();
 
@@ -136,19 +113,16 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
  public:
   // Overrides
  public:
-  virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-  virtual BOOL LoadFrame(UINT nIDResource,
-                         DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW |
-                                                FWS_ADDTOTITLE,
-                         CWnd* pParentWnd = NULL,
-                         CCreateContext* pContext = NULL);
+  BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+  BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE,
+                         CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL) override;
 
   // Implementation
  public:
   virtual ~CMainFrame();
 #ifdef _DEBUG
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& dc) const;
+  void AssertValid() const override;
+  void Dump(CDumpContext& dc) const override;
 #endif
 
  protected:  // control bar embedded members
@@ -160,7 +134,7 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
   HICON m_hIcon;
 
  private:
-  boost::shared_ptr<Updater> m_updater;
+  std::shared_ptr<Updater> m_updater;
 
   // Generated message map functions
  protected:
@@ -177,12 +151,11 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
 
  private:
   std::wstring getSymbolsFileSample() {
-    return yloader::addBackSlash(getLocalYLoaderDataPath()) +
-           _T( "symbols\\sampleSymbols.txt" );
+    return yloader::addBackSlash(getLocalYLoaderDataPath()) + L"symbols\\sampleSymbols.txt";
   }
 
   std::wstring getDataPathSample() {
-    return yloader::getDirectory(getLocalYLoaderDataPath(), _T( "data" ));
+    return yloader::getDirectory(getLocalYLoaderDataPath(), L"data" );
   }
 
  public:
@@ -198,10 +171,10 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
   std::wstring lastUpdateError;
 
  public:
-  virtual void updateAvailable();
-  virtual void checkingForUpdate();
-  virtual void noUpdateAvailable();
-  virtual void updateError(const std::wstring& error);
+  void updateAvailable() override;
+  void checkingForUpdate() override;
+  void noUpdateAvailable() override;
+  void updateError(const std::wstring& error) override;
 
  protected:
   afx_msg LRESULT OnYmUpdateAvailable(WPARAM wParam, LPARAM lParam);
@@ -210,7 +183,7 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
   afx_msg LRESULT OnYmUpdateError(WPARAM wParam, LPARAM lParam);
 
  public:
-  void init(boost::shared_ptr<Updater> updater);
+  void init(std::shared_ptr<Updater> updater);
 
  private:
   bool m_autoUpdating;
@@ -221,9 +194,7 @@ class CMainFrame : public CFrameWndEx, Frame, public UpdaterHandler {
   afx_msg void OnOpensettingsfile();
 
   std::wstring getYLoaderSettingsFile() {
-    return addBackSlash(
-               getDirectory(getLocalYLoaderDataPath(), _T( "settings" ))) +
-           _T( "settings.ini" );
+    return addBackSlash(getDirectory(getLocalYLoaderDataPath(), L"settings" )) + L"settings.ini";
   }
   afx_msg void OnHelp();
   afx_msg void OnHelpReleasenotes();

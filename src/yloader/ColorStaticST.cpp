@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -79,7 +79,8 @@ HBRUSH CColorStaticST::CtlColor(CDC* pDC, UINT nCtlColor) {
   // If control is blinking (text)
   if (m_bTextBlink == TRUE) {
     pDC->SetTextColor(m_crBlinkTextColors[m_nTextBlinkStep]);
-  } else {
+  }
+  else {
     pDC->SetTextColor(m_crTextColor);
   }
 
@@ -100,7 +101,9 @@ void CColorStaticST::OnDestroy() {
   CStatic::OnDestroy();
 
   // Destroy timer (if any)
-  if (m_nTimerId > 0) KillTimer(m_nTimerId);
+  if (m_nTimerId > 0) {
+    KillTimer(m_nTimerId);
+  }
 
   // Destroy resources
   m_brBkgnd.DeleteObject();
@@ -112,8 +115,8 @@ void CColorStaticST::SetTextColor(COLORREF crTextColor) {
   // Set new foreground color
   if (crTextColor != 0xffffffff) {
     m_crTextColor = crTextColor;
-  } else  // Set default foreground color
-  {
+  }
+  else { // Set default foreground color
     m_crTextColor = ::GetSysColor(COLOR_BTNTEXT);
   }
 
@@ -129,8 +132,8 @@ void CColorStaticST::SetBkColor(COLORREF crBkColor) {
   // Set new background color
   if (crBkColor != 0xffffffff) {
     m_crBkColor = crBkColor;
-  } else  // Set default background color
-  {
+  }
+  else { // Set default background color
     m_crBkColor = ::GetSysColor(COLOR_BTNFACE);
   }
 
@@ -145,8 +148,7 @@ COLORREF CColorStaticST::GetBkColor() {
   return m_crBkColor;
 }  // End of GetBkColor
 
-void CColorStaticST::SetBlinkTextColors(COLORREF crBlinkTextColor1,
-                                        COLORREF crBlinkTextColor2) {
+void CColorStaticST::SetBlinkTextColors(COLORREF crBlinkTextColor1, COLORREF crBlinkTextColor2) {
   // Set new blink text colors
   m_crBlinkTextColors[0] = crBlinkTextColor1;
   m_crBlinkTextColors[1] = crBlinkTextColor2;
@@ -184,8 +186,7 @@ void CColorStaticST::StartTextBlink(BOOL bStart, UINT nElapse) {
   }
 }  // End of StartTextBlink
 
-void CColorStaticST::SetBlinkBkColors(COLORREF crBlinkBkColor1,
-                                      COLORREF crBlinkBkColor2) {
+void CColorStaticST::SetBlinkBkColors(COLORREF crBlinkBkColor1, COLORREF crBlinkBkColor2) {
   // Set new blink background colors
   m_crBlinkBkColors[0] = crBlinkBkColor1;
   m_crBlinkBkColors[1] = crBlinkBkColor2;
@@ -247,19 +248,26 @@ const char* CColorStaticST::GetVersionC() {
 void CColorStaticST::OnTimer(UINT_PTR nIDEvent) {
   if (nIDEvent == m_nTimerId) {
     // If control is blinking (text) switch its color
-    if (m_bTextBlink == TRUE) m_nTextBlinkStep = !m_nTextBlinkStep;
+    if (m_bTextBlink == TRUE) {
+      m_nTextBlinkStep = !m_nTextBlinkStep;
+    }
 
     // If control is blinking (background) switch its color
-    if (m_bBkBlink == TRUE) m_nBkBlinkStep = !m_nBkBlinkStep;
+    if (m_bBkBlink == TRUE) {
+      m_nBkBlinkStep = !m_nBkBlinkStep;
+    }
 
     // If there is any blinking in action then repaint the control
     // and send the notification message (if any)
     if (m_bBkBlink == TRUE || m_bTextBlink == TRUE) {
       Invalidate();
       // Send notification message only on rising blink
-      if (m_pParent != NULL && (m_nBkBlinkStep == 1 || m_nTextBlinkStep == 1))
+      if (m_pParent != NULL && (m_nBkBlinkStep == 1 || m_nTextBlinkStep == 1)) {
         m_pParent->PostMessage(m_nMsg, GetDlgCtrlID(), 0);
+      }
     }
-  } else
+  }
+  else {
     CStatic::OnTimer(nIDEvent);
+  }
 }  // End of OnTimer

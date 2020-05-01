@@ -17,12 +17,16 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#pragma warning(disable : 4800 4275 4251 4244 4003)
-
 #include "sharedptr.h"
 #include "strings.h"
 
-using yloader::operator<<;
+#ifdef MISC_EXPORTS
+#define MISC_API __declspec(dllexport)
+#else
+#define MISC_API __declspec(dllimport)
+#endif
+
+using namespace std::string_literals;
 
 namespace yloader {
 
@@ -33,7 +37,7 @@ namespace yloader {
 
 /* @cond XXXXX */
 class TimeDurationAbstr;
-typedef ManagedPtr<TimeDurationAbstr> TimeDurationAbstrPtr;
+using TimeDurationAbstrPtr = std::shared_ptr<TimeDurationAbstr>;
 
 class TimeDurationAbstr {
  public:
@@ -70,7 +74,7 @@ class TimeDurationAbstr {
 };
 
 class DateDurationAbstr;
-typedef ManagedPtr<DateDurationAbstr> DateDurationAbstrPtr;
+using DateDurationAbstrPtr = std::shared_ptr<DateDurationAbstr>;
 
 class DateDurationAbstr {
  public:
@@ -101,7 +105,7 @@ class DateDurationAbstr {
 };
 
 class DateAbstr;
-typedef ManagedPtr<DateAbstr> DateAbstrPtr;
+using DateAbstrPtr = std::shared_ptr<DateAbstr>;
 
 class DateAbstr {
   friend class Date;
@@ -147,7 +151,7 @@ class DateAbstr {
 };
 
 class DateTimeAbstr;
-typedef ManagedPtr<DateTimeAbstr> DateTimeAbstrPtr;
+using DateTimeAbstrPtr = std::shared_ptr<DateTimeAbstr>;
 
 class DateTimeAbstr {
  public:
@@ -222,10 +226,10 @@ class TimeDuration {
   friend class DateTime;
 
  private:
-  TimeDuration(TimeDurationAbstrPtr duration) : _duration(duration) {}
+  TimeDuration(TimeDurationAbstrPtr duration) : m_duration(duration) {}
 
  private:
-  TimeDurationAbstrPtr _duration;
+  TimeDurationAbstrPtr m_duration;
 
  public:
   /**
@@ -242,7 +246,7 @@ class TimeDuration {
    * @param frac_sec duration in fraction of a second (microsecond)
    */
   TimeDuration(long hours, long mins, long secs = 0, long frac_sec = 0)
-      : _duration(TimeDurationAbstrPtr(
+      : m_duration(TimeDurationAbstrPtr(
             TimeDurationAbstr::make(hours, mins, secs, frac_sec))) {}
 
   /**
@@ -253,8 +257,8 @@ class TimeDuration {
    * @param duration The source duration
    */
   TimeDuration(const TimeDuration& duration) {
-    _duration =
-        TimeDurationAbstrPtr(TimeDurationAbstr::make(*(duration._duration)));
+    m_duration =
+        TimeDurationAbstrPtr(TimeDurationAbstr::make(*(duration.m_duration)));
   }
 
   /**
@@ -264,7 +268,7 @@ class TimeDuration {
    *
    * @return the number of normalized hours
    */
-  long hours() const { return _duration->hours(); }
+  long hours() const { return m_duration->hours(); }
   /**
    * Get the number of normalized minutes
    *
@@ -272,7 +276,7 @@ class TimeDuration {
    *
    * @return the number of normalized minutes
    */
-  long minutes() const { return _duration->minutes(); }
+  long minutes() const { return m_duration->minutes(); }
   /**
    * Get the number of normalized seconds
    *
@@ -280,7 +284,7 @@ class TimeDuration {
    *
    * @return the number of normalized seconds
    */
-  long seconds() const { return _duration->seconds(); }
+  long seconds() const { return m_duration->seconds(); }
   /**
    * Get the total number of seconds truncating any fractional seconds
    *
@@ -289,8 +293,8 @@ class TimeDuration {
    *
    * @return
    */
-  long total_seconds() const { return _duration->total_seconds(); }
-  long totalSeconds() const { return _duration->total_seconds(); }
+  long total_seconds() const { return m_duration->total_seconds(); }
+  long totalSeconds() const { return m_duration->total_seconds(); }
   /**
    * Get the number of fractional seconds
    *
@@ -298,8 +302,8 @@ class TimeDuration {
    *
    * @return
    */
-  long fractional_seconds() const { return _duration->fractional_seconds(); }
-  long fractionalSeconds() const { return _duration->fractional_seconds(); }
+  long fractional_seconds() const { return m_duration->fractional_seconds(); }
+  long fractionalSeconds() const { return m_duration->fractional_seconds(); }
   /**
    * Returns true if the duration is negtive
    *
@@ -307,8 +311,8 @@ class TimeDuration {
    *
    * @return true if the duration is negative
    */
-  bool is_negative() const { return _duration->is_negative(); }
-  bool isNegative() const { return _duration->is_negative(); }
+  bool is_negative() const { return m_duration->is_negative(); }
+  bool isNegative() const { return m_duration->is_negative(); }
   //	virtual time_duration invert_sign() const
 
   /**
@@ -322,7 +326,7 @@ class TimeDuration {
    * @return true if ==, false otherwise
    */
   bool operator==(const TimeDuration& duration) const {
-    return _duration->operator==(*(duration._duration));
+    return m_duration->operator==(*(duration.m_duration));
   }
   /**
    * Operator !=
@@ -334,7 +338,7 @@ class TimeDuration {
    * @return true if != false otherwise
    */
   bool operator!=(const TimeDuration& duration) const {
-    return _duration->operator!=(*(duration._duration));
+    return m_duration->operator!=(*(duration.m_duration));
   }
   /**
    * Operator >
@@ -346,7 +350,7 @@ class TimeDuration {
    * @return true if >, false otherwise
    */
   bool operator>(const TimeDuration& duration) const {
-    return _duration->operator>(*(duration._duration));
+    return m_duration->operator>(*(duration.m_duration));
   }
   /**
    * Operator <
@@ -358,7 +362,7 @@ class TimeDuration {
    * @return true if < false otherwise
    */
   bool operator<(const TimeDuration& duration) const {
-    return _duration->operator<(*(duration._duration));
+    return m_duration->operator<(*(duration.m_duration));
   }
   /**
    * Operator >=
@@ -370,7 +374,7 @@ class TimeDuration {
    * @return true if >= false otherwise
    */
   bool operator>=(const TimeDuration& duration) const {
-    return _duration->operator>=(*(duration._duration));
+    return m_duration->operator>=(*(duration.m_duration));
   }
   /**
    * Operator <=
@@ -382,7 +386,7 @@ class TimeDuration {
    * @return true if <= false otherwise
    */
   bool operator<=(const TimeDuration& duration) const {
-    return _duration->operator<=(*(duration._duration));
+    return m_duration->operator<=(*(duration.m_duration));
   }
   /**
    * Adds two time durations, and returns the result
@@ -392,7 +396,7 @@ class TimeDuration {
    * @return The time duration result of the addition
    */
   TimeDuration operator+(const TimeDuration& duration) const {
-    return _duration->operator+(*(duration._duration));
+    return m_duration->operator+(*(duration.m_duration));
   }
   /**
    * Subtracts a time durations from the current time duration and returns the
@@ -404,7 +408,7 @@ class TimeDuration {
    * @return The time duration result of the subtraction
    */
   TimeDuration operator-(const TimeDuration& duration) const {
-    return _duration->operator-(*(duration._duration));
+    return m_duration->operator-(*(duration.m_duration));
   }
   /**
    * Divides the current time duration by an integer value, and discards the
@@ -416,7 +420,7 @@ class TimeDuration {
    *
    * @return The time duration result of the division
    */
-  TimeDuration operator/(int divisor) { return *_duration / divisor; }
+  TimeDuration operator/(int divisor) { return *m_duration / divisor; }
   /**
    * Multiplies the current time duration by an integer factor
    *
@@ -426,7 +430,7 @@ class TimeDuration {
    *
    * @return The time duration result of the multiplication
    */
-  TimeDuration operator*(int factor) { return *_duration * factor; }
+  TimeDuration operator*(int factor) { return *m_duration * factor; }
   /**
    * Subtracts a time duration from the current time duration and assigns the
    * result to the current duration. Also returns the result of the operation
@@ -437,7 +441,7 @@ class TimeDuration {
    * @return The time duration result of the subtraction
    */
   TimeDuration operator-=(const TimeDuration& duration) {
-    return _duration->operator-=(*(duration._duration));
+    return m_duration->operator-=(*(duration.m_duration));
   }
   /**
    * Adds a time duration to the current time duration and assigns the result
@@ -448,7 +452,7 @@ class TimeDuration {
    * @return The time duration result of the addition
    */
   TimeDuration operator+=(const TimeDuration& duration) {
-    return _duration->operator+=(*(duration._duration));
+    return m_duration->operator+=(*(duration.m_duration));
   }
   /**
    * Divides the current time duration by an integer value, and discards the
@@ -461,7 +465,7 @@ class TimeDuration {
    *
    * @return The time duration result of the division
    */
-  TimeDuration operator/=(int divisor) { return *_duration /= divisor; }
+  TimeDuration operator/=(int divisor) { return *m_duration /= divisor; }
   /**
    * Multiplies the current time duration by an integer factor
    *
@@ -472,27 +476,33 @@ class TimeDuration {
    *
    * @return The time duration result of the multiplication
    */
-  TimeDuration operator*=(int factor) { return *_duration *= factor; }
+  TimeDuration operator*=(int factor) { return *m_duration *= factor; }
   const std::wstring toString() const {
-    std::wstring h, m, s;
+    std::wostringstream h, m, s;
 
     h << hours();
 
-    if (minutes() < 10 && minutes() >= 0)
-      m << _T( "0" ) << minutes();
-    else if (minutes() > -10 && minutes() < 0)
-      m << _T( "-0" ) << -minutes();
-    else
+    if (minutes() < 10 && minutes() >= 0) {
+      m << L"0" << minutes();
+    }
+    else if (minutes() > -10 && minutes() < 0) {
+      m << L"-0" << -minutes();
+    }
+    else {
       m << minutes();
+    }
 
-    if (seconds() < 10 && seconds() >= 0)
-      s << _T( "0" ) << seconds();
-    else if (seconds() > -10 && seconds() < 0)
-      s << _T( "-0" ) << -seconds();
-    else
+    if (seconds() < 10 && seconds() >= 0) {
+      s << L"0" << seconds();
+    }
+    else if (seconds() > -10 && seconds() < 0) {
+      s << L"-0" << -seconds();
+    }
+    else {
       s << seconds();
+    }
 
-    return h + _T( ":" ) + m + _T( ":" ) + s;
+    return h.str() + L":" + m.str() + L":" + s.str();
   }
 };
 
@@ -586,10 +596,10 @@ class DateDuration {
   friend DateTime;
 
  private:
-  DateDurationAbstrPtr _duration;
+  DateDurationAbstrPtr m_duration;
 
  private:
-  DateDuration(DateDurationAbstrPtr duration) : _duration(duration) {}
+  DateDuration(DateDurationAbstrPtr duration) : m_duration(duration) {}
 
  public:
   /**
@@ -599,28 +609,28 @@ class DateDuration {
    *
    * @param days   number of days
    */
-  DateDuration(long days) : _duration(DateDurationAbstr::make(days)) {}
+  DateDuration(long days) : m_duration(DateDurationAbstr::make(days)) {}
 
   /**
    * Default constructor - makes a DateDuration equal to the date duration unit
    * or 1 day
    */
-  DateDuration() : _duration(DateDurationAbstr::make()) {}
+  DateDuration() : m_duration(DateDurationAbstr::make()) {}
 
   /**
    * The nuber of days represented by the date duration
    *
    * @return number of days
    */
-  long days() const { return _duration->days(); }
+  long days() const { return m_duration->days(); }
 
   /**
    * Indicates whether the date duration is negative
    *
    * @return true if negative, false otherwise
    */
-  bool is_negative() const { return _duration->is_negative(); }
-  bool isNegative() const { return _duration->is_negative(); }
+  bool is_negative() const { return m_duration->is_negative(); }
+  bool isNegative() const { return m_duration->is_negative(); }
 
   /**
    * Operator ==
@@ -633,7 +643,7 @@ class DateDuration {
    * @return true if ==, false otherwise
    */
   bool operator==(const DateDuration& duration) const {
-    return *_duration == *(duration._duration);
+    return *m_duration == *(duration.m_duration);
   }
   /**
    * Operator !=
@@ -646,7 +656,7 @@ class DateDuration {
    * @return true if !=, false otherwise
    */
   bool operator!=(const DateDuration& duration) const {
-    return *_duration != *(duration._duration);
+    return *m_duration != *(duration.m_duration);
   }
   /**
    * Operator >
@@ -659,7 +669,7 @@ class DateDuration {
    * @return true if >, false otherwise
    */
   bool operator>(const DateDuration& duration) const {
-    return *_duration > *(duration._duration);
+    return *m_duration > *(duration.m_duration);
   }
   /**
    * Operator <
@@ -672,7 +682,7 @@ class DateDuration {
    * @return true if <, false otherwise
    */
   bool operator<(const DateDuration& duration) const {
-    return *_duration < *(duration._duration);
+    return *m_duration < *(duration.m_duration);
   }
   /**
    * Operator >=
@@ -685,7 +695,7 @@ class DateDuration {
    * @return true if >=, false otherwise
    */
   bool operator>=(const DateDuration& duration) const {
-    return *_duration >= *(duration._duration);
+    return *m_duration >= *(duration.m_duration);
   }
   /**
    * Operator <=
@@ -698,7 +708,7 @@ class DateDuration {
    * @return true if <=, false otherwise
    */
   bool operator<=(const DateDuration& duration) const {
-    return *_duration <= *(duration._duration);
+    return *m_duration <= *(duration.m_duration);
   }
 
   /**
@@ -709,7 +719,7 @@ class DateDuration {
    * @return The date duration result of the addition
    */
   DateDuration operator+(const DateDuration& duration) const {
-    return _duration->operator+(*(duration._duration));
+    return m_duration->operator+(*(duration.m_duration));
   }
   /**
    * Subtracts a date durations from the current date duration and returns the
@@ -721,7 +731,7 @@ class DateDuration {
    * @return The date duration result of the subtraction
    */
   DateDuration operator-(const DateDuration& duration) const {
-    return _duration->operator-(*(duration._duration));
+    return m_duration->operator-(*(duration.m_duration));
   }
   /**
    * Divides the current date duration by an integer value, and discards the
@@ -733,7 +743,7 @@ class DateDuration {
    *
    * @return The date duration result of the division
    */
-  DateDuration operator/(int divisor) { return *_duration / divisor; }
+  DateDuration operator/(int divisor) { return *m_duration / divisor; }
   /**
    * Subtracts a date duration from the current date duration and assigns the
    * result to the current duration. Also returns the result of the operation
@@ -744,7 +754,7 @@ class DateDuration {
    * @return The date duration result of the subtraction
    */
   DateDuration operator-=(const DateDuration& duration) {
-    return _duration->operator-=(*(duration._duration));
+    return m_duration->operator-=(*(duration.m_duration));
   }
   /**
    * Adds a date duration to the current date duration and assigns the result
@@ -755,7 +765,7 @@ class DateDuration {
    * @return The date duration result of the addition
    */
   DateDuration operator+=(const DateDuration& duration) {
-    return _duration->operator+=(*(duration._duration));
+    return m_duration->operator+=(*(duration.m_duration));
   }
   /**
    * Divides the current date duration by an integer value, and discards the
@@ -768,7 +778,7 @@ class DateDuration {
    *
    * @return The date duration result of the division
    */
-  DateDuration operator/=(int divisor) { return *_duration /= divisor; }
+  DateDuration operator/=(int divisor) { return *m_duration /= divisor; }
 };
 
 class Days : public DateDuration {
@@ -778,19 +788,19 @@ class Days : public DateDuration {
 
 class DateException {
  private:
-  const std::wstring _date;
-  const std::wstring _message;
+  const std::wstring m_date;
+  const std::wstring m_message;
 
  public:
   DateException(const std::wstring& date, const std::wstring& message)
-      : _date(date), _message(message) {}
+      : m_date(date), m_message(message) {}
 
-  const std::wstring date() const { return _date; }
+  const std::wstring date() const { return m_date; }
 
   const std::wstring message() const {
     std::wostringstream o;
 
-    o << _message << _T( ": " ) << _date;
+    o << m_message << L": " << m_date;
     return o.str();
   }
 };
@@ -802,23 +812,18 @@ enum DateFormat {
   xyz        // 25-Jan-2007
 };
 
-inline std::wstring dateFormatToString(DateFormat dateFormat,
-                                       const std::wstring& sep) {
+inline std::wstring dateFormatToString(DateFormat dateFormat, const std::wstring& sep) {
   switch (dateFormat) {
     case us:
-      return std::wstring(_T("US (m" ))
-             << sep << _T( "d" ) << sep << _T( "y)" );
+      return L"US (m"s + sep + L"d" + sep + L"y)";
     case european:
-      return std::wstring(_T( "EU (d" )) << sep << _T("m" ) << sep << _T("y)" );
+      return L"EU (d"s + sep + L"m" + sep + L"y)";
     case iso:
-      return std::wstring(_T( "ISO (y" ))
-             << sep << _T( "m" ) << sep << _T("d)" );
+      return L"ISO (y"s + sep + L"m" + sep + L"d)";
     case xyz:
-      return std::wstring(_T( "d"))
-             << sep << _T("m" ) << sep << _T("y (ex: 25" ) << sep << _T("Jan" )
-             << sep << _T("2010)" );
+      return L"d"s + sep + L"m" + sep + L"y (ex: 25" + sep + L"Jan" + sep + L"2020)";
     default:
-      return _T( "not a valid date format" );
+      return L"not a valid date format";
   }
 }
 
@@ -835,13 +840,13 @@ class Date {
   friend class DateTime;
 
  private:
-  DateAbstrPtr _date;
+  DateAbstrPtr m_date;
 
  private:
    void parse(const std::wstring& xdate, DateFormat format, const std::wstring& sep);
 
  protected:
-  Date(DateAbstrPtr date) : _date(date) {}
+  Date(DateAbstrPtr date) : m_date(date) {}
 
  public:
   /**
@@ -852,7 +857,7 @@ class Date {
    * @param day    The day
    */
   Date(unsigned int year, unsigned int month, unsigned int day)
-      : _date(DateAbstr::make(year, month, day)) {}
+      : m_date(DateAbstr::make(year, month, day)) {}
 
   /**
    * Copy constructor
@@ -862,7 +867,7 @@ class Date {
    * @param date   The source date
    */
   Date(const Date& date) {
-    _date = DateAbstrPtr(DateAbstr::make(*(date._date)));
+    m_date = DateAbstrPtr(DateAbstr::make(*(date.m_date)));
   }
 
   /**
@@ -871,14 +876,14 @@ class Date {
    * Creates a Date object set to not_a_date
    *
    */
-  Date() { _date = DateAbstrPtr(DateAbstr::make()); }
+  Date() { m_date = DateAbstrPtr(DateAbstr::make()); }
 
   // if year is xx < 100, the year will be considered to be 20xx, for ex 06 will
   // be 2006. sep indicates whether the fields are separated or not. Accepted
   // separators: / and -
 //  MISC_API explicit Date( const std::wstring& date, DateFormat format, bool
 //  sep ) throw( DateException );
-#define DEF_DATE_SEP _T( "/-" )
+#define DEF_DATE_SEP L"/-"
   MISC_API explicit Date(const std::wstring& date, DateFormat format = us, const std::wstring& separator = DEF_DATE_SEP);
 
   MISC_API Date(const std::wstring& date, const std::wstring& format);
@@ -887,57 +892,57 @@ class Date {
    *
    * @return the year
    */
-  unsigned short year() const { return _date->year(); }
+  unsigned short year() const { return m_date->year(); }
   /**
    * Get the month part of the date
    *
    * @return the month
    */
-  unsigned short month() const { return _date->month(); }
+  unsigned short month() const { return m_date->month(); }
   /**
    * Get the day part of the date
    *
    * @return the day
    */
-  unsigned short day() const { return _date->day(); }
+  unsigned short day() const { return m_date->day(); }
   /**
    * Returns true if date is either positive or negative infinity
    *
    * @return true if positive or negative infinity
    */
-  bool is_infinity() const { return _date->is_infinity(); }
-  bool isInfinity() const { return _date->is_infinity(); }
+  bool is_infinity() const { return m_date->is_infinity(); }
+  bool isInfinity() const { return m_date->is_infinity(); }
   /**
    * Returns true if date is negative infinity
    *
    * @return true if negative infinity
    */
-  bool is_neg_infinity() const { return _date->is_neg_infinity(); }
-  bool isNegInfinity() const { return _date->is_neg_infinity(); }
+  bool is_neg_infinity() const { return m_date->is_neg_infinity(); }
+  bool isNegInfinity() const { return m_date->is_neg_infinity(); }
   /**
    * Returns true if date is positive infinity
    *
    * @return true if date is positive infinity
    */
-  bool is_pos_infinity() const { return _date->is_pos_infinity(); }
-  bool isPosInfinity() const { return _date->is_pos_infinity(); }
+  bool is_pos_infinity() const { return m_date->is_pos_infinity(); }
+  bool isPosInfinity() const { return m_date->is_pos_infinity(); }
   /**
    * Returns true if date is not a valid date
    *
    * @return true if date is not a valid date
    */
-  bool is_not_a_date() const { return _date->is_not_a_date(); }
-  bool isNotADate() const { return _date->is_not_a_date(); }
+  bool is_not_a_date() const { return m_date->is_not_a_date(); }
+  bool isNotADate() const { return m_date->is_not_a_date(); }
   /**
    * returns the ISO 8601 week number for date
    *
    * @return the ISO 8601 week number for date
    */
-  int week_number() const { return _date->week_number(); }
-  int weekNumber() const { return _date->week_number(); }
+  int week_number() const { return m_date->week_number(); }
+  int weekNumber() const { return m_date->week_number(); }
 
-  bool is_special() const { return _date->is_special(); }
-  bool isSpecial() const { return _date->is_special(); }
+  bool is_special() const { return m_date->is_special(); }
+  bool isSpecial() const { return m_date->is_special(); }
   /**
    * Operator ==
    *
@@ -948,7 +953,7 @@ class Date {
    * @return true if ==, false otherwise
    */
   bool operator==(const Date& date) const {
-    return _date->operator==(*(date._date));
+    return m_date->operator==(*(date.m_date));
   }
   /**
    * Operator !=
@@ -960,7 +965,7 @@ class Date {
    * @return true if !=, false otherwise
    */
   bool operator!=(const Date& date) const {
-    return _date->operator!=(*(date._date));
+    return m_date->operator!=(*(date.m_date));
   }
   /**
    * Operator >
@@ -972,7 +977,7 @@ class Date {
    * @return true if >, false otherwise
    */
   bool operator>(const Date& date) const {
-    return _date->operator>(*(date._date));
+    return m_date->operator>(*(date.m_date));
   }
   /**
    * Operator <
@@ -984,7 +989,7 @@ class Date {
    * @return true if <, false otherwise
    */
   bool operator<(const Date& date) const {
-    return _date->operator<(*(date._date));
+    return m_date->operator<(*(date.m_date));
   }
   /**
    * Operator >=
@@ -996,7 +1001,7 @@ class Date {
    * @return true if >=, false otherwise
    */
   bool operator>=(const Date& date) const {
-    return _date->operator>=(*(date._date));
+    return m_date->operator>=(*(date.m_date));
   }
   /**
    * Operator <=
@@ -1008,7 +1013,7 @@ class Date {
    * @return true if <=, false otherwise
    */
   bool operator<=(const Date& date) const {
-    return _date->operator<=(*(date._date));
+    return m_date->operator<=(*(date.m_date));
   }
 
   /**
@@ -1019,7 +1024,7 @@ class Date {
    * @return The new date
    */
   Date operator+(const DateDuration& duration) const {
-    return _date->operator+(*(duration._duration));
+    return m_date->operator+(*(duration.m_duration));
   }
   /**
    * Subtracts a DateDuration from the current Date
@@ -1029,7 +1034,7 @@ class Date {
    * @return The new date
    */
   Date operator-(const DateDuration& duration) const {
-    return _date->operator-(*(duration._duration));
+    return m_date->operator-(*(duration.m_duration));
   }
   /**
    * Subtracts a Date from the current Date. The result is a DateDuration
@@ -1039,7 +1044,7 @@ class Date {
    * @return The difference between the two dates
    */
   DateDuration operator-(const Date& date) const {
-    return _date->operator-(*(date._date));
+    return m_date->operator-(*(date.m_date));
   }
 
   /**
@@ -1050,7 +1055,7 @@ class Date {
    * @return The new date
    */
   Date operator+=(const DateDuration& duration) {
-    return _date->operator+=(*(duration._duration));
+    return m_date->operator+=(*(duration.m_duration));
   }
   /**
    * Subtracts a DateDuration from the current Date
@@ -1060,13 +1065,13 @@ class Date {
    * @return The new date
    */
   Date operator-=(const DateDuration& duration) {
-    return _date->operator-=(*(duration._duration));
+    return m_date->operator-=(*(duration.m_duration));
   }
   /**
    * assignment operator
    */
   const Date& operator=(const Date& date) {
-    if (this != &date) _date = DateAbstr::make(*(date._date));
+    if (this != &date) m_date = DateAbstr::make(*(date.m_date));
     return *this;
   }
   const Date& operator++() {
@@ -1094,25 +1099,25 @@ class Date {
    *
    * @return The string representation of the date
    */
-  std::wstring to_simple_string() const { return _date->to_simple_string(); }
-  std::wstring toString() const { return _date->to_simple_string(); }
+  std::wstring to_simple_string() const { return m_date->to_simple_string(); }
+  std::wstring toString() const { return m_date->to_simple_string(); }
   /**
    * To YYYYMMDD where all components are integers. ex: 20020131
    *
    * @return The string representation of the date
    */
-  std::wstring to_iso_string() const { return _date->to_iso_string(); }
+  std::wstring to_iso_string() const { return m_date->to_iso_string(); }
   /**
    * To YYYY-MM-DD where all components are integers. Ex: 2002-01-31
    *
    * @return The string representation of the date
    */
   std::wstring to_iso_extended_string() const {
-    return _date->to_iso_extended_string();
+    return m_date->to_iso_extended_string();
   }
 
   MISC_API std::wstring toString(
-      DateFormat format, const std::wstring& separator = _T( "/" )) const;
+      DateFormat format, const std::wstring& separator = L"/") const;
 };
 
 class PosInfinityDate : public Date {
@@ -1147,17 +1152,17 @@ class NotADate : public Date {};
  */
 class DateTime {
  private:
-  DateTimeAbstrPtr _date_time;
+  DateTimeAbstrPtr m_date_time;
 
  protected:
-  DateTime(DateTimeAbstrPtr date_time) : _date_time(date_time) {}
+  DateTime(DateTimeAbstrPtr date_time) : m_date_time(date_time) {}
 
  public:
   /**
    * Default constructor - Creates a DateTime object initialized to
    * not_a_date_time
    */
-  DateTime() : _date_time(DateTimeAbstrPtr(DateTimeAbstr::make())) {}
+  DateTime() : m_date_time(DateTimeAbstrPtr(DateTimeAbstr::make())) {}
   /**
    * Constructor that takes a date and a duration as parameters
    *
@@ -1165,11 +1170,11 @@ class DateTime {
    * @param duration The duration
    */
   DateTime(const Date& date, const TimeDuration& duration)
-      : _date_time(DateTimeAbstrPtr(
-            DateTimeAbstr::make(*date._date, *duration._duration))) {}
+      : m_date_time(DateTimeAbstrPtr(
+            DateTimeAbstr::make(*date.m_date, *duration.m_duration))) {}
 
   DateTime(const std::wstring& extendedIso)
-      : _date_time(DateTimeAbstrPtr(
+      : m_date_time(DateTimeAbstrPtr(
             DateTimeAbstr::makeFromIsoExtendedString(extendedIso))) {}
 
   /**
@@ -1180,10 +1185,10 @@ class DateTime {
    * @param date
    */
   DateTime(const Date& date)
-      : _date_time(DateTimeAbstrPtr(DateTimeAbstr::make(*date._date))) {}
+      : m_date_time(DateTimeAbstrPtr(DateTimeAbstr::make(*date.m_date))) {}
 
   DateTime(const time_t& time)
-      : _date_time(DateTimeAbstrPtr(DateTimeAbstr::makeFromUnixTime(time))) {}
+      : m_date_time(DateTimeAbstrPtr(DateTimeAbstr::makeFromUnixTime(time))) {}
 
   /**
    * Copy constructor
@@ -1193,7 +1198,7 @@ class DateTime {
    * @param time   The source DateTime
    */
   DateTime(const DateTime& time)
-      : _date_time(DateTimeAbstrPtr(DateTimeAbstr::make(*(time._date_time)))) {}
+      : m_date_time(DateTimeAbstrPtr(DateTimeAbstr::make(*(time.m_date_time)))) {}
 
   /**
    * Operator <
@@ -1205,7 +1210,7 @@ class DateTime {
    * @return true if <, false otherwise
    */
   bool operator<(const DateTime& xtime) const {
-    return _date_time->operator<(*(xtime._date_time));
+    return m_date_time->operator<(*(xtime.m_date_time));
   }
   /**
    * Operator >
@@ -1217,7 +1222,7 @@ class DateTime {
    * @return true if >, false otherwise
    */
   bool operator>(const DateTime& xtime) const {
-    return _date_time->operator>(*(xtime._date_time));
+    return m_date_time->operator>(*(xtime.m_date_time));
   }
   /**
    * Operator >=
@@ -1229,7 +1234,7 @@ class DateTime {
    * @return true if >=, false otherwise
    */
   bool operator>=(const DateTime& xtime) const {
-    return _date_time->operator>=(*(xtime._date_time));
+    return m_date_time->operator>=(*(xtime.m_date_time));
   }
   /**
    * Operator <=
@@ -1241,7 +1246,7 @@ class DateTime {
    * @return true if <, false otherwise
    */
   bool operator<=(const DateTime& xtime) const {
-    return _date_time->operator<=(*(xtime._date_time));
+    return m_date_time->operator<=(*(xtime.m_date_time));
   }
   /**
    * Operator ==
@@ -1253,7 +1258,7 @@ class DateTime {
    * @return true if ==, false otherwise
    */
   bool operator==(const DateTime& xtime) const {
-    return _date_time->operator==(*(xtime._date_time));
+    return m_date_time->operator==(*(xtime.m_date_time));
   }
   /**
    * Operator !=
@@ -1265,7 +1270,7 @@ class DateTime {
    * @return true if !=, false otherwise
    */
   bool operator!=(const DateTime& xtime) const {
-    return _date_time->operator!=(*(xtime._date_time));
+    return m_date_time->operator!=(*(xtime.m_date_time));
   }
 
   /**
@@ -1279,11 +1284,11 @@ class DateTime {
    * @return The string representation
    */
   std::wstring to_simple_string() const {
-    return _date_time->to_simple_string();
+    return m_date_time->to_simple_string();
   }
-  std::wstring toString() const { return _date_time->to_simple_string(); }
-  std::wstring to_iso_string() const { return _date_time->to_iso_string(); }
-  __int64 to_epoch_time() const { return _date_time->to_epoch_time(); }
+  std::wstring toString() const { return m_date_time->to_simple_string(); }
+  std::wstring to_iso_string() const { return m_date_time->to_iso_string(); }
+  __int64 to_epoch_time() const { return m_date_time->to_epoch_time(); }
 
   /**
    * accesor methods
@@ -1292,23 +1297,23 @@ class DateTime {
   /**
    * Gets the date component of the time
    */
-  const Date date() const { return Date(_date_time->date()); }
+  const Date date() const { return Date(m_date_time->date()); }
 
   /**
    * gets the "time of day" component of the time
    */
   const TimeDuration time_of_day() const {
-    return TimeDuration(_date_time->time_of_day());
+    return TimeDuration(m_date_time->time_of_day());
   }
   const TimeDuration timeOfDay() const {
-    return TimeDuration(_date_time->time_of_day());
+    return TimeDuration(m_date_time->time_of_day());
   }
 
   /**
    * assignment operator
    */
   const DateTime& operator=(const DateTime& time) {
-    if (this != &time) _date_time = DateTimeAbstr::make(*(time._date_time));
+    if (this != &time) m_date_time = DateTimeAbstr::make(*(time.m_date_time));
     return *this;
   }
 
@@ -1320,38 +1325,38 @@ class DateTime {
    *
    * @return true if it is not a valid DateTime
    */
-  bool is_not_a_date_time() const { return _date_time->is_not_a_date_time(); }
-  bool isNotADateTime() const { return _date_time->is_not_a_date_time(); }
+  bool is_not_a_date_time() const { return m_date_time->is_not_a_date_time(); }
+  bool isNotADateTime() const { return m_date_time->is_not_a_date_time(); }
   /**
    * Indicates whether the curerent DateTime is one of positive or negative
    * infinity
    *
    * @return true if it is a positive or negative infinity
    */
-  bool is_infinity() const { return _date_time->is_infinity(); }
-  bool isInfinity() const { return _date_time->is_infinity(); }
+  bool is_infinity() const { return m_date_time->is_infinity(); }
+  bool isInfinity() const { return m_date_time->is_infinity(); }
   /**
    * Indicates whether the current DateTime is a positive infinity
    *
    * @return true if positive infinity
    */
-  bool is_pos_infinity() const { return _date_time->is_pos_infinity(); }
-  bool isPosInfinity() const { return _date_time->is_pos_infinity(); }
+  bool is_pos_infinity() const { return m_date_time->is_pos_infinity(); }
+  bool isPosInfinity() const { return m_date_time->is_pos_infinity(); }
   /**
    * Indicates whether the current DateTime is a negative infinity
    *
    * @return true if negative infinity
    */
-  bool is_neg_infinity() const { return _date_time->is_neg_infinity(); }
-  bool isNegInfinity() const { return _date_time->is_neg_infinity(); }
+  bool is_neg_infinity() const { return m_date_time->is_neg_infinity(); }
+  bool isNegInfinity() const { return m_date_time->is_neg_infinity(); }
   /**
    * Indicates whether the current DateTime is either an infinity or not a valid
    * value
    *
    * @return true if infinity (positive or negative) or not a valid value
    */
-  bool is_special() const { return _date_time->is_special(); }
-  bool isSpecial() const { return _date_time->is_special(); }
+  bool is_special() const { return m_date_time->is_special(); }
+  bool isSpecial() const { return m_date_time->is_special(); }
   /**
    * Subtracts a DateTime from the current DateTime and returns the
    * resulting time duration
@@ -1361,7 +1366,7 @@ class DateTime {
    * @return The resulting TimeDuration
    */
   TimeDuration operator-(const DateTime& time) const {
-    return _date_time->operator-(*(time._date_time));
+    return m_date_time->operator-(*(time.m_date_time));
   }
   /**
    * Adds a DateDuration to the current DateTime and returns the resulting
@@ -1372,7 +1377,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator+(const DateDuration& dd) const {
-    return _date_time->operator+(*(dd._duration));
+    return m_date_time->operator+(*(dd.m_duration));
   }
   /**
    * Adds a DateDuration to the current DateTime, assigns the result to the
@@ -1383,7 +1388,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator+=(const DateDuration& dd) {
-    return _date_time->operator+=(*(dd._duration));
+    return m_date_time->operator+=(*(dd.m_duration));
   }
   /**
    * Subtracts a DateDuration from the current DateTime and returns the
@@ -1394,7 +1399,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator-(const DateDuration& dd) const {
-    return _date_time->operator-(*(dd._duration));
+    return m_date_time->operator-(*(dd.m_duration));
   }
   /**
    * Subtracts a DateDuration from the current DateTime, assigns the result to
@@ -1405,7 +1410,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator-=(const DateDuration& dd) {
-    return _date_time->operator-=(*(dd._duration));
+    return m_date_time->operator-=(*(dd.m_duration));
   }
   /**
    * Adds a TimeDuration to the current DateTime and returns the resulting
@@ -1416,7 +1421,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator+(const TimeDuration& td) const {
-    return _date_time->operator+(*(td._duration));
+    return m_date_time->operator+(*(td.m_duration));
   }
   /**
    * Adds a TimeDuration to the current DateTime, assigns the result to the
@@ -1427,7 +1432,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator+=(const TimeDuration& td) {
-    return _date_time->operator+=(*(td._duration));
+    return m_date_time->operator+=(*(td.m_duration));
   }
   /**
    * Subtracts a TimeDuration from the current DateTime and returns the
@@ -1438,7 +1443,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator-(const TimeDuration& td) const {
-    return _date_time->operator-(*(td._duration));
+    return m_date_time->operator-(*(td.m_duration));
   }
   /**
    * Subtracts a TimeDuration from the current DateTime, assigns the result to
@@ -1449,7 +1454,7 @@ class DateTime {
    * @return The resulting DateTime
    */
   DateTime operator-=(const TimeDuration& td) {
-    return _date_time->operator-=(*(td._duration));
+    return m_date_time->operator-=(*(td.m_duration));
   }
 };
 
@@ -1519,7 +1524,7 @@ class UniversalTime : public DateTime {
   UniversalTime() : DateTime(DateTimeAbstr::universalTime()) {}
 };
 
-typedef std::auto_ptr<DateTime> DateTimePtr;
+using DateTimePtr = std::shared_ptr<DateTime>;
 
 class TimerAbstr {
  public:
@@ -1547,9 +1552,9 @@ class TimerAbstr {
  */
 class Timer {
  private:
-  typedef std::auto_ptr<TimerAbstr> TimerAbstrPtr;
+  using TimerAbstrPtr = std::shared_ptr<TimerAbstr>;
 
-  TimerAbstrPtr _timer;
+  TimerAbstrPtr m_timer;
 
  public:
   /**
@@ -1557,13 +1562,13 @@ class Timer {
    *
    * The timer starts at the moment it is created.
    */
-  Timer() : _timer(TimerAbstrPtr(TimerAbstr::make())) {}
+  Timer() : m_timer(TimerAbstrPtr(TimerAbstr::make())) {}
 
   /**
    * Restarts the timer
    */
-  void restart() { _timer->restart(); }
-  void stop() { _timer->stop(); }
+  void restart() { m_timer->restart(); }
+  void stop() { m_timer->stop(); }
   /**
    * Returns the time elapsed since the moment the timer was first created or
    * the last restart.
@@ -1573,14 +1578,14 @@ class Timer {
    *
    * @return Elapsed time
    */
-  double elapsed() const { return _timer->elapsed(); }
-  bool isStopped() const { return _timer->isStopped(); }
+  double elapsed() const { return m_timer->elapsed(); }
+  bool isStopped() const { return m_timer->isStopped(); }
 };
 
 /**
  * A pair of DateTime instances
  */
-typedef std::pair<DateTime, DateTime> DateTimePair;
+using DateTimePair = std::pair<DateTime, DateTime>;
 
 inline std::wstring timeStamp(bool fracSeconds,
                               TCHAR timeSeparator = _TCHAR(':')) {
@@ -1603,7 +1608,7 @@ inline std::wstring timeStamp(bool fracSeconds,
   if (fracSeconds) {
     std::wostringstream f;
 
-    f << frac << _T("000");
+    f << frac << L"000";
 
     o << _TCHAR('.') << f.str().substr(0, 3);
   }

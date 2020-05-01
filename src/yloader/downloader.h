@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,12 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class DownloaderException {
  private:
-  const std::wstring _message;
+  const std::wstring m_message;
 
  public:
-  DownloaderException(const std::wstring& message) : _message(message) {}
+  DownloaderException(const std::wstring& message) : m_message(message) {}
 
-  const std::wstring& message() const { return _message; }
+  const std::wstring& message() const { return m_message; }
 };
 
 class Downloader {
@@ -37,8 +37,7 @@ class Downloader {
   virtual bool isSessionActive() const = 0;
   virtual bool setSymbolsFileName(const std::wstring& symbolsFileName) = 0;
   virtual bool setDataPath(const std::wstring& dataPath) = 0;
-  virtual bool setDateRange(const std::wstring& startDate,
-                            const std::wstring& endDate) = 0;
+  virtual bool setDateRange(const std::wstring& startDate, const std::wstring& endDate) = 0;
   virtual bool setStartDate(const std::wstring& startDate) = 0;
   virtual bool setEndDate(const std::wstring& endDate) = 0;
   virtual bool setDataSourcePlugin(const std::wstring& dataSource) = 0;
@@ -57,10 +56,8 @@ class Downloader {
   virtual bool setDataFileHeader(const std::wstring& dataFileHeader) = 0;
   virtual bool setInvalidDataHandling(unsigned int invalidDataHandling) = 0;
   virtual bool setVolume0Handling(bool volume0Handling) = 0;
-  virtual bool setPrependToDataFileName(
-      const std::wstring& prependToDataFileName) = 0;
-  virtual bool setAppendToDataFileName(
-      const std::wstring& appendToDataFileName) = 0;
+  virtual bool setPrependToDataFileName(const std::wstring& prependToDataFileName) = 0;
+  virtual bool setAppendToDataFileName(const std::wstring& appendToDataFileName) = 0;
   virtual bool setExtension(const std::wstring& extension) = 0;
   virtual bool setOutputFile(const std::wstring& outputFile) = 0;
   virtual bool setNoReloadOldData(bool noReloadOldData) = 0;
@@ -74,14 +71,12 @@ class Downloader {
   virtual bool setRegexFormat(const std::wstring& regexFormat) = 0;
   virtual bool setRegexFlags(unsigned long regexFlags) = 0;
   virtual bool setEnableRegexFormatting(bool enable) = 0;
-  virtual bool setErrorSymbolsListFileName(
-      const std::wstring& errorSymbolsListFileName) = 0;
+  virtual bool setErrorSymbolsListFileName(const std::wstring& errorSymbolsListFileName) = 0;
   virtual bool setAppendToErrorSymbolsList(bool append) = 0;
   virtual bool setIgnoreErrorSymbolsList(bool ignore) = 0;
   virtual bool setIgnoreSymbolsList(const std::wstring& symbolsList) = 0;
-
   virtual bool closeDownloader(bool exc = true) = 0;
   virtual bool hasHadSession() = 0;
 };
 
-typedef yloader::ManagedPtr<Downloader> DownloaderPtr;
+using DownloaderPtr = std::shared_ptr<Downloader>;

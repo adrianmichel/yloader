@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2017  YLoader.com
+Copyright (C) 2020  YLoader.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,12 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "stdafx.h"
 #include "datavalidationsettingspage.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 // GeneralSettings dialog
 
 IMPLEMENT_DYNCREATE(CDataValidationSettings, CDialog)
 CDataValidationSettings::CDataValidationSettings(CWnd* pParent /*=NULL*/)
     : CDialog(CDataValidationSettings::IDD, pParent)
-//  , m_searchForUpdatesAtStartupBool(FALSE)
 {}
 
 CDataValidationSettings::~CDataValidationSettings() {}
@@ -31,11 +34,9 @@ CDataValidationSettings::~CDataValidationSettings() {}
 void CDataValidationSettings::DoDataExchange(CDataExchange* pDX) {
   CDialog::DoDataExchange(pDX);
 
-  DDX_Control(pDX, IDC_RADIO_INVALID_DATA_IS_WARNING,
-              m_invalidDataAsWarningCtrl);
+  DDX_Control(pDX, IDC_RADIO_INVALID_DATA_IS_WARNING, m_invalidDataAsWarningCtrl);
   DDX_Control(pDX, IDC_RADIO_INVALID_DATA_IS_ERROR, m_invalidDataAsErrorCtrl);
-  DDX_Control(pDX, IDC_STATIC_HANDLING_OF_INVALID_DATA_GROUP,
-              m_handlingOfInvalidDataGroup);
+  DDX_Control(pDX, IDC_STATIC_HANDLING_OF_INVALID_DATA_GROUP, m_handlingOfInvalidDataGroup);
   DDX_Control(pDX, IDC_CHECK_VOLUME_0_INVALID, m_volume0invalidCtrl);
 
   DDX_Radio(pDX, IDC_RADIO_INVALID_DATA_IS_WARNING, m_invalidDataHandling);
@@ -49,11 +50,6 @@ END_MESSAGE_MAP()
 
 BOOL CDataValidationSettings::OnInitDialog() {
   __super::OnInitDialog();
-
-  /*  GeneralSettings gs;
-    m_searchForUpdatesAtStartupBool = gs.searchForUpdatesAtStartup();
-    UpdateData( false );
-    */
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE

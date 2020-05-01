@@ -29,6 +29,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #define STRPRODUCT_DESC "Historical Quotes Downloader"
 #define STRPRODUCT_VER _T(STRFILEVER)
 #define STRPRODUCT_NAME _T(STRCOMPANYNAME)
-#define YLOADER_URL L"http://www.yloader.com"
-#define LANG _T( "en_us")
-#define VERSION_QUERY_ARGS _T("version=") WSTRPRODUCTVER _T("&lang=") LANG
+#define YLOADER_URL L"https://www.yloader.com"
+#define LANG L"en_us"
+#define VERSION_QUERY_ARGS L"version=" WSTRPRODUCTVER L"&lang=" LANG

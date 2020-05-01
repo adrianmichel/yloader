@@ -58,7 +58,7 @@ This manual is divided in the following sections:
 */
 
 /*! \page simpreproc Symbol processing command line utility (symbols.exe)
-	\htmlinclude sympreproc.htm
+	\htmlinclude symbols.htm
 */
 
 /*! \page settings Settings
