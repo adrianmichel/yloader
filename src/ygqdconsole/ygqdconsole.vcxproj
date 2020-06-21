@@ -227,16 +227,8 @@
       <Project>{1803644b-83f5-4dbc-a140-29ea44b92d6a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\ygoogledsplugin\ygoogledsplugin.vcxproj">
-      <Project>{63396364-3271-4942-aa10-f358858a75f7}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\yloadercore\yloadercore.vcxproj">
       <Project>{4d7c9a81-2e6e-4afc-8a41-b0db7cdc2a93}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\yqmdsplugin\yqmdsplugin.vcxproj">
-      <Project>{5f2b4da2-7d9f-4a40-8d7a-fb85bc2aeef7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\yyahoodsplugin\yyahoodsplugin.vcxproj">
