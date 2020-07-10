@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <ExternalDir>$(SolutionDir)external\</ExternalDir>
+    <ExternalDir>$(SolutionDir)..\external\</ExternalDir>
     <Fciv>$(ExternalDir)fciv\fciv.exe</Fciv>
     <InstallerDir>$(SolutionDir)bin\installer\</InstallerDir>
-    <InstallerFile>$(InstallerDir)y5_$(PlatformArchitecture)_setup.exe</InstallerFile>
+    <InstallerFile>$(InstallerDir)y6_$(PlatformArchitecture)_setup.exe</InstallerFile>
     <NSISExe>C:\Program Files (x86)\NSIS\makensis.exe</NSISExe>
   </PropertyGroup>
   <PropertyGroup />
