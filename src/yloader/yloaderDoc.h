@@ -17,11 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-class CyloaderDoc : public CDocument {
-  OBJ_COUNTER(CyloaderDoc)
+class CYLoaderDoc : public CDocument {
+  OBJ_COUNTER(CYLoaderDoc)
  protected:  // create from serialization only
-  CyloaderDoc();
-  DECLARE_DYNCREATE(CyloaderDoc)
+  CYLoaderDoc();
+  DECLARE_DYNCREATE(CYLoaderDoc)
 
   // Attributes
  public:
@@ -38,7 +38,7 @@ class CyloaderDoc : public CDocument {
 
   // Implementation
  public:
-  virtual ~CyloaderDoc();
+  virtual ~CYLoaderDoc();
 #ifdef _DEBUG
   virtual void AssertValid() const;
   virtual void Dump(CDumpContext& dc) const;

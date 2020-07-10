@@ -131,7 +131,7 @@ BOOL CYLoaderApp::InitInstance() {
   // Register the application's document templates.  Document templates
   //  serve as the connection between documents, frame windows and views
   CSingleDocTemplate* pDocTemplate;
-  pDocTemplate = new CSingleDocTemplate(IDR_MAIN_TOOLBAR, RUNTIME_CLASS(CyloaderDoc),
+  pDocTemplate = new CSingleDocTemplate(IDR_MAIN_TOOLBAR, RUNTIME_CLASS(CYLoaderDoc),
       RUNTIME_CLASS(CMainFrame),  // main SDI frame window
       RUNTIME_CLASS(CYLoaderView));
   if (!pDocTemplate) {

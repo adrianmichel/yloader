@@ -105,7 +105,7 @@ class CYLoaderView : public CFormView, public Refreshable {
 
   // Attributes
  public:
-  CyloaderDoc* GetDocument() const;
+  CYLoaderDoc* GetDocument() const;
 
   // Operations
  public:
@@ -749,7 +749,7 @@ class CYLoaderView : public CFormView, public Refreshable {
 };
 
 #ifndef _DEBUG  // debug version in YloaderView.cpp
-inline CyloaderDoc* CYloaderView::GetDocument() const {
-  return reinterpret_cast<CyloaderDoc*>(m_pDocument);
+inline CYLoaderDoc* CYLoaderView::GetDocument() const {
+  return reinterpret_cast<CYLoaderDoc*>(m_pDocument);
 }
 #endif

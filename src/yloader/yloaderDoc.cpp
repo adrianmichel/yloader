@@ -32,20 +32,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // CyloaderDoc
 
-IMPLEMENT_DYNCREATE(CyloaderDoc, CDocument)
+IMPLEMENT_DYNCREATE(CYLoaderDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CyloaderDoc, CDocument)
+BEGIN_MESSAGE_MAP(CYLoaderDoc, CDocument)
 END_MESSAGE_MAP()
 
 // CyloaderDoc construction/destruction
 
-CyloaderDoc::CyloaderDoc() {
+CYLoaderDoc::CYLoaderDoc() {
   // TODO: add one-time construction code here
 }
 
-CyloaderDoc::~CyloaderDoc() {}
+CYLoaderDoc::~CYLoaderDoc() {}
 
-BOOL CyloaderDoc::OnNewDocument() {
+BOOL CYLoaderDoc::OnNewDocument() {
   if (!CDocument::OnNewDocument()) {
     return FALSE;
   }
@@ -58,7 +58,7 @@ BOOL CyloaderDoc::OnNewDocument() {
 
 // CyloaderDoc serialization
 
-void CyloaderDoc::Serialize(CArchive& ar) {
+void CYLoaderDoc::Serialize(CArchive& ar) {
   if (ar.IsStoring()) {
     // TODO: add storing code here
   }
