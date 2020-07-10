@@ -17,10 +17,6 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define OBJ_COUNTER_ENABLED
-
-#if defined( _DEBUG ) && defined( OBJ_COUNTER_ENABLED)
-
 #include <fstream>
 #include <set>
 #include <mutex>
@@ -28,6 +24,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <assert.h>
 #include <log.h>
+
+#define OBJ_COUNTER_ENABLED
 
 namespace amichel {
 	class Counter {
@@ -52,11 +50,11 @@ namespace amichel {
 			assert(m_indexes.size() == m_count);
 			if (m_count > 0) {
 				std::wostringstream os;
-				os << _T("ObjCounter - leaks found:\"") << m_name << _T("\"") << std::endl
-					<< _T("\tTotal created:\t ") << m_total << std::endl
-					<< _T("\tMax created:\t ") << m_max << std::endl
-					<< _T("\tLeaked count:\t ") << m_count << std::endl
-					<< _T("\tLeaked indexes:\t ") << leakedIxsAsString();
+				os << L"ObjCounter - leaks found:\"" << m_name << L"\"" << std::endl
+					<< L"\tTotal created:\t " << m_total << std::endl
+					<< L"\tMax created:\t " << m_max << std::endl
+					<< L"\tLeaked count:\t " << m_count << std::endl
+					<< L"\tLeaked indexes:\t " << leakedIxsAsString();
 				LOG(log_debug, os.str().c_str());
 			}
 			else if (m_count < 0)
@@ -82,10 +80,10 @@ namespace amichel {
 				__debugbreak();
 			}
 			std::wostringstream os;
-			os << _T("ObjCounter - allocating: \"") << m_name << _T("\"")
-				<< _T(", index ") << ix
-				<< _T(", count: ") << m_indexes.size()
-				<< _T(", cumulative ") << m_total;
+			os << L"ObjCounter - allocating: \"" << m_name << L"\""
+				<< L", index " << ix
+				<< L", count: " << m_indexes.size()
+				<< L", cumulative " << m_total;
 			LOG(log_debug, os.str().c_str());
 			return ix;
 		}
@@ -104,9 +102,9 @@ namespace amichel {
 				m_indexes.erase(index);
 
 				std::wostringstream os;
-				os << _T("ObjCounter - de-allocating: \"") << m_name << _T("\"")
-					<< _T(", index ") << index
-					<< _T(", count ") << m_indexes.size();
+				os << L"ObjCounter - de-allocating: \"" << m_name << L"\""
+					<< L", index " << index
+					<< L", count " << m_indexes.size();
 				LOG(log_debug, os.str().c_str());
 			}
 		}
@@ -118,9 +116,9 @@ namespace amichel {
 			int n = 0;
 			for (std::set<int>::const_iterator i = m_indexes.begin();
 				i != m_indexes.end() && n < MAX_LEAKED_INDEXES_DISPLAYED; ++i, ++n)
-				leakedIxs << (n == 0 ? _T("") : _T(", ")) << *i;
+				leakedIxs << (n == 0 ? L"" : L", ") << *i;
 
-			if (n >= MAX_LEAKED_INDEXES_DISPLAYED) leakedIxs << _T(", ...");
+			if (n >= MAX_LEAKED_INDEXES_DISPLAYED) leakedIxs << L", ...";
 
 			return leakedIxs.str();
 		}
@@ -146,34 +144,30 @@ namespace amichel {
 
 }
 
+
+template <typename T> amichel::Counter amichel::ObjCounterBase<T>::m_count;
+
+#if defined( _DEBUG ) && defined( OBJ_COUNTER_ENABLED)
+
 #define OBJ_COUNTER_NAME(COUNTER_STR) _T( ObjCounter##COUNTER_STR )
 
-template <typename T>
-amichel::Counter amichel::ObjCounterBase<T>::m_count;
+#define OBJ_CTR_CLASS(COUNTER_STR, BREAK_INDEX)	\
+	class OBJ_COUNTER_NAME(COUNTER_STR)	\
+      : public amichel::ObjCounterBase<COUNTER_STR>	\
+	{	\
+	public:	\
+		OBJ_COUNTER_NAME(COUNTER_STR)() \
+			: amichel::ObjCounterBase<COUNTER_STR>(_T( #COUNTER_STR ), BREAK_INDEX){}	\
+	};
 
-#define OBJ_CTR_CLASS(COUNTER_STR, BREAK_INDEX)							\
-																		\
-class OBJ_COUNTER_NAME(COUNTER_STR)										\
-      : public amichel::ObjCounterBase<COUNTER_STR>						\
-{																		\
-public:																	\
-	OBJ_COUNTER_NAME(COUNTER_STR)() :									\
-              amichel::ObjCounterBase<COUNTER_STR>(_T( #COUNTER_STR ),	\
-                                                   BREAK_INDEX){}		\
-};
-
-#define OBJ_COUNTER(COUNTER_STR)										\
-																		\
-OBJ_CTR_CLASS( COUNTER_STR, 0)											\
-																		\
-OBJ_COUNTER_NAME(COUNTER_STR)											\
+#define OBJ_COUNTER(COUNTER_STR) \
+	OBJ_CTR_CLASS( COUNTER_STR, 0) \
+	OBJ_COUNTER_NAME(COUNTER_STR) \
   m_objCounter;
 
-#define OBJ_COUNTER_BREAK_ON_INDEX(COUNTER_STR, BREAK_INDEX)			\
-																		\
-OBJ_CTR(COUNTER_STR, BREAK_INDEX)										\
-																		\
-OBJ_COUNTER_NAME(COUNTER_STR)											\
+#define OBJ_COUNTER_BREAK_ON_INDEX(COUNTER_STR, BREAK_INDEX) \
+	OBJ_CTR(COUNTER_STR, BREAK_INDEX) \
+	OBJ_COUNTER_NAME(COUNTER_STR) \
   m_objCounter;
 
 #else
