@@ -38,9 +38,10 @@ Applications used in the course of YLoader development:
 * **Doxygen** (optional), documentation generator: http://wwww.doxygen.org.
 * **NSIS** - Nullsoft Scriptable Install System (optional), a Windows installer generator: http://nsis.sourceforge.net.
 * **vcpkg** - Library manager: https://github.com/Microsoft/vcpkg
+* **fciv** - (optional) utility for calculating the MD5 and SHA1 hashes, which can be downloaded from https://www.microsoft.com.
 
 ## Building YLoader from sources
-Follow the steps below to successfully build YLoader binaries. This process will generate quite a bit of data, so be sure to have enough available storage on the build drive. 
+Follow the steps below to successfully build YLoader binaries and optionally the installer(s). This process will generate quite a bit of data, so be sure to have enough available storage on the build drive. 
 
 Note that this build will generate binaries compatible with Windows 7 or later. **They will not run on Windows XP**.
 
@@ -48,6 +49,7 @@ Note that this build will generate binaries compatible with Windows 7 or later. 
 3. Optionally install Doxygen and/or NSIS if you want to be able to build the documentation and/or the YLoader installer.
 4. Install the newest Git client.
 6. Open a Windows console and clone the YLoader repository to the desired directory:<pre><code>git clone https://github.com/adrianmichel/yloader.git [yloader_dir] </code></pre>
+7. Optionally download the fciv.exe utility and copy it under [yloader_dir]\external\fciv\fciv.exe.
 8. cd to the new YLoader directory directory and run <pre><code>bootstrap.bat</code></pre>This will download and build third party packages that YLoader depends on.
 10. Once this build has completed successfully, open Visual Studio, open the *File* menu, *Open*, *Project/Solution*, and open the YLoader solution located at:<pre><code>[yloader_dir]\src\yloader.sln</code></pre>
 12. On the *Build* toolbar located under the Visual Studio main menu select the *Solution Configuration* (Debug/Release) and *Solution Platform* (win32/x64) that you would like to build.
@@ -55,3 +57,4 @@ Note that this build will generate binaries compatible with Windows 7 or later. 
 12. Right click again on the *yloader* project and click on *Build*.
 13. The generated binaries will be under <pre><code>[yloader_dir]\[Release/Debug]\[win32/x64]</pre></code>
 14. If you have installed NSIS and built the Release version of either win32 and/or x64, the YLoader installer(s) will be created under<pre><code>[yloader_dir]\src\bin\installer</code></pre>
+15. If you have installed the fciv.exe utility, an additional text file with the MD5 and SHA1 hashes will generated for each of 32 and 64 bit under the installer directory.
