@@ -10,18 +10,14 @@
 ;--------------------------------
 ;General
   !define KEY "Software\YLoader"
-  !define YLOADER_INSTALLER_NAME_BASE y5_
+  !define YLOADER_INSTALLER_NAME_BASE y6_
 
   !if ${Platform} == win32
 	!define TYPE 32
 	!define INSTALLDIR $PROGRAMFILES32\YLoader
-    !define LIB_CRYPTO libcrypto-1_1.dll
-    !define LIB_SSL libssl-1_1.dll
   !else
 	!define TYPE 64
 	!define INSTALLDIR $PROGRAMFILES64\YLoader
-    !define LIB_CRYPTO libcrypto-1_1-x64.dll
-    !define LIB_SSL libssl-1_1-x64.dll
   !endif
 
   BrandingText "YLoader"
@@ -78,12 +74,9 @@ Section "Dummy Section" SecDummy
   File ${INDIR}\symbols.exe
   File ${INDIR}\misc.dll
   File ${INDIR}\miscwin.dll
-  File ${INDIR}\dspluginhelper.dll
   File ${INDIR}\yahooplugin.ypi
   File ${INDIR}\zlib1.dll
-  File ${INDIR}\${LIB_CRYPTO}
   File ${INDIR}\libcurl.dll
-  File ${INDIR}\${LIB_SSL}
   File license.txt
 
   ;Store installation folder
@@ -111,12 +104,9 @@ Section "Uninstall"
   Delete $INSTDIR\symbols.exe
   Delete $INSTDIR\misc.dll
   Delete $INSTDIR\miscwin.dll
-  Delete $INSTDIR\dspluginhelper.dll
   Delete $INSTDIR\yahooplugin.ypi
   Delete ${INDIR}\zlib1.dll
-  Delete ${INDIR}\${LIB_CRYPTO}
   Delete ${INDIR}\libcurl.dll
-  Delete ${INDIR}\${LIB_SSL}.dll
   Delete $INSTDIR\license.txt
 
 
