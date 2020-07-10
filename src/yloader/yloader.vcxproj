@@ -94,14 +94,14 @@
     <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
-    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(Configuration)\$(PlatformTarget)\</IntDir>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
-    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -203,7 +203,7 @@
 if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
 if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
       <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
-      <Outputs>$(InstallerDir)\y5_$(PlatformArchitecture)_setup.exe</Outputs>
+      <Outputs>$(InstallerDir)\y6_$(PlatformArchitecture)_setup.exe</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
@@ -249,7 +249,7 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
 if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
 if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
       <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
-      <Outputs>$(InstallerDir)\y5_$(PlatformArchitecture)_setup.exe</Outputs>
+      <Outputs>$(InstallerDir)\y6_$(PlatformArchitecture)_setup.exe</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
