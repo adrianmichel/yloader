@@ -409,14 +409,19 @@ class PriceData : public BarVector {
     try {
       bool error;
       assert(m_dateRange != 0);
+      LOG(log_info, L"Calling plugin getData");
       YPluginString result(m_plugin->getData(m_symbol, *m_dateRange, period, m_adjust, error), m_plugin);
+      LOG(log_info, L"Plugin getData returned result");
 
       if (error) {
-        throw PriceDataException((const TCHAR*)result);
+        LOG(log_error, L"Error signaled by plugin getData, throwing PriceDataException: ", result.to_wstring());
+
+        throw PriceDataException(result.to_wstring());
       }
 
-      parse(result);
-
+      LOG(log_info, L"Parsing result");
+      parse(result.to_wstring());
+      LOG(log_info, L"Puccessfully parsed result");
       // if there are more than two bars, check if the last bars has a date that
       // is equal or lower than the previous bar this is to fix a Yahoo change,
       // where downloaded data has two last bars of the same date, with the very
@@ -428,22 +433,28 @@ class PriceData : public BarVector {
 
         if (lastBar->date() <= beforeLastBar->date()) eraseLastBar();
       }
+      LOG(log_info, L"Exiting init");
     }
     catch (const InvalidBarException& e) {
+      LOG(log_error, L"InvalidBarException: ", e.message());
+      LOG(log_error, L"Re-throwing as PriceDataException");
+
       throw PriceDataException(L"Invalid bar: "s + e.message());
     }
-    catch (const PriceDataException&) {
+    catch (const PriceDataException& e) {
+      LOG(log_error, L"PriceDataException: ", e.message(), L", re-throwing");
       throw;
     }
-    catch (const RegexFormatException&) {
+    catch (const RegexFormatException& e) {
+      LOG(log_error, L"RegexFormatException: ", e.message(), L", re-throwing");
       throw;
     }
     catch (const std::exception& e) {
-      LOG(log_error, L"exception in getData: ", yloader::s2ws(e.what()));
+      LOG(log_error, L"std::exception in getData: ", yloader::s2ws(e.what()), L", re-throwing as PriceDataException");
       throw PriceDataException(yloader::s2ws(e.what()));
     }
     catch (...) {
-      LOG(log_error, L"Unknow exception in getData");
+      LOG(log_error, L"Unknown exception in getData, re-throwing as PriceDataException");
       throw PriceDataException(L"unknown error in getData");
     }
   }
@@ -464,19 +475,24 @@ class PriceData : public BarVector {
             makeBar(bar);
           }
           else {
+            LOG(log_error, L"Throwing BadDataFormatException: ", line);
+
             throw BadDataFormatException(line);
           }
         }
       }
     }
-    catch (const InvalidBarException&) {
+    catch (const InvalidBarException& e) {
+      LOG(log_error, L"InvalidBarException: ", e.message(), L", re-throwing");
       throw;
     }
-    catch (const RegexFormatException&) {
+    catch (const RegexFormatException& e) {
+      LOG(log_error, L"RegexFormatException: ", e.message(), L", re-throwing");
       throw;
     }
     catch (...) {
-      LOG(log_error, L"unknown exception while parsing line:\n", line);
+      LOG(log_error, L"Unknown exception while parsing line:\n", line);
+      LOG(log_error, L"Re-throwing as PriceDataException");
       throw PriceDataException(L"unknown error while parsing: "s + line);
     }
   }

@@ -69,6 +69,8 @@ std::wstring DateRanges::toString() const {
 }
 
 yloader::StringPtr yloader::removeLines(const std::wstring& str, unsigned int count, const std::wstring& eol) {
+  LOG(log_info, L"Count: ", count);
+
   if (!str.empty()) {
     std::wstring::size_type crt = 0;
     for (; count > 0 && crt != std::wstring::npos; --count) {
@@ -79,13 +81,16 @@ yloader::StringPtr yloader::removeLines(const std::wstring& str, unsigned int co
       yloader::StringPtr s(new std::wstring());
 
       *s = str.substr(crt, str.length() - crt);
+      LOG(log_info, L"Returning new data string");
       return s;
     }
     else {
+      LOG(log_info, L"Returning nullptr");
       return nullptr;
     }
   }
   else {
+    LOG(log_info, L"Returning nullptr");
     return nullptr;
   }
 }

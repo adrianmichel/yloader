@@ -148,14 +148,20 @@ class YahooHTTPErrorHandler : public yloader::HTTPErrorHandler {
 YDSPLUGIN_API const TCHAR* getData(const TCHAR* symbol, const TCHAR* startDate,
                                    const TCHAR* endDate, Period period,
                                    bool adjusted, bool& error, int retries) {
-  if (!validated) return 0;
+  if (!validated) {
+    return 0;
+  }
+  LOG(log_info, L"Yahoo plugin getData, symbol: ", symbol, L", start date: ", startDate, L", endDate", endDate,
+    L", period", period, L", adjusted: ", adjusted);
   YahooData yd;
   YahooHTTPErrorHandler yheh;
+  LOG(log_info, L"Constructing request");
   yloader::Request req(yd, yheh, symbol, yloader::DateRange(startDate, endDate),
                        period, false);
 
   yloader::StringPtr str;
 
+  LOG(log_info, L"Running request");
   if (!req.run()) {
     LOG(log_error, L"error getting data: ", req.error());
     if (retries > 0) {
@@ -171,6 +177,8 @@ YDSPLUGIN_API const TCHAR* getData(const TCHAR* symbol, const TCHAR* startDate,
     }
   }
   else {
+    LOG(log_info, L"Request succeeded");
+
     str = yloader::removeLines(*req.response(), 1, L"\n" );
     error = false;
   }
