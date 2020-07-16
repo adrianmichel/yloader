@@ -442,10 +442,10 @@ void CYLoaderView::AssertValid() const { CFormView::AssertValid(); }
 
 void CYLoaderView::Dump(CDumpContext& dc) const { CFormView::Dump(dc); }
 
-CyloaderDoc* CYLoaderView::GetDocument() const  // non-debug version is inline
+CYLoaderDoc* CYLoaderView::GetDocument() const  // non-debug version is inline
 {
-  ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CyloaderDoc)));
-  return (CyloaderDoc*)m_pDocument;
+  ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CYLoaderDoc)));
+  return (CYLoaderDoc*)m_pDocument;
 }
 #endif  //_DEBUG
 

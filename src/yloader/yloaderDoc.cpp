@@ -70,9 +70,9 @@ void CYLoaderDoc::Serialize(CArchive& ar) {
 // CyloaderDoc diagnostics
 
 #ifdef _DEBUG
-void CyloaderDoc::AssertValid() const { CDocument::AssertValid(); }
+void CYLoaderDoc::AssertValid() const { CDocument::AssertValid(); }
 
-void CyloaderDoc::Dump(CDumpContext& dc) const { CDocument::Dump(dc); }
+void CYLoaderDoc::Dump(CDumpContext& dc) const { CDocument::Dump(dc); }
 #endif  //_DEBUG
 
 // CyloaderDoc commands
