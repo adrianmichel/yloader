@@ -421,7 +421,7 @@ class PriceData : public BarVector {
 
       LOG(log_info, L"Parsing result");
       parse(result.to_wstring());
-      LOG(log_info, L"Puccessfully parsed result");
+      LOG(log_info, L"Successfully parsed result");
       // if there are more than two bars, check if the last bars has a date that
       // is equal or lower than the previous bar this is to fix a Yahoo change,
       // where downloaded data has two last bars of the same date, with the very
