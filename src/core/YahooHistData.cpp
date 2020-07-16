@@ -30,7 +30,7 @@ void YahooHistData::run(ThreadContext* context) {
         const std::wstring path(makeFileName(*symbol));
         downloadSymbol(*symbol, path, m_dataParams.update());
         m_fileNames.add(path);
-
+        LOG(log_info, L"downloadSymbol succeeded for symbol: ", *symbol, L", path: ", path, L", exiting thread");
       }
       catch (const YahooErrorException& e) {
         m_yahooEventSink.event(YahooEvent(*symbol, e.message(), event_error));
@@ -170,10 +170,13 @@ void YahooHistData::downloadSymbol(const std::wstring& symbol, const std::wstrin
   }
 
   if (history.get() != 0 && !history->empty()) {
+    LOG(log_info, L"Writing data for symbol: ", symbol, L" to: ", path);
     if (!writeData(symbol, path, history.get(), updateCurrent, reload)) {
+      LOG(log_error, L"writeData failed, throwing YahooErrorException");
       throw YahooErrorException(L"Could not write data to: "s + path);
     }
     else {
+      LOG(log_info, L"writeData succeeded, building event");
       size_t bars = history->count();
       std::wostringstream os;
       os << bars << (bars == 1 ? L" bar, " : L" bars, ")
@@ -191,10 +194,12 @@ void YahooHistData::downloadSymbol(const std::wstring& symbol, const std::wstrin
         os << L", " << history->retries() << (history->retries() == 1 ? L" retry" : L" retries");
       }
 
+      LOG(log_info, L"Sending write success event");
       m_yahooEventSink.event(YahooEvent(symbol, os.str(), event_info));
     }
   }
   else {
+    LOG(log_info, L"Sending \"No data loaded\" event");
     m_yahooEventSink.event(YahooEvent(symbol, L"No data loaded", event_info));
   }
 }
