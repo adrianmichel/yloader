@@ -133,7 +133,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\bootstrap.bat = ..\bootstrap.bat
 		licenses.txt = licenses.txt
-		README.md = README.md
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "tests\tests.vcxproj", "{3EDBF8E3-D0E5-405C-848E-5DB48227FF52}"
