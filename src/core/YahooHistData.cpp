@@ -36,7 +36,7 @@ void YahooHistData::run(ThreadContext* context) {
         m_yahooEventSink.event(YahooEvent(*symbol, e.message(), event_error));
       }
       catch (const YahooFatalErrorException& e) {
-        LOG(log_info, L"Fatal error in thread, exiting thread - symbol: ", symbol);
+        LOG(log_error, L"Fatal error in thread, exiting thread - symbol: ", symbol);
         m_yahooEventSink.event(YahooEvent(*symbol, e.message(), event_fatal_error));
         break;
         // if fatal error break and stop execution
