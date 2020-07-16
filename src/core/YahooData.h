@@ -610,40 +610,52 @@ class PriceData : public BarVector {
   // ascending sort indicates the sorting of the downloaded data, not the
   // sorting of the final data
   void toString(std::wofstream& o, const DataParams& dataParams) const {
+    LOG(log_info, L"Getting sorting order");
     bool asc = !(dataParams.lastBarsLast() ^ m_ascending);
 
+    LOG(log_info, L"Checking regex enabled status");
     if (dataParams.regexFormattingEnabled()) {
+      LOG(log_info, L"Creating DataFormatSettings object");
       DataFormatSettings dataFormatSettings(true, 0, DEFAULT_DATE_FORMAT, DEFAULT_DATE_SEPARATOR,
           DEFAULT_FIELD_SEPARATOR, DEFAULT_PAD_DATE_FIELDS, DEFAULT_FIXED_DECIMALS_COUNT, DEFAULT_DECIMAL_SEPARATOR);
       if (asc) {
+        LOG(log_info, L"Writing data in ascending order, regex");
         for (size_t i = 0; i < size(); i++) {
           barToStringRegex(i, dataFormatSettings, dataParams, o);
           o << std::endl;
         }
+        LOG(log_info, L"Done writing data in ascending order, regex");
       }
       else {
+        LOG(log_info, L"Writing data in descending order, regex");
         // write in reverse order
         for (size_t i = size() - 1; i >= 0; i--) {
           barToStringRegex(i, dataFormatSettings, dataParams, o);
           o << std::endl;
         }
+        LOG(log_info, L"Done writing data in descending order, regex");
       }
     }
     else {
       if (asc) {
+        LOG(log_info, L"Writing data in ascending order, normal");
         for (size_t i = 0; i < size(); i++) {
           barToString(i, dataParams, o);
           o << std::endl;
         }
+        LOG(log_info, L"Done writing data in ascending order, normal");
       }
       else {
         // write in reverse order
+        LOG(log_info, L"Writing data in descending order, normal");
         for (size_t i = size() - 1; i >= 0; i--) {
           barToString(i, dataParams, o);
           o << std::endl;
         }
+        LOG(log_info, L"Done writing data in descending order, normal");
       }
     }
+    LOG(log_info, L"Exiting");
   }
 
   bool hasInvalidBars() const { return !m_invalidBars.empty(); }

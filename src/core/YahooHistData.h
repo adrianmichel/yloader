@@ -308,6 +308,7 @@ class YahooHistData : public yloader::Thread {
   }
 
   bool writeData(const std::wstring& symbol, const std::wstring& path, const PriceData* history, bool update, bool reload) {
+    LOG(log_info, L"writeData start - symbol: ", symbol, L", path: ", path, L", update: ", update, L", reload: ", reload);
     bool wroteHeader = false;
     // first handle the file header
     const std::wstring& fh(m_dataParams.fileHeader());
@@ -317,18 +318,25 @@ class YahooHistData : public yloader::Thread {
       // the text transformation that happens
       // in text mode
       try {
+        LOG(log_info, L"Calling SpecialFileWrite");
         SpecialFileWrite f(path, false, true);
+        LOG(log_info, L"After SpecialFileWrite");
 
         std::wofstream& of(f);
 
+        LOG(log_info, L"Writing to of");
         of << fh;
+        LOG(log_info, L"Checking eol");
         if (*fh.rbegin() != L'\n') {
+          LOG(log_info, L"Writing \\r\\n");
           of << L"\r\n";
         }
+
         // close the binary file
         wroteHeader = true;
       }
       catch (SpecialFileException&) {
+        LOG(log_error, L"Caught SpecialFileException 1, returning false");
         return false;
       }
     }
@@ -337,16 +345,20 @@ class YahooHistData : public yloader::Thread {
 
     try {
       if (update || wroteHeader) {
-        o = SpecialFileWritePtr(new SpecialFileWrite(path.c_str(), true));
+        LOG(log_info, L"Making SpecialFileWrite 1");
+        o = std::make_shared<SpecialFileWrite>(path.c_str(), true);
       }
       else {
-        o = SpecialFileWritePtr(new SpecialFileWrite(path.c_str()));
+        LOG(log_info, L"Making SpecialFileWrite 2");
+        o = std::make_shared<SpecialFileWrite>(path.c_str());
       }
 
+      LOG(log_info, L"Writing history data");
       history->toString(*o, m_dataParams);
       return true;
     }
     catch (const SpecialFileException&) {
+      LOG(log_error, L"Caught SpecialFileException 2, returning false");
       return false;
     }
   }
