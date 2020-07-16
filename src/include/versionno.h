@@ -18,7 +18,7 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #define STR_EXPAND(tok) #tok
 #define STR(tok) STR_EXPAND(tok)
 
-#define FILEVER 6,0,0,2
+#define FILEVER 6,0,0,3
 #define PRODUCTVER FILEVER
 #define STRCOMPANYNAME "YLoader"
 #define STRPRODUCTNAME STRCOMPANYNAME
