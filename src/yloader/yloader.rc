@@ -561,8 +561,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 5,0,0,0
- PRODUCTVERSION 5,0,0,0
+ FILEVERSION 6,0,0,1
+ PRODUCTVERSION 6,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -579,12 +579,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "YLoader"
             VALUE "FileDescription", "YLoader"
-            VALUE "FileVersion", "5.0.0.0"
+            VALUE "FileVersion", "6.0.0.1"
             VALUE "InternalName", "yloader.exe"
             VALUE "LegalCopyright", "(c) YLoader.  All rights reserved."
             VALUE "OriginalFilename", "yloader.exe"
             VALUE "ProductName", "YLoader"
-            VALUE "ProductVersion", "5.0.0.0"
+            VALUE "ProductVersion", "6.0.0.1"
         END
     END
     BLOCK "VarFileInfo"
