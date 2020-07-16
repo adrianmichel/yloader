@@ -78,7 +78,7 @@ yloader::StringPtr yloader::removeLines(const std::wstring& str, unsigned int co
     }
 
     if (crt != std::wstring::npos) {
-      yloader::StringPtr s(new std::wstring());
+      yloader::StringPtr s(std::make_shared<std::wstring>());
 
       *s = str.substr(crt, str.length() - crt);
       LOG(log_info, L"Returning new data string");
