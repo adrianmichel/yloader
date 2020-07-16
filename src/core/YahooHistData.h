@@ -270,6 +270,7 @@ class YahooHistData : public yloader::Thread {
          retries ) );
             }
       */
+      LOG(log_info, L"Exiting getData");
       return ypd;
     }
     catch (const PriceDataException& e) {
@@ -287,7 +288,9 @@ class YahooHistData : public yloader::Thread {
     catch (const BadDataFormatException& e) {
       if (retries < 2) {
         //        MessageBox( 0, "retry", "retry", MB_OK );
-        return getData(symbol, dateRange, retries + 1);
+        PriceDataPtr data = getData(symbol, dateRange, retries + 1);
+        LOG(log_info, L"Exiting getData from BadDataFormatException catch block");
+        return data;
       }
       else {
         LOG(log_error, L"Bad format exception: ", e.getData());

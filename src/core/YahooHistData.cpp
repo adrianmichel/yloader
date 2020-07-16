@@ -121,23 +121,30 @@ void YahooHistData::downloadSymbol(const std::wstring& symbol, const std::wstrin
 
   PriceDataPtr history;
   history = getData(symbol, range);
+  LOG(log_info, L"getData returned, history ", history ? L" valid" : L"null");
+
 
   assert(history);
 
   if (history->hasInvalidBars()) {
+    LOG(log_info, L"History has invalid bars, sending event");
     m_yahooEventSink.event(YahooEvent(symbol, L"Invalid bar(s): "s + history->invalidBarsToString(), event_warning));
   }
 
+
   if (updateCurrent) {
+    LOG(log_info, L"In updateCurrent block");
+
     /*      std::wstring lastDate = lastBar.date().toString();
           std::wstring firstNewBar = (*history)[ 0 ]->date().toString();
           */
     if (!history->empty()) {
-      //        LOG( log_debug, _T( "last bar in update mode: " ) <<
-      //        lastBar.toString() );
+      LOG(log_info, L"History not empty, processing the update");
+
       const Bar newBar = *(history->first());
       LOG(log_debug, L"compared to new bar: ", newBar.toString());
 
+      LOG(log_info, L"check if we need to reload data, lastBars: ", lastBars ? L" valid" : L"null");
       assert(lastBars);
 
       // only update old data if the flag is not set in General Settings
@@ -145,13 +152,15 @@ void YahooHistData::downloadSymbol(const std::wstring& symbol, const std::wstrin
         // if we're updating and adjusting, and there has been some div or split
         // during the most recent data, than do a complete download recursively,
         // to make sure we have valid data
+        LOG(log_info, L"Redownloading symbol: ", symbol);
         downloadSymbol(symbol, path, false, true);
         return;
       }
       else {
+        LOG(log_info, L"Erasing first ", lastBars->size(), L" bars");
         std::wstring d1 = history->first()->date().to_simple_string();
         std::wstring d2 = history->last()->date().to_simple_string();
-        // erase the first n bars, which was loaded just for test
+        // erase the first n bars, which were loaded just for test
         history->eraseFirst(lastBars->size());
         //			d1 =
         //history->first()->date().to_simple_string(); 			d2 =
