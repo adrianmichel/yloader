@@ -620,7 +620,7 @@ class PriceData : public BarVector {
           DEFAULT_FIELD_SEPARATOR, DEFAULT_PAD_DATE_FIELDS, DEFAULT_FIXED_DECIMALS_COUNT, DEFAULT_DECIMAL_SEPARATOR);
       if (asc) {
         LOG(log_info, L"Writing data in ascending order, regex");
-        for (size_t i = 0; i < size(); i++) {
+        for (size_t i = 0; i < size(); ++i) {
           barToStringRegex(i, dataFormatSettings, dataParams, o);
           o << std::endl;
         }
@@ -629,8 +629,8 @@ class PriceData : public BarVector {
       else {
         LOG(log_info, L"Writing data in descending order, regex");
         // write in reverse order
-        for (size_t i = size() - 1; i >= 0; i--) {
-          barToStringRegex(i, dataFormatSettings, dataParams, o);
+        for (size_t i = size(); i > 0; --i) {
+          barToStringRegex(i - 1, dataFormatSettings, dataParams, o);
           o << std::endl;
         }
         LOG(log_info, L"Done writing data in descending order, regex");
@@ -639,7 +639,7 @@ class PriceData : public BarVector {
     else {
       if (asc) {
         LOG(log_info, L"Writing data in ascending order, normal");
-        for (size_t i = 0; i < size(); i++) {
+        for (size_t i = 0; i < size(); ++i) {
           barToString(i, dataParams, o);
           o << std::endl;
         }
@@ -648,8 +648,8 @@ class PriceData : public BarVector {
       else {
         // write in reverse order
         LOG(log_info, L"Writing data in descending order, normal");
-        for (size_t i = size() - 1; i >= 0; i--) {
-          barToString(i, dataParams, o);
+        for (size_t i = size(); i > 0; --i) {
+          barToString(i - 1, dataParams, o);
           o << std::endl;
         }
         LOG(log_info, L"Done writing data in descending order, normal");
