@@ -85,7 +85,7 @@ class YPluginBase : public HInstance {
 
 class YPluginString {
  private:
-  const TCHAR* m_string;
+  const wchar_t* m_string;
   const YPluginBase* m_plugin;
 
  public:
@@ -94,7 +94,8 @@ class YPluginString {
 
   ~YPluginString() { m_plugin->freeString(m_string); }
 
-  operator const TCHAR*() { return m_string; }
+  const wchar_t* to_wstring() const { return m_string; }
+  operator const wchar_t* () const { return m_string; }
 };
 
 class YPlugin : public YPluginBase, public YPluginInfo {
