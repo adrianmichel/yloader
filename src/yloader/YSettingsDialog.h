@@ -74,7 +74,7 @@ class YSettingsDialog : public CSettingsDialog {
     return (!_disableExtraFeatures) ? m_gs->threads() : 1;
   }
   const CString logFile() const {
-    return (!_disableExtraFeatures) ? m_ls->logFile() : L"";
+    return (!_disableExtraFeatures) ? m_ls->logFile().GetString() : L"";
   }
   bool appendToLog() const { return m_ls->appendToLog(); }
   bool padDate() const { return m_dfs->padDate(); }

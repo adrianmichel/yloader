@@ -159,38 +159,34 @@ runProcess(const std::wstring& processFileName, const std::wstring& cmdLine, boo
            const Environment& env = Environment(), unsigned long timeout = 0);
 
 
-template <class CharT, class TraitsT = std::char_traits<CharT> >
-class basic_debugbuf : public std::basic_stringbuf<CharT, TraitsT> {
+class basic_debugbuf : public std::basic_stringbuf<wchar_t, std::char_traits<wchar_t>> {
+  using Base = std::basic_stringbuf<wchar_t, std::char_traits<wchar_t>>;
  public:
   virtual ~basic_debugbuf() { sync(); }
 
  protected:
   int sync() {
-    output_debug_string(str().c_str());
-    str(std::basic_string<CharT>());  // Clear the string buffer
+    output_debug_string(Base::str().c_str());
+    Base::str(std::wstring());  // Clear the string buffer
 
     return 0;
   }
 
-  void output_debug_string(const CharT* text) {}
+  void output_debug_string(const wchar_t* text) {
+      ::OutputDebugStringW(text);
+  }
 };
 
-template <>
-void basic_debugbuf<wchar_t>::output_debug_string(const wchar_t* text) {
-  ::OutputDebugStringW(text);
-}
-
-template <class CharT, class TraitsT = std::char_traits<CharT> >
-class basic_dostream : public std::basic_ostream<CharT, TraitsT> {
-  using buf_type = basic_debugbuf<CharT, TraitsT>;
+class basic_dostream : public std::basic_ostream<wchar_t, std::char_traits<wchar_t>> {
+  using Base = std::basic_ostream < wchar_t, std::char_traits<wchar_t>>;
 
  public:
   basic_dostream()
-      : std::basic_ostream<CharT, TraitsT>(new buf_type{}) {}
-  ~basic_dostream() { delete rdbuf(); }
+      : std::basic_ostream<wchar_t, std::char_traits<wchar_t>>(new basic_debugbuf{}) {}
+  ~basic_dostream() { delete Base::rdbuf(); }
 };
 
-using t_dostream = basic_dostream< wchar_t >;
+using t_dostream = basic_dostream;
 
 //////////////////////////////////////
 /// Named mutex

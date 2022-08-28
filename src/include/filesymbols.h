@@ -79,7 +79,7 @@ class UniqueSymbolsSet : public UniqueSymbolsSetBase {
 using UniqueSymbolsSetPtr = std::shared_ptr<UniqueSymbolsSet>;
 
 StrListPtr getSymbols(const std::wstring& fileName, bool removeDuplcateSymbols = false, const SymbolTransformer* st = 0);
-StrListPtr getSymbols( const StrVector& fileNames, bool removeDuplcateSymbols = false, const SymbolTransformer* st = 0,
+StrListPtr getSymbols( const yloader::StrVector& fileNames, bool removeDuplcateSymbols = false, const SymbolTransformer* st = 0,
     const yloader::StrList* extraSymbols = 0);
 
 UniqueSymbolsSetPtr getUniqueSymbols(const StrVector& fileNames);

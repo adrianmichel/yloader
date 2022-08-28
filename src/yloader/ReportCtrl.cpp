@@ -582,7 +582,7 @@ BOOL CYReportCtrl::SetItemText(int nItem, int nSubItem,
                                const COleDateTime& dateTime, DWORD dwFlags) {
   return SetItemText(nItem, nSubItem,
                      dateTime.GetStatus() == COleDateTime::valid
-                         ? dateTime.Format(dwFlags)
+                         ? dateTime.Format(dwFlags).GetString()
                          : _T(""));
 }
 

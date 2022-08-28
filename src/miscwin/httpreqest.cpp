@@ -160,7 +160,7 @@ std::shared_ptr<std::string> CurlHTTPRequest::post(const std::wstring& object, c
 
   //	std::shared_ptr< curl_httppost* > x( &formpost, cleanformpost );
 
-  std::wstring url(url(object));
+  std::wstring url(HTTPRequestBase::url(object));
   handleCurlResult(curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str()), "curl_easy_setopt( CURLOPT_URL )");
 
   /* Now specify the POST data */

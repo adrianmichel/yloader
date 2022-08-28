@@ -94,11 +94,11 @@ class UniqueIdException {
 
 class UniqueId : public std::wstring {
  public:
-  UniqueId::UniqueId()
+  UniqueId()
     : std::wstring(MakeUuidString()) {
   }
 
-  UniqueId::UniqueId(const TCHAR* str){
+  UniqueId(const TCHAR* str){
     UUID uuid;
     if (UuidFromString(reinterpret_cast<RPC_WSTR>(const_cast<TCHAR*>(str)), &uuid) != RPC_S_OK)
       throw UniqueIdException(str);
@@ -179,103 +179,6 @@ extern MISC_API std::mutex m;
  * @{
  */
 
-// TODO: these pointer collections should be implemented using a different
-// allocator leave like this for now not all methods will work as expected, such
-// as erase or remove, depending on the container
-
-/**
- * A vector of pointers
- *
- * A regular STL vector of pointers does not delete the pointers in the
- * destructor. At the same time it is not a good idea to use smart pointers in a
- * vector because of assignment and copy issues so PtrVector implements a vector
- * of regular pointers whose destructor deletes all pointers
- */
-template <class T>
-class PtrVector : public std::vector<T*> {
- private:
-  using PtrVectorBase = std::vector<T*>;
-
- public:
-  virtual ~PtrVector() { deleteAll(); }
-
-  void deleteAll() {
-    for (unsigned int n = 0; n < size(); n++) delete at(n);
-  }
-
-  void clear() {
-    deleteAll();
-    PtrVectorBase::clear();
-  }
-};
-
-/**
- * A vector of pointers to constant objects
- *
- * A regular STL vector of pointers does not delete the pointers in the
- * destructor. At the same time it is not a good idea to use smart pointers in a
- * vector because of assignment and copy issues so PtrVector implements a vector
- * of regular pointers whose destructor deletes all pointers
- */
-template <class T>
-class ConstPtrVector : public PtrVector<const T> {};
-
-// note: erase has not been overriden, so it will not delete the pointer!
-template <class T, class U>
-class PtrMap : public std::map<T, U*> {
- private:
-  using PtrMapBase = std::map<T, U*>;
-
- public:
-  virtual ~PtrMap() { deleteAll(); }
-
-  void deleteAll() {
-    for (PtrMapBase::iterator i = begin(); i != end(); i++) delete i->second;
-  }
-
-  void clear() {
-    deleteAll();
-    PtrMapBase::clear();
-  }
-};
-
-/**
- * A map of an arbitrary type T to pointers to constant objects of type U
- *
- * A regular STL map of pointers does not delete the pointers in the destructor.
- * At the same time it is not a good idea to use smart pointers because of
- * assignment and copy issues so PtrMap implements a map of regular pointers
- * whose destructor deletes all pointers
- */
-template <class T, class U>
-class ConstPtrMap : public PtrMap<T, const U> {};
-
-template <class T>
-class PtrSet : public std::set<T*> {
- private:
-  using PtrSetBase = std::set<T*>;
-
- public:
-  virtual ~PtrSet() { deleteAll(); }
-
-  void deleteAll() {
-    for (PtrSetBase::iterator i = begin(); i != end(); i++) delete *i;
-  }
-
-  void clear() {
-    deleteAll();
-    PtrSetBase::clear();
-  }
-};
-
-template <class T>
-class ConstPtrSet : public PtrSet<const T> {};
-
-/** \brief a vector of strings
- *
- * Can be used as a base class for a polymorphic multiply derived class, because
- * of the virtual destructor
- */
 
 using StrVectorBase = std::vector<std::wstring>;
 

@@ -34,7 +34,7 @@ class CMiscWinApp : public CWinApp {
   // Overrides
  public:
   virtual BOOL InitInstance();
-  virtual int CMiscWinApp::ExitInstance();
+  virtual int ExitInstance();
 
   DECLARE_MESSAGE_MAP()
 };

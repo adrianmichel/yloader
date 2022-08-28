@@ -570,7 +570,7 @@ class CYLoaderView : public CFormView, public Refreshable {
   std::shared_ptr<CDownloading> m_downloading;
 
   void OnSettings();
-  void CYLoaderView::OnDownload();
+  void OnDownload();
 
   std::wstring getYLoaderSettingsFile() {
     return yloader::addBackSlash(yloader::getDirectory(getLocalYLoaderDataPath(), L"settings")) + L"settings.ini";
@@ -690,7 +690,7 @@ class CYLoaderView : public CFormView, public Refreshable {
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg LRESULT DoDownload(WPARAM, LPARAM);
 
-  void CYLoaderView::openDataFile(boost::shared_array<TCHAR> symbol);
+  void openDataFile(boost::shared_array<TCHAR> symbol);
 
   void initSymbolsList() {
     try {

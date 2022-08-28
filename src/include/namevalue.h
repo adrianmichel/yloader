@@ -45,7 +45,7 @@ class NameValue : public NameValueBase {
 
   operator bool() const { return !NameValueBase::first.empty(); }
 
-  yloader::StringPtr yloader::NameValue::toString() const {
+  yloader::StringPtr toString() const {
     yloader::StringPtr str(std::make_shared< std::wstring >());
     *str += name() + L"=" + value();
     return str;

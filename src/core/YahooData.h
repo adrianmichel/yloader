@@ -390,7 +390,7 @@ class PriceData : public BarVector {
   bool operator==(BarVectorPtr bars) const {
     assert(bars);
 
-    size_t size(min(bars->size(), size()));
+    size_t size(min(bars->size(), BarVector::size()));
 
     for (size_t n = 0; n < size; ++n) {
       BarPtr bp1 = m_ascending ? *(begin() + n) : *(rbegin() + n);
