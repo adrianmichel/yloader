@@ -19,6 +19,7 @@
 #include "token.h"
 
 void Token::update(const std::wstring& symbol) {
+  return;
   std::scoped_lock lock(mx);
 
   if (!lastSuccessfulUpdate.isNotADateTime()) {

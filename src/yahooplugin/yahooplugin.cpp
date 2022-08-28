@@ -72,7 +72,7 @@ YDSPLUGIN_API const TCHAR* getFirstDate() {
 
 Token token;
 
-constexpr auto QUERY = L"/v7/finance/download/%1%?period1=%2%&period2=%3%&interval=%4%&events=history&crumb=%5%";
+constexpr auto QUERY = L"/v7/finance/download/%1%?period1=%2%&period2=%3%&interval=%4%&events=history&includeAdjustedClose=true";
 
 class YahooData : public yloader::ReqBuilder {
  public:
@@ -97,9 +97,10 @@ class YahooData : public yloader::ReqBuilder {
 
  public:
   virtual std::wstring buildRequest(const std::wstring& symbol, const yloader::DateRange& dateRange, Period period) const {
-    if (token.getCrumb(symbol).empty() || token.getCookie(symbol).empty()) {
+ /*   if (token.getCrumb(symbol).empty() || token.getCookie(symbol).empty()) {
       token.update(symbol);
     }
+ */
 
     DateTime startDate = DateTime(dateRange.first.isNotADate() ? FIRST_YAHOO_DATE : dateRange.first);
     std::wstring sd = startDate.to_iso_string();
@@ -110,7 +111,7 @@ class YahooData : public yloader::ReqBuilder {
     // this is 12am, we have to add 23h 59min 59 sec
     __int64 end = endDate.to_epoch_time() + 23 * 3600 + 59 * 60 + 59;
 
-    std::wstring req = yloader::format(QUERY, urlencode(symbol), start, end, getPeriod(period), yloader::s2ws(token.getCrumb(symbol)));
+    std::wstring req = yloader::format(QUERY, urlencode(symbol), start, end, getPeriod(period));
 
     LOG(log_debug, L"query: ", req);
 
