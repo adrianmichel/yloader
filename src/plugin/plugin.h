@@ -77,8 +77,8 @@ class PluginInstance : public PluginInstanceBase<T> {
       {
         try {
           try {
-            GET_PLUGIN getPlugin = reinterpret_cast<GET_PLUGIN>(getProcAddress(procName));
-            m_plugin = (*getPlugin)();
+            typename PluginInstanceBase<T>::GET_PLUGIN getPlugin = reinterpret_cast<typename PluginInstanceBase<T>::GET_PLUGIN>(getProcAddress(procName));
+            __super::m_plugin = (*getPlugin)();
           }
           catch (const HInstanceMethodException&) {
             //					LOG( log_debug, _T( "Not a plugin: ") << path << ", " <<

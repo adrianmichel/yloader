@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost\static_assert.hpp>
 #include <boost\type_traits.hpp>
 
+#include <log.h>
 #include <exceptions.h>
 #include <misc.h>
 #include <plugin.h>
