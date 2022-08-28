@@ -22,7 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <datetime.h>
 #include <filesymbols.h>
 #include <miscfile.h>
-#include <boost/make_shared.hpp>
 #include <boost/regex.hpp>
 #include "charactermapping.h"
 #include "defaults.h"
