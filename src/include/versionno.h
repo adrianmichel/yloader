@@ -18,14 +18,14 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #define STR_EXPAND(tok) #tok
 #define STR(tok) STR_EXPAND(tok)
 
-#define FILEVER 6,0,0,6
+#define FILEVER 6,0,0,7
 #define PRODUCTVER FILEVER
 #define STRCOMPANYNAME "YLoader"
 #define STRPRODUCTNAME STRCOMPANYNAME
 #define STRPRODUCTVER STR(PRODUCTVER)
 #define STRFILEVER STRPRODUCTVER
 #define WSTRPRODUCTVER _T(STRPRODUCTVER)
-#define STRCOPYRIGHT "Copyright © 2022 YLoader"
+#define STRCOPYRIGHT "Copyright © 2024 YLoader"
 #define STRPRODUCT_DESC "Historical Quotes Downloader"
 #define STRPRODUCT_VER _T(STRFILEVER)
 #define STRPRODUCT_NAME _T(STRCOMPANYNAME)
