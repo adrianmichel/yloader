@@ -31,6 +31,8 @@ along with this program.If not, see <http://www.gnu.org/licenses/>.
 #pragma warning (disable:4800 4275 4251 4244 4003)
 #pragma warning (push)
 
+#define BOOST_TIMER_ENABLE_DEPRECATED
+
 #include <boost\date_time\posix_time\ptime.hpp>
 #include <boost\date_time\posix_time\posix_time.hpp>
 #include <boost\date_time\time_clock.hpp>
