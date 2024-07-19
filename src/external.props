@@ -6,7 +6,7 @@
     <Fciv>$(ExternalDir)fciv\fciv.exe</Fciv>
     <InstallerDir>$(SolutionDir)bin\installer\</InstallerDir>
     <InstallerFile>$(InstallerDir)y6_$(PlatformArchitecture)_setup.exe</InstallerFile>
-    <NSISExe>C:\Program Files (x86)\NSIS\makensis.exe</NSISExe>
+    <NSISExe>$(ExternalDir)\nsis\makensis.exe</NSISExe>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
