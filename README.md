@@ -54,5 +54,3 @@ Note that this build will generate binaries compatible with Windows 7 or later. 
 11. In the Solution Explorer pane, expand the *yloader* folder, right click on the *yloader* project under that folder and select *Set as Startup Project*.
 12. Right click again on the *yloader* project and click on *Build*.
 13. The generated binaries will be under <pre><code>[yloader_dir]\[Release/Debug]\[win32/x64]</pre></code>
-14. If you have installed NSIS and built the Release version of either win32 and/or x64, the YLoader installer(s) will be created under<pre><code>[yloader_dir]\src\bin\installer</code></pre>
-15. If you have installed the fciv.exe utility, an additional text file with the MD5 and SHA1 hashes will generated for each of 32 and 64 bit under the installer directory.
