@@ -36,9 +36,9 @@ Applications used in the course of YLoader development:
 * **Visual Studio 2022 Community Edition**
 * **Git Command Line Client for Linux**
 * **Doxygen** (optional), documentation generator: http://wwww.doxygen.org.
-* **NSIS** - Nullsoft Scriptable Install System (optional), a Windows installer generator: http://nsis.sourceforge.net.
+* **NSIS** - Nullsoft Scriptable Install System, a Windows installer generator: http://nsis.sourceforge.net (already included in the external directory).
 * **vcpkg** - Library manager: https://github.com/Microsoft/vcpkg
-* **fciv** - utility for calculating the MD5 and SHA1 hashes, which can be downloaded from https://www.microsoft.com.
+* **fciv** - utility for calculating the MD5 and SHA1 hashes, which can be downloaded from https://www.microsoft.com (already included in the external directory).
 
 ## Building YLoader from sources
 Follow the steps below to successfully build YLoader binaries and optionally the installer(s). This process will generate quite a bit of data, so be sure to have enough available storage on the build drive. 
