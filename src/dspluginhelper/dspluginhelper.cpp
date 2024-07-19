@@ -194,7 +194,7 @@ bool Request::run() {
     try {
       m_error.clear();
       std::shared_ptr<std::string> r(req->get(m_reqBuilder.buildRequest(m_symbol, m_dateRange, m_period), std::wstring{},
-        std::wstring{}, m_proxyServerAddress, m_proxyServerUserName, m_proxyServerPassword,
+        m_reqBuilder.userAgent(), m_proxyServerAddress, m_proxyServerUserName, m_proxyServerPassword,
           m_httpRequestTimeout, m_reqBuilder.cookie(m_symbol)));
 
       yloader::StringPtr resp(std::make_shared< std::wstring >(yloader::s2ws(*r)));

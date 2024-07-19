@@ -119,6 +119,7 @@ class YahooData : public yloader::ReqBuilder {
   }
 
   std::wstring rootURL() const { return L"query1.finance.yahoo.com"; }
+  std::wstring userAgent() const { return L"curl / 7.68.0"; }
 
   bool hasCookie() const override { return true; }
   std::wstring cookie(const std::wstring& symbol) const override {

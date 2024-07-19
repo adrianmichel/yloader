@@ -75,6 +75,7 @@ class ReqBuilder {
   virtual ~ReqBuilder() {}
   virtual std::wstring buildRequest(const std::wstring& symbol, const yloader::DateRange& dateRange, Period period) const = 0;
   virtual std::wstring rootURL() const = 0;
+  virtual std::wstring userAgent() const = 0;
   virtual bool hasCookie() const { return false; }
   virtual std::wstring cookie(const std::wstring& symbol) const {
     return L"";
