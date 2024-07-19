@@ -200,15 +200,14 @@
     </ProjectReference>
     <CustomBuildStep>
       <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
-if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
-if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
+"$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+"$(Fciv)" -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
       <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
       <Outputs>$(InstallerDir)\y6_$(PlatformArchitecture)_setup.exe</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
-"C:\Program Files (x86)\NSIS\makensis.exe" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
-if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(Bits).txt</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -246,15 +245,14 @@ if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(B
     </ProjectReference>
     <CustomBuildStep>
       <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
-if exist "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
-if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
+ "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+"$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
       <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
       <Outputs>$(InstallerDir)\y6_$(PlatformArchitecture)_setup.exe</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
-"C:\Program Files (x86)\NSIS\makensis.exe" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
-if exist "$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(Bits).txt</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

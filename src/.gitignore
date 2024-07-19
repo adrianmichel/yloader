@@ -1,7 +1,7 @@
 Thumbs.db
 yloadercore/timestamp.h
 doc/output
-external/
+#external/
 
 
 ## from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
