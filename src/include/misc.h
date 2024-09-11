@@ -494,8 +494,8 @@ template <class T> class Settable {
  private:
    std::optional< T > m_value;
  public:
-   const Settable() = default;
-   const Settable(const T& t)
+   Settable() = default;
+   Settable(const T& t)
      : m_value(t) {
    }
   const Settable& operator=(const T& t) {
