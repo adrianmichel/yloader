@@ -65,7 +65,7 @@ class Requests {
   HTTPRequestBasePtr getRequest(uint64_t id, const std::wstring& serverName, bool http);
   void cancel();
   void remove(uint64_t id) {
-    std::scoped_lock(m_mx);
+    std::scoped_lock lock(m_mx);
     m_requests.erase(id);
   }
 };
