@@ -19,6 +19,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "dataparams.h"
 #include "yplugin.h"
+#include <ranges>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+using json = nlohmann::json;
+
+namespace json_strings {
+  constexpr const char* CHART_ = "chart";
+  constexpr const char* RESULT = "result";
+  constexpr const char* TIMESTAMP = "timestamp";
+  constexpr const char* INDICATORS = "indicators";
+  constexpr const char* QUOTE = "quote";
+  constexpr const char* CLOSE = "close";
+  constexpr const char* OPEN = "open";
+  constexpr const char* LOW = "low";
+  constexpr const char* HIGH = "high";
+  constexpr const char* ADJCLOSE = "adjclose";
+  constexpr const char* VOLUME = "volume";
+  constexpr const char* CHART = "chart";
+  constexpr const wchar_t* TIMESTAMP_FORMAT = L"%Y/%m/%d";
+}
+
+namespace js = json_strings;
 
 /*
         daily, 1/21/2005 - 6/2/2007
@@ -420,7 +442,15 @@ class PriceData : public BarVector {
       }
 
       LOG(log_info, L"Parsing result");
-      parse(result.to_wstring());
+      // calling parsejson instead of parse to handle the new yahoo data format.
+      // normally this should be handled in the plugin, as this is datasource specific, but since there are no other data sources
+      // (for now), and implementing it the right way would require a new plugin api, we'll take a shortcut for the time being
+      // and just handle it here.
+
+      // ideally, the plugin would let yloader know what the data format is and then process data using the appropriate handler
+    
+      parseJson(result.to_wstring());
+//      parse(result.to_wstring());
       LOG(log_info, L"Successfully parsed result");
       // if there are more than two bars, check if the last bars has a date that
       // is equal or lower than the previous bar this is to fix a Yahoo change,
@@ -460,6 +490,56 @@ class PriceData : public BarVector {
   }
 
   unsigned int retries() const { return m_retries; }
+
+
+  void parseJson(const wchar_t* str) {
+    json j = json::parse(yloader::ws2s(str));
+
+    //  extracting various arrays
+    auto& result = j[js::CHART][js::RESULT][0];
+    auto& timestamps = result[js::TIMESTAMP];
+    auto& indicators = result[js::INDICATORS];
+    auto& quote = indicators[js::QUOTE][0];
+    auto& close = quote[js::CLOSE];
+    auto& open = quote[js::OPEN];
+    auto& low = quote[js::LOW];
+    auto& high = quote[js::HIGH];
+    auto& adjclose = indicators[js::ADJCLOSE][0][js::ADJCLOSE];
+    auto& vol = quote[js::VOLUME];
+
+    // all array must be the same size
+    // if not throw exception
+    if (close.size() != open.size() ||
+      close.size() != low.size() ||
+      close.size() != high.size() ||
+      close.size() != timestamps.size() ||
+      close.size() != vol.size() ||
+      close.size() != adjclose.size()) {
+      throw PriceDataException(L"Inconsistent data: bar arrays have different sizes");
+    }
+    // construct bars by traversing all arrays at the same time
+    for (auto [ts, o, l, h, c, v, ac] : std::views::zip(timestamps, open, low, high, close, vol, adjclose)) {
+      // ratio for adjusted values
+      double ratio = ac.is_null() ? 0 : (m_adjust ? (c > 0 ? (double)ac / (double)c : 1) : 1);
+      DatasourceBar bar;
+
+      // calculate adjusted values
+      bar.open = o.is_null() ? 0 : (double)o * ratio;
+      bar.low = l.is_null() ? 0 : (double)l * ratio;
+      bar.high = h.is_null() ? 0 : (double)h * ratio;
+      bar.close = c.is_null() ? 0 : (double)c * ratio;
+      bar.volume = v.is_null() ? 0 : (double)v / ratio;
+
+      // converting unix timestamp (including negative values) to a string timestamp
+      auto time = boost::posix_time::from_time_t(0) + boost::posix_time::seconds((int64_t)ts);
+      std::tm t = to_tm(time);
+      std::wstringstream ss; // or if you're going to print, just input directly into the output stream
+      ss << std::put_time(&t, js::TIMESTAMP_FORMAT);
+      wcscpy_s(bar.date, ss.str().c_str());
+
+      makeBar(bar);
+    }
+  }
 
   void parse(const TCHAR* str) {
     std::wstring line;
