@@ -245,8 +245,8 @@
     </ProjectReference>
     <CustomBuildStep>
       <Command>if not exist "$(InstallerDir)" mkdir $(InstallerDir)
- "$(NSISExe)" "$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
-"$(Fciv)" $(Fciv) -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
+"$(NSISExe)" /DInDir=$(OutDir) /DOutDir=$(InstallerDir) /DPlatform=$(Platform) /DInstallerFile=$(InstallerFile)  $(SolutionDir)installer\yloader.nsi
+"$(Fciv)" -both $(InstallerFile) &gt; $(InstallerDir)hashes_$(PlatformArchitecture).txt</Command>
       <Inputs>$(SolutionDir)\installer\yloader.nsi</Inputs>
       <Outputs>$(InstallerDir)\y6_$(PlatformArchitecture)_setup.exe</Outputs>
     </CustomBuildStep>
