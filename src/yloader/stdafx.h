@@ -53,6 +53,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <boost\algorithm\string.hpp>
 #include <boost/regex.hpp>
 
+#include <nlohmann/json.hpp>
+
 #if defined(_DEBUG)
 #define new DEBUG_NEW
 #endif

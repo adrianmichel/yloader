@@ -47,6 +47,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <condition_variable>
 
+#include <nlohmann/json.hpp>
+
 #include <cmdline.h>
 #include <yplugin.h>
 #include <log.h>

@@ -36,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <boost\algorithm\string.hpp>
-
+#include <nlohmann/json.hpp>
 
 #include <misc.h>
 #include <strings.h>
