@@ -72,7 +72,7 @@ YDSPLUGIN_API const TCHAR* getFirstDate() {
 
 Token token;
 
-constexpr auto QUERY = L"/v7/finance/download/%1%?period1=%2%&period2=%3%&interval=%4%&events=history&includeAdjustedClose=true";
+constexpr auto QUERY = L"/v8/finance/chart/%1%?period1=%2%&period2=%3%&interval=%4%&events=history&includeAdjustedClose=true";
 
 class YahooData : public yloader::ReqBuilder {
  public:
@@ -118,7 +118,7 @@ class YahooData : public yloader::ReqBuilder {
     return req;
   }
 
-  std::wstring rootURL() const { return L"query1.finance.yahoo.com"; }
+  std::wstring rootURL() const { return L"query2.finance.yahoo.com"; }
   std::wstring userAgent() const { return L"curl / 7.68.0"; }
 
   bool hasCookie() const override { return true; }
