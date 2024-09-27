@@ -1,4 +1,3 @@
-<<<<<<<< HEAD:src/.gitignore
 Thumbs.db
 yloadercore/timestamp.h
 doc/output
@@ -250,6 +249,4 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 *.dat
-========
 .vs
->>>>>>>> 13ee56691a4686a0babfcf4dbfb02f2869b887e8:.gitignore
